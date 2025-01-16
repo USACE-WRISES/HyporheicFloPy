@@ -7,8 +7,8 @@ env/
 # VS Code settings
 .vscode/
 
-# Ignore all content (including nested folders) in directories ending with '_gitignore'
+# 1) Ignore everything inside folders ending with '_gitignore'
+# 2) Un-ignore .gitkeep files (even in subfolders)
 **/*_gitignore/**
-
-# Un-ignore any .gitkeep files in those folders (and subfolders)
+!**/*_gitignore/**/
 !**/*_gitignore/**/.gitkeep
