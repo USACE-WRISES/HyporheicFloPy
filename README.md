@@ -8,6 +8,8 @@ https://flopy.readthedocs.io/en/3.4.2/examples.html
 
 We are using python version: 3.11.4
 
+Folders ending with '_gitignore', will NOT be uploaded to github.  I recommend having a Data_gitignore folder in your directory, then having an 'input' and 'ouput' folder.  Use this for data heavy input/output folders.  Do not upload large files (e.g., model results or setup files) to github.
+
 Recreate the virtual environment (only if you don't already have the .venv folder): 
 <br/> 'python -m venv .venv'
 <br/> This will make a '.venv' folder in your HyporheicFloPy directory.
