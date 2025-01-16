@@ -6,3 +6,7 @@ env/
 
 # VS Code settings
 .vscode/
+
+#ignore all content in folder ending with '_gitignore'
+**/*_gitignore/*
+!**/*_gitignore/.gitkeep

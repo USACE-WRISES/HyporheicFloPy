@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 
 # Define the modflow executable path, two directories up from the current working directory
-modflow_exe_path = Path("../../modflowExe")
+modflow_exe_path = Path("../modflowExe")
 
 # Check if the modflowExe directory exists
 if not modflow_exe_path.exists():

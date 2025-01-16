@@ -1,6 +1,10 @@
 # HyporheicFloPy
 
---NOTES--
+--Resources--
+https://flopy.readthedocs.io/
+https://flopy.readthedocs.io/en/3.4.2/examples.html
+
+--Programming Notes--
 
 We are using python version: 3.11.4
 
