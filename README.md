@@ -1,8 +1,8 @@
 # HyporheicFloPy
 
 --Resources--
-https://flopy.readthedocs.io/
-https://flopy.readthedocs.io/en/3.4.2/examples.html
+<br/> https://flopy.readthedocs.io/
+<br/> https://flopy.readthedocs.io/en/3.4.2/examples.html
 
 --Programming Notes--
 
