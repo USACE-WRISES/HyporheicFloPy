@@ -4,6 +4,9 @@
 <br/> https://flopy.readthedocs.io/
 <br/> https://flopy.readthedocs.io/en/3.4.2/examples.html
 
+--Modflow Notes--
+<br/> We can use UGSS ModelMuse and USGS ModelViewer, which are standalone executibles, to verify our created models.  We can ship this with the script we produce.
+
 --Programming Notes--
 
 We are using python version: 3.11.4
