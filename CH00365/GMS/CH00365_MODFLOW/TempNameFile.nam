@@ -1,0 +1,22 @@
+# MF2K NAME file
+#
+# Output Files
+LIST            2 "CH00365.out"
+DATA(BINARY)    3 "CH00365.hed"
+DATA(BINARY)   40 "CH00365.ccf"
+LMT6            4 "CH00365.lmt"
+#
+# Obs-Sen-Pes Process Input Files
+#OBS            14 "CH00365.obs"
+HOB             7 "CH00365.hob"
+CHOB           15 "CH00365.chob"
+#
+# Global Input Files
+DIS             8 "CH00365.dis"
+#
+# Flow Process Input Files
+BAS6            9 "CH00365.ba6"
+LPF            10 "CH00365.lpf"
+OC             11 "CH00365.oc"
+CHD            12 "CH00365.chd"
+#PCG            13 "CH00365.pcg"

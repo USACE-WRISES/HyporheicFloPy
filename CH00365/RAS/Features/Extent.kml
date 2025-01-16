@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document id="root_doc">
+    <Schema name="Extent.kml.tmp" id="Extent.kml.tmp">
+      <SimpleField name="FID" type="float">
+      </SimpleField>
+      <SimpleField name="Count" type="float">
+      </SimpleField>
+      <SimpleField name="Length" type="float">
+      </SimpleField>
+      <SimpleField name="Area" type="float">
+      </SimpleField>
+    </Schema>
+    <Folder>
+      <name>Extent.kml.tmp</name>
+      <Placemark>
+        <styleUrl xmlns="">#MapStyle</styleUrl>
+        <ExtendedData>
+          <SchemaData schemaUrl="#Extent.kml.tmp">
+            <SimpleData name="FID">0</SimpleData>
+            <SimpleData name="Count">5</SimpleData>
+            <SimpleData name="Length">8017.95768012000</SimpleData>
+            <SimpleData name="Area">3998169.91877999995</SimpleData>
+          </SchemaData>
+        </ExtendedData>
+        <Polygon>
+          <outerBoundaryIs>
+            <LinearRing>
+              <coordinates>-99.9818801302761,31.5138801310083 -99.9818664820945,31.5189996637474 -99.9749797057492,31.5189673926331 -99.9749989904693,31.5138389091292 -99.9818801302761,31.5138801310083</coordinates>
+            </LinearRing>
+          </outerBoundaryIs>
+        </Polygon>
+      </Placemark>
+    </Folder>
+    <Style id="MapStyle" xmlns="">
+      <LineStyle>
+        <color>FF000000</color>
+        <width xmlns="">2</width>
+      </LineStyle>
+      <PolyStyle>
+        <fill>1</fill>
+        <color xmlns="">32000000</color>
+      </PolyStyle>
+    </Style>
+  </Document>
+</kml>
