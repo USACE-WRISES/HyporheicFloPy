@@ -21,6 +21,7 @@
 #
 # First set the path and import the required packages. The flopy path doesn't have to be set if you install flopy from a binary installer. If you want to run this notebook, you have to set the path to your own flopy path.
 
+
 # +
 import os
 import sys
@@ -41,6 +42,21 @@ print("numpy version: {}".format(np.__version__))
 print("matplotlib version: {}".format(mpl.__version__))
 print("flopy version: {}".format(flopy.__version__))
 # -
+
+
+# Define the modflow executable path, two directories up from the current working directory
+modflow_exe_path = Path("../../modflowExe")
+
+# Check if the modflowExe directory exists
+if not modflow_exe_path.exists():
+    raise FileNotFoundError(f"The path '{modflow_exe_path}' does not exist. Please check the directory location.")
+
+# Add all executables from the modflowExe folder to the PATH
+for exe in modflow_exe_path.iterdir():
+    if exe.is_file():
+        os.environ["PATH"] += os.pathsep + str(exe.parent.resolve())
+        print(f"Executable added to PATH: {exe.name}")
+
 
 # ## Creating Meshes with the Triangle Class
 #
