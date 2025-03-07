@@ -1,0 +1,16 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+chapters:
+- file: preprocessing
+- file: initialization
+- file: packages
+- file: groundwater
+- file: plotting
+- file: particles
+- file: results
+
+
+
