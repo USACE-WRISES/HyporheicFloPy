@@ -1,0 +1,712 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Initializing Variables &#8212; Automating Groudwater Modelling with Python using FloPy</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'initialization';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Model Domain" href="model_domain.html" />
+    <link rel="prev" title="Preprocessing Data" href="preprocessing.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Automating Groudwater Modelling with Python using FloPy</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing Data</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Initializing Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_domain.html">Model Domain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="define_boundary.html">Flood Plain Boundaries and Groundwater Domain</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/USACE-WRISES/HyporheicFloPy.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/USACE-WRISES/HyporheicFloPy.git/issues/new?title=Issue%20on%20page%20%2Finitialization.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/initialization.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Initializing Variables</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="initializing-variables">
+<h1>Initializing Variables<a class="headerlink" href="#initializing-variables" title="Link to this heading">#</a></h1>
+<p>This section defines the modeling executables, directories, and parameters used to run the model. The user can define the model grid through cell size and depth, and also define the depth of the groundwater model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#-----------------------Importing Libraries-----------------------#</span>
+<span class="c1"># import os</span>
+<span class="c1"># import flopy</span>
+<span class="c1"># import pathlib</span>
+<span class="c1"># import matplotlib.pyplot as plt</span>
+<span class="c1"># import numpy as np</span>
+<span class="c1"># import geopandas as gpd</span>
+<span class="c1"># import pandas as pd</span>
+<span class="c1"># import rasterio</span>
+<span class="c1"># import pyproj</span>
+<span class="c1"># import shutil</span>
+<span class="c1"># import random</span>
+<span class="c1"># import jupyter_book</span>
+<span class="c1"># import pathlib as pl</span>
+<span class="c1"># from pathlib import Path</span>
+<span class="c1"># from rasterio.crs import CRS</span>
+<span class="c1"># from rasterio.plot import show</span>
+<span class="c1"># from rasterio.warp import calculate_default_transform, reproject, Resampling</span>
+<span class="c1"># from rasterio.transform import from_bounds</span>
+<span class="c1"># from rasterio.transform import rowcol</span>
+<span class="c1"># from rasterio.mask import mask</span>
+<span class="c1"># from shapely.geometry import box, Point, Polygon, LineString</span>
+<span class="c1"># from flopy.utils.binaryfile import HeadFile</span>
+<span class="c1"># from scipy.interpolate import griddata</span>
+<span class="c1"># from pprint import pformat</span>
+<span class="c1"># from flopy.plot.styles import styles</span>
+<span class="c1"># from matplotlib.lines import Line2D</span>
+<span class="c1"># from flopy.mf6 import MFSimulation</span>
+<span class="c1"># from matplotlib import cbook, cm</span>
+<span class="c1"># from matplotlib.colors import LightSource</span>
+<span class="c1"># from modflow_devtools.misc import get_env, timed</span>
+
+<span class="o">%</span><span class="k">run</span> /Users/u4eeevmq/Documents/Python/HyporheicFloPy/VQuintana/common_imports.py
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#------------------------ Define Modeling Workspaces -----------------------#</span>
+<span class="c1"># Project workspace</span>
+<span class="n">md6_exe_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\u4eeevmq\Documents\Python\Flo_Py\flopy\modflowExe\mf6.exe&quot;</span>  <span class="c1"># Update to your MODFLOW-6 executable path</span>
+<span class="n">md7_exe_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\u4eeevmq\Documents\Python\Flo_Py\flopy\modflowExe\mp7.exe&quot;</span>  <span class="c1"># Update to your MODPATH-7 executable path</span>
+<span class="n">sim_name</span> <span class="o">=</span> <span class="s2">&quot;Hyporheic_Project&quot;</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./HP_workspace&quot;</span><span class="p">)</span>  <span class="c1"># Convert to Path object</span>
+<span class="n">figs_path</span> <span class="o">=</span> <span class="n">workspace</span> <span class="o">/</span> <span class="s2">&quot;figures&quot;</span>
+
+<span class="c1"># Clear the workspace directory if it exists</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">workspace</span><span class="p">):</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">workspace</span><span class="p">)</span>   
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">workspace</span><span class="p">)</span>
+
+<span class="c1"># shorten model names so they fit in 16-char limit</span>
+<span class="n">gwf_name</span> <span class="o">=</span> <span class="s2">&quot;gwf_model&quot;</span>
+<span class="n">prt_name</span> <span class="o">=</span> <span class="s2">&quot;prt_model&quot;</span>
+<span class="n">mp7_name</span> <span class="o">=</span> <span class="s2">&quot;mp7_model&quot;</span>
+<span class="n">gwf_ws</span> <span class="o">=</span> <span class="n">workspace</span> <span class="o">/</span> <span class="s2">&quot;gwf_workspace&quot;</span>
+<span class="n">prt_ws</span> <span class="o">=</span> <span class="n">workspace</span> <span class="o">/</span> <span class="s2">&quot;prt_workspace&quot;</span>
+<span class="n">mp7_ws</span> <span class="o">=</span> <span class="n">workspace</span> <span class="o">/</span> <span class="s2">&quot;mp7_workspace&quot;</span>
+
+<span class="c1"># Create directories</span>
+<span class="n">workspace</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">figs_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">gwf_ws</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">prt_ws</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">mp7_ws</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Define output file names</span>
+<span class="c1"># Head Files</span>
+<span class="n">headfile</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.hds&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gwf_name</span><span class="p">)</span>
+<span class="n">head_filerecord</span> <span class="o">=</span> <span class="p">[</span><span class="n">headfile</span><span class="p">]</span>
+<span class="n">headfile_prt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.hds&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prt_name</span><span class="p">)</span>
+
+<span class="c1"># Budget Files</span>
+<span class="n">budgetfile</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.cbb&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gwf_name</span><span class="p">)</span>
+<span class="n">budget_filerecord</span> <span class="o">=</span> <span class="p">[</span><span class="n">budgetfile</span><span class="p">]</span>
+<span class="n">budgetfile_prt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.cbb&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prt_name</span><span class="p">)</span>
+<span class="n">budget_filerecord_prt</span> <span class="o">=</span> <span class="p">[</span><span class="n">budgetfile_prt</span><span class="p">]</span>
+
+<span class="c1"># Particle Tracking Files</span>
+<span class="n">trackfile_prt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.trk&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prt_name</span><span class="p">)</span>
+<span class="n">trackhdrfile_prt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.trk.hdr&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prt_name</span><span class="p">)</span>
+<span class="n">trackcsvfile_prt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.trk.csv&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prt_name</span><span class="p">)</span>
+
+<span class="c1"># Settings from environment variables</span>
+<span class="n">write</span> <span class="o">=</span> <span class="n">get_env</span><span class="p">(</span><span class="s2">&quot;WRITE&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">run</span> <span class="o">=</span> <span class="n">get_env</span><span class="p">(</span><span class="s2">&quot;RUN&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">plot</span> <span class="o">=</span> <span class="n">get_env</span><span class="p">(</span><span class="s2">&quot;PLOT&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">plot_show</span> <span class="o">=</span> <span class="n">get_env</span><span class="p">(</span><span class="s2">&quot;PLOT_SHOW&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">plot_save</span> <span class="o">=</span> <span class="n">get_env</span><span class="p">(</span><span class="s2">&quot;PLOT_SAVE&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#--------------------------Model Parameters-------------------------#</span>
+<span class="c1"># Model units</span>
+<span class="n">length_units</span> <span class="o">=</span> <span class="s2">&quot;feet&quot;</span>
+<span class="n">time_units</span> <span class="o">=</span> <span class="s2">&quot;days&quot;</span>
+
+<span class="c1"># Model Settings</span>
+<span class="n">nper</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Number of stress periods</span>
+<span class="n">cell_size_x</span> <span class="o">=</span> <span class="n">cell_size_y</span> <span class="o">=</span> <span class="mf">10.0</span>  <span class="c1"># Grid cell size (10x10 feet) calculated from raster resolution</span>
+<span class="n">gw_mod_depth</span> <span class="o">=</span> <span class="mf">20.0</span>  <span class="c1"># Depth of the model (20 feet below the bed surface)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="mf">0.5</span>  <span class="c1"># model layer thickness in feet</span>
+<span class="n">kh</span> <span class="o">=</span> <span class="mf">10.0</span>  <span class="c1"># Horizontal hydraulic conductivity (ft/day)</span>
+<span class="n">kv</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># Vertical hydraulic conductivity (ft/day)</span>
+<span class="n">gw_offset</span> <span class="o">=</span> <span class="mf">0.5</span>  <span class="c1"># Offset value (ft) for groundwater elevation (used to set initial head from surface water elevation)</span>
+
+<span class="c1"># Optional Settings</span>
+<span class="n">porosity</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="c1"># Porosity</span>
+<span class="n">rch_iface</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">rch_iflowface</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">recharge_rate</span> <span class="o">=</span> <span class="mf">0.005</span>  <span class="c1"># Recharge rate ($ft/d$)</span>
+
+<span class="c1"># Time discretization</span>
+<span class="n">nstp</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">perlen</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">tsmult</span> <span class="o">=</span> <span class="mf">1.0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Store variables</span>
+<span class="o">%</span><span class="k">store</span> md6_exe_path
+<span class="o">%</span><span class="k">store</span> md7_exe_path
+<span class="o">%</span><span class="k">store</span> sim_name
+<span class="o">%</span><span class="k">store</span> workspace
+<span class="o">%</span><span class="k">store</span> figs_path
+<span class="o">%</span><span class="k">store</span> gwf_name
+<span class="o">%</span><span class="k">store</span> prt_name
+<span class="o">%</span><span class="k">store</span> mp7_name
+<span class="o">%</span><span class="k">store</span> gwf_ws
+<span class="o">%</span><span class="k">store</span> prt_ws
+<span class="o">%</span><span class="k">store</span> mp7_ws
+<span class="o">%</span><span class="k">store</span> headfile
+<span class="o">%</span><span class="k">store</span> head_filerecord
+<span class="o">%</span><span class="k">store</span> headfile_prt
+<span class="o">%</span><span class="k">store</span> budgetfile
+<span class="o">%</span><span class="k">store</span> budget_filerecord
+<span class="o">%</span><span class="k">store</span> budgetfile_prt
+<span class="o">%</span><span class="k">store</span> budget_filerecord_prt
+<span class="o">%</span><span class="k">store</span> trackfile_prt
+<span class="o">%</span><span class="k">store</span> trackhdrfile_prt
+<span class="o">%</span><span class="k">store</span> trackcsvfile_prt
+<span class="o">%</span><span class="k">store</span> write
+<span class="o">%</span><span class="k">store</span> run
+<span class="o">%</span><span class="k">store</span> plot
+<span class="o">%</span><span class="k">store</span> plot_show
+<span class="o">%</span><span class="k">store</span> plot_save
+
+<span class="c1"># Store model parameters</span>
+<span class="o">%</span><span class="k">store</span> length_units
+<span class="o">%</span><span class="k">store</span> time_units
+<span class="o">%</span><span class="k">store</span> nper
+<span class="o">%</span><span class="k">store</span> cell_size_x
+<span class="o">%</span><span class="k">store</span> cell_size_y
+<span class="o">%</span><span class="k">store</span> gw_mod_depth
+<span class="o">%</span><span class="k">store</span> z
+<span class="o">%</span><span class="k">store</span> kh
+<span class="o">%</span><span class="k">store</span> kv
+<span class="o">%</span><span class="k">store</span> gw_offset
+<span class="o">%</span><span class="k">store</span> porosity
+<span class="o">%</span><span class="k">store</span> rch_iface
+<span class="o">%</span><span class="k">store</span> rch_iflowface
+<span class="o">%</span><span class="k">store</span> recharge_rate
+<span class="o">%</span><span class="k">store</span> nstp
+<span class="o">%</span><span class="k">store</span> perlen
+<span class="o">%</span><span class="k">store</span> tsmult
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Stored &#39;md6_exe_path&#39; (str)
+Stored &#39;md7_exe_path&#39; (str)
+Stored &#39;sim_name&#39; (str)
+Stored &#39;workspace&#39; (WindowsPath)
+Stored &#39;figs_path&#39; (WindowsPath)
+Stored &#39;gwf_name&#39; (str)
+Stored &#39;prt_name&#39; (str)
+Stored &#39;mp7_name&#39; (str)
+Stored &#39;gwf_ws&#39; (WindowsPath)
+Stored &#39;prt_ws&#39; (WindowsPath)
+Stored &#39;mp7_ws&#39; (WindowsPath)
+Stored &#39;headfile&#39; (str)
+Stored &#39;head_filerecord&#39; (list)
+Stored &#39;headfile_prt&#39; (str)
+Stored &#39;budgetfile&#39; (str)
+Stored &#39;budget_filerecord&#39; (list)
+Stored &#39;budgetfile_prt&#39; (str)
+Stored &#39;budget_filerecord_prt&#39; (list)
+Stored &#39;trackfile_prt&#39; (str)
+Stored &#39;trackhdrfile_prt&#39; (str)
+Stored &#39;trackcsvfile_prt&#39; (str)
+Stored &#39;write&#39; (bool)
+Stored &#39;run&#39; (bool)
+Stored &#39;plot&#39; (bool)
+Stored &#39;plot_show&#39; (bool)
+Stored &#39;plot_save&#39; (bool)
+Stored &#39;length_units&#39; (str)
+Stored &#39;time_units&#39; (str)
+Stored &#39;nper&#39; (int)
+Stored &#39;cell_size_x&#39; (float)
+Stored &#39;cell_size_y&#39; (float)
+Stored &#39;gw_mod_depth&#39; (float)
+Stored &#39;z&#39; (float)
+Stored &#39;kh&#39; (float)
+Stored &#39;kv&#39; (float)
+Stored &#39;gw_offset&#39; (float)
+Stored &#39;porosity&#39; (float)
+Stored &#39;rch_iface&#39; (int)
+Stored &#39;rch_iflowface&#39; (int)
+Stored &#39;recharge_rate&#39; (float)
+Stored &#39;nstp&#39; (int)
+Stored &#39;perlen&#39; (float)
+Stored &#39;tsmult&#39; (float)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="preprocessing.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Preprocessing Data</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="model_domain.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Model Domain</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vanessa Quintana
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

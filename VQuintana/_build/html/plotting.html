@@ -1,0 +1,691 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Plotting Groundwater Modeling Results &#8212; Automating Groudwater Modelling with Python using FloPy</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'plotting';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Particle Tracking Modeling Packages" href="particles.html" />
+    <link rel="prev" title="Groundwater Modeling Packages" href="groundwater.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Automating Groudwater Modelling with Python using FloPy</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="initialization.html">Initializing Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_domain.html">Model Domain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="define_boundary.html">Flood Plain Boundaries and Groundwater Domain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boundary_conditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wells.html">OPTIONAL:  Define Wells</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particle_release.html">Particle Release</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nodes.html">OPTIONAL: Define Nodes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="groundwater.html">Groundwater Modeling Packages</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Plotting Groundwater Modeling Results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particles.html">Particle Tracking Modeling Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particle_plotting.html">Plotting Particle Tracking Results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_models.html">Run Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="results.html">Quantifying Ecological Benefits</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/USACE-WRISES/HyporheicFloPy.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/USACE-WRISES/HyporheicFloPy.git/issues/new?title=Issue%20on%20page%20%2Fplotting.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/plotting.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Plotting Groundwater Modeling Results</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="plotting-groundwater-modeling-results">
+<h1>Plotting Groundwater Modeling Results<a class="headerlink" href="#plotting-groundwater-modeling-results" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#---------------------- Groundwater Model Plotting ------------------------#</span>
+<span class="c1"># Save the function to a file with utf-8 encoding</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;plot_gwf_all.py&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">import flopy</span>
+<span class="s2">import numpy as np</span>
+<span class="s2">import matplotlib.pyplot as plt</span>
+<span class="s2">import matplotlib.cm as cm</span>
+<span class="s2">from mpl_toolkits.mplot3d import Axes3D</span>
+<span class="s2">from matplotlib.colors import LightSource</span>
+
+<span class="s2">def load_head():</span>
+<span class="s2">    # Assuming you have a head file to load</span>
+<span class="s2">    head_file = gwf_ws / headfile</span>
+<span class="s2">    head_obj = flopy.utils.HeadFile(head_file)</span>
+<span class="s2">    head = head_obj.get_data()</span>
+<span class="s2">    return head</span>
+
+<span class="s2">def plot_gwf_all(gwfsim):</span>
+<span class="s2">    # get gwf model</span>
+<span class="s2">    gwf = gwfsim.get_model(gwf_name)</span>
+<span class="s2">    head = load_head()</span>
+
+<span class="s2">    # Load the discretization file to access model grid information</span>
+<span class="s2">    dis = gwf.get_package(&quot;DIS&quot;)</span>
+<span class="s2">    nlay, nrow, ncol = dis.nlay.data, dis.nrow.data, dis.ncol.data</span>
+
+<span class="s2">    # Load the idomain array to identify active cells</span>
+<span class="s2">    idomain = dis.idomain.array # No results will be visible otherwise</span>
+
+<span class="s2">    # Choose the layer you want to plot, e.g., the first layer (layer 0)</span>
+<span class="s2">    layer_to_plot = 1  # You can change this to any other layer (0-based index)</span>
+
+<span class="s2">    # Extract the groundwater head for the specified layer (nrow, ncol)</span>
+<span class="s2">    head_layer = head[layer_to_plot, :, :]</span>
+
+<span class="s2">    # Mask the inactive cells in the head_layer array</span>
+<span class="s2">    head_layer_masked = np.ma.masked_where(idomain[layer_to_plot, :, :] == 0, head_layer)</span>
+
+<span class="s2">    # Plot the groundwater head for the chosen layer</span>
+<span class="s2">    plt.figure(figsize=(10, 6))</span>
+<span class="s2">    plt.imshow(head_layer_masked, cmap=&#39;viridis&#39;, origin=&#39;lower&#39;, extent=[0, ncol, 0, nrow])</span>
+<span class="s2">    plt.colorbar(label=&#39;Groundwater Head (m)&#39;)</span>
+<span class="s2">    plt.title(f&#39;Groundwater Head at Layer {layer_to_plot + 1}&#39;)</span>
+<span class="s2">    plt.xlabel(&#39;Column&#39;)</span>
+<span class="s2">    plt.ylabel(&#39;Row&#39;)</span>
+<span class="s2">    plt.show()</span>
+
+<span class="s2">    # Load the surface elevation data</span>
+<span class="s2">    surface_elevation = dis.top.array</span>
+
+<span class="s2">    # Choose the layers you want to plot, e.g., the first layer (layer 0) and the last layer</span>
+<span class="s2">    layer_to_plot_first = 0  # First layer (0-based index)</span>
+<span class="s2">    layer_to_plot_last = nlay - 1  # Last layer (0-based index)</span>
+
+<span class="s2">    # Extract the groundwater head for the specified layers (nrow, ncol)</span>
+<span class="s2">    head_layer_first = head[layer_to_plot_first, :, :]</span>
+<span class="s2">    head_layer_last = head[layer_to_plot_last, :, :]</span>
+
+<span class="s2">    # Mask the inactive cells in the head_layer arrays</span>
+<span class="s2">    head_layer_first_masked = np.ma.masked_where(idomain[layer_to_plot_first, :, :] == 0, head_layer_first)</span>
+<span class="s2">    head_layer_last_masked = np.ma.masked_where(idomain[layer_to_plot_last, :, :] == 0, head_layer_last)</span>
+
+<span class="s2">    # Plot the surface elevation for active cells and overlay groundwater head contours</span>
+<span class="s2">    fig, axs = plt.subplots(1, 2, figsize=(20, 10))</span>
+
+<span class="s2">    # Plot for the first layer</span>
+<span class="s2">    top_active_first = np.ma.masked_where(idomain[layer_to_plot_first, :, :] == 0, surface_elevation)</span>
+<span class="s2">    im1 = axs[0].imshow(top_active_first, cmap=&quot;terrain&quot;, interpolation=&quot;nearest&quot;, origin=&quot;lower&quot;,</span>
+<span class="s2">                        extent=[0, ncol, 0, nrow], alpha=0.7)</span>
+<span class="s2">    plt.colorbar(im1, ax=axs[0], label=&#39;Surface Elevation (m)&#39;)</span>
+
+<span class="s2">    # Check if the minimum and maximum values are different before creating contour levels</span>
+<span class="s2">    if head_layer_first_masked.min() != head_layer_first_masked.max():</span>
+<span class="s2">        contour_first = axs[0].contour(head_layer_first_masked, levels=np.linspace(head_layer_first_masked.min(), head_layer_first_masked.max(), 10), colors=&#39;blue&#39;, extent=[0, ncol, 0, nrow])</span>
+<span class="s2">        axs[0].clabel(contour_first, inline=True, fontsize=8, fmt=&#39;</span><span class="si">%1.1f</span><span class="s2">&#39;)</span>
+<span class="s2">    axs[0].set_title(f&#39;Surface Elevation and Groundwater Head Contours at Layer {layer_to_plot_first + 1}&#39;)</span>
+<span class="s2">    axs[0].set_xlabel(&#39;Column&#39;)</span>
+<span class="s2">    axs[0].set_ylabel(&#39;Row&#39;)</span>
+
+<span class="s2">    # Plot for the last layer</span>
+<span class="s2">    top_active_last = np.ma.masked_where(idomain[layer_to_plot_last, :, :] == 0, surface_elevation)</span>
+<span class="s2">    im2 = axs[1].imshow(top_active_last, cmap=&quot;terrain&quot;, interpolation=&quot;nearest&quot;, origin=&quot;lower&quot;,</span>
+<span class="s2">                        extent=[0, ncol, 0, nrow], alpha=0.7)</span>
+<span class="s2">    plt.colorbar(im2, ax=axs[1], label=&#39;Surface Elevation (m)&#39;)</span>
+
+<span class="s2">    # Check if the minimum and maximum values are different before creating contour levels</span>
+<span class="s2">    if head_layer_last_masked.min() != head_layer_last_masked.max():</span>
+<span class="s2">        contour_last = axs[1].contour(head_layer_last_masked, levels=np.linspace(head_layer_last_masked.min(), head_layer_last_masked.max(), 10), colors=&#39;blue&#39;, extent=[0, ncol, 0, nrow])</span>
+<span class="s2">        axs[1].clabel(contour_last, inline=True, fontsize=8, fmt=&#39;</span><span class="si">%1.1f</span><span class="s2">&#39;)</span>
+<span class="s2">    axs[1].set_title(f&#39;Surface Elevation and Groundwater Head Contours at Layer {layer_to_plot_last + 1}&#39;)</span>
+<span class="s2">    axs[1].set_xlabel(&#39;Column&#39;)</span>
+<span class="s2">    axs[1].set_ylabel(&#39;Row&#39;)</span>
+
+<span class="s2">    plt.tight_layout()</span>
+<span class="s2">    plt.show()</span>
+
+<span class="s2">    #---------------------- Zoom In to idomain ------------------------#</span>
+<span class="s2">    # Choose the layers you want to plot</span>
+<span class="s2">    layers_to_plot = [1, 19, 39]  # 1st, 20th, and 40th layers (0-based index)</span>
+
+<span class="s2">    # Extract the groundwater head for the specified layers (nrow, ncol)</span>
+<span class="s2">    head_layers = [head[layer, :, :] for layer in layers_to_plot]</span>
+
+<span class="s2">    # Mask the inactive cells in the head_layer arrays</span>
+<span class="s2">    head_layers_masked = [np.ma.masked_where(idomain[layer, :, :] == 0, head_layers[i]) for i, layer in enumerate(layers_to_plot)]</span>
+
+<span class="s2">    # Determine the extent of the active cells</span>
+<span class="s2">    active_cells = np.any(idomain, axis=0)</span>
+<span class="s2">    active_rows, active_cols = np.where(active_cells)</span>
+<span class="s2">    row_min, row_max = active_rows.min(), active_rows.max()</span>
+<span class="s2">    col_min, col_max = active_cols.min(), active_cols.max()</span>
+
+<span class="s2">    # Define the extent for the plots</span>
+<span class="s2">    extent = [col_min, col_max + 1, row_min, row_max + 1]</span>
+
+<span class="s2">    # Plot the surface elevation for active cells and overlay groundwater head contours</span>
+<span class="s2">    fig, axs = plt.subplots(3, 1, figsize=(10, 30))</span>
+
+<span class="s2">    for i, layer in enumerate(layers_to_plot):</span>
+<span class="s2">        # Plot for each layer</span>
+<span class="s2">        top_active = np.ma.masked_where(idomain[layer, :, :] == 0, surface_elevation)</span>
+<span class="s2">        im = axs[i].imshow(top_active[row_min:row_max+1, col_min:col_max+1], cmap=&quot;terrain&quot;, interpolation=&quot;nearest&quot;, origin=&quot;lower&quot;,</span>
+<span class="s2">                           extent=extent, alpha=0.7)</span>
+<span class="s2">        plt.colorbar(im, ax=axs[i], label=&#39;Surface Elevation (m)&#39;)</span>
+<span class="s2">        contour = axs[i].contour(head_layers_masked[i][row_min:row_max+1, col_min:col_max+1], levels=np.linspace(head_layers_masked[i].min(), head_layers_masked[i].max(), 10), colors=&#39;blue&#39;, extent=extent)</span>
+<span class="s2">        axs[i].clabel(contour, inline=True, fontsize=8, fmt=&#39;</span><span class="si">%1.1f</span><span class="s2">&#39;)</span>
+<span class="s2">        axs[i].set_title(f&#39;Surface Elevation and Groundwater Head Contours at Layer {layer + 1}&#39;)</span>
+<span class="s2">        axs[i].set_xlabel(&#39;Column&#39;)</span>
+<span class="s2">        axs[i].set_ylabel(&#39;Row&#39;)</span>
+
+<span class="s2">    plt.tight_layout()</span>
+<span class="s2">    plt.show()</span>
+
+<span class="s2">    #---------------------- 3D Plot of the Model ------------------------#</span>
+<span class="s2">    top = dis.top.array</span>
+<span class="s2">    botm = dis.botm.array</span>
+<span class="s2">    idomain = dis.idomain.array  # Assuming idomain is part of the dis object</span>
+
+<span class="s2">    # Combine top and botm to get the elevation data for all layers</span>
+<span class="s2">    elevation_data = np.concatenate(([top], botm), axis=0)</span>
+
+<span class="s2">    # Get the number of rows and columns</span>
+<span class="s2">    nrows, ncols = top.shape</span>
+
+<span class="s2">    # Layer to plot for terrain</span>
+<span class="s2">    terrain_layer = 0</span>
+
+<span class="s2">    # Create a meshgrid for x and y coordinates</span>
+<span class="s2">    x = np.linspace(0, ncols - 1, ncols)</span>
+<span class="s2">    y = np.linspace(0, nrows - 1, nrows)</span>
+<span class="s2">    x, y = np.meshgrid(x, y)</span>
+
+<span class="s2">    # Mask the elevation data using the idomain array</span>
+<span class="s2">    #z = np.ma.masked_where(idomain[terrain_layer, :, :] == 0, elevation_data[terrain_layer, :, :])</span>
+
+<span class="s2">    # Set up plot</span>
+<span class="s2">    fig, ax = plt.subplots(subplot_kw=dict(projection=&#39;3d&#39;))</span>
+
+<span class="s2">    # Light source for hillshading</span>
+<span class="s2">    ls = LightSource(270, 45)</span>
+
+<span class="s2">    # Plot the masked elevation data</span>
+<span class="s2">    z = elevation_data[terrain_layer, :, :]</span>
+<span class="s2">    rgb = ls.shade(z, cmap=cm.gist_earth, vert_exag=0.1, blend_mode=&#39;soft&#39;)</span>
+<span class="s2">    surf = ax.plot_surface(x, y, z, rstride=1, cstride=1, facecolors=rgb,</span>
+<span class="s2">                        linewidth=0, antialiased=False, shade=False)</span>
+
+<span class="s2">    # Set plot labels and title</span>
+<span class="s2">    ax.set_title(&#39;3D Terrain Elevation&#39;)</span>
+<span class="s2">    ax.set_xlabel(&#39;Column&#39;)</span>
+<span class="s2">    ax.set_ylabel(&#39;Row&#39;)</span>
+<span class="s2">    ax.set_zlabel(&#39;Elevation (ft)&#39;)</span>
+
+<span class="s2">    plt.show()</span>
+
+<span class="s2">print(&quot;✅ plot_gwf_all function saved successfully.&quot;)</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="c1">## Code from:</span>
+<span class="c1"># https://github.com/matplotlib/matplotlib/tree/cfe5bf75eaf378b9523830908036f2123acfe4e7/examples/frontpage/3D.py</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the function from the file</span>
+<span class="c1"># %run plot_gwf_model.py</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="groundwater.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Groundwater Modeling Packages</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="particles.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Particle Tracking Modeling Packages</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vanessa Quintana
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

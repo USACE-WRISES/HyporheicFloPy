@@ -1,0 +1,85 @@
+Traceback (most recent call last):
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\jupyter_cache\executors\utils.py", line 58, in single_nb_execution
+    executenb(
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\jupyter_core\utils\__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\asyncio\base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+#------------------------ Define Modeling Workspaces -----------------------#
+# Project workspace
+md6_exe_path = r"C:\Users\u4eeevmq\Documents\Python\Flo_Py\flopy\modflowExe\mf6.exe"  # Update to your MODFLOW-6 executable path
+md7_exe_path = r"C:\Users\u4eeevmq\Documents\Python\Flo_Py\flopy\modflowExe\mp7.exe"  # Update to your MODPATH-7 executable path
+sim_name = "Hyporheic_Project"
+workspace = Path("./HP_workspace")  # Convert to Path object
+figs_path = workspace / "figures"
+
+# Clear the workspace directory if it exists
+if os.path.exists(workspace):
+    shutil.rmtree(workspace)   
+os.makedirs(workspace)
+
+# shorten model names so they fit in 16-char limit
+gwf_name = "gwf_model"
+prt_name = "prt_model"
+mp7_name = "mp7_model"
+gwf_ws = workspace / "gwf_workspace"
+prt_ws = workspace / "prt_workspace"
+mp7_ws = workspace / "mp7_workspace"
+
+# Create directories
+workspace.mkdir(exist_ok=True, parents=True)
+figs_path.mkdir(exist_ok=True, parents=True)
+gwf_ws.mkdir(exist_ok=True, parents=True)
+prt_ws.mkdir(exist_ok=True, parents=True)
+mp7_ws.mkdir(exist_ok=True, parents=True)
+
+# Define output file names
+# Head Files
+headfile = "{}.hds".format(gwf_name)
+head_filerecord = [headfile]
+headfile_prt = "{}.hds".format(prt_name)
+
+# Budget Files
+budgetfile = "{}.cbb".format(gwf_name)
+budget_filerecord = [budgetfile]
+budgetfile_prt = "{}.cbb".format(prt_name)
+budget_filerecord_prt = [budgetfile_prt]
+
+# Particle Tracking Files
+trackfile_prt = "{}.trk".format(prt_name)
+trackhdrfile_prt = "{}.trk.hdr".format(prt_name)
+trackcsvfile_prt = "{}.trk.csv".format(prt_name)
+
+# Settings from environment variables
+write = get_env("WRITE", True)
+run = get_env("RUN", True)
+plot = get_env("PLOT", True)
+plot_show = get_env("PLOT_SHOW", True)
+plot_save = get_env("PLOT_SAVE", True)
+------------------
+
+
+[1;31m---------------------------------------------------------------------------[0m
+[1;31mNameError[0m                                 Traceback (most recent call last)
+Cell [1;32mIn[1], line 6[0m
+[0;32m      4[0m md7_exe_path [38;5;241m=[39m [38;5;124mr[39m[38;5;124m"[39m[38;5;124mC:[39m[38;5;124m\[39m[38;5;124mUsers[39m[38;5;124m\[39m[38;5;124mu4eeevmq[39m[38;5;124m\[39m[38;5;124mDocuments[39m[38;5;124m\[39m[38;5;124mPython[39m[38;5;124m\[39m[38;5;124mFlo_Py[39m[38;5;124m\[39m[38;5;124mflopy[39m[38;5;124m\[39m[38;5;124mmodflowExe[39m[38;5;124m\[39m[38;5;124mmp7.exe[39m[38;5;124m"[39m  [38;5;66;03m# Update to your MODPATH-7 executable path[39;00m
+[0;32m      5[0m sim_name [38;5;241m=[39m [38;5;124m"[39m[38;5;124mHyporheic_Project[39m[38;5;124m"[39m
+[1;32m----> 6[0m workspace [38;5;241m=[39m [43mPath[49m([38;5;124m"[39m[38;5;124m./HP_workspace[39m[38;5;124m"[39m)  [38;5;66;03m# Convert to Path object[39;00m
+[0;32m      7[0m figs_path [38;5;241m=[39m workspace [38;5;241m/[39m [38;5;124m"[39m[38;5;124mfigures[39m[38;5;124m"[39m
+[0;32m      9[0m [38;5;66;03m# Clear the workspace directory if it exists[39;00m
+
+[1;31mNameError[0m: name 'Path' is not defined
+

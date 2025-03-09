@@ -9,6 +9,11 @@ author: Vanessa Quintana
 # See https://jupyterbook.org/content/execute.html
 execute:
   execute_notebooks: force
+  exclude_patterns:
+    - '**/hyporheic_project/*.ipynb'
+    - '**/Preprocessing_Steps_VQuintana/*.ipynb'
+  warn_on_notebook_execute: false
+  timeout: 600  # Increase the timeout to 600 seconds (10 minutes)
 
 # Define the name of the latex output file for PDF builds
 latex:
@@ -16,8 +21,8 @@ latex:
     targetname: book.tex
 
 # Add a bibtex file so that we can create citations
-bibtex_bibfiles:
-  - references.bib
+#bibtex_bibfiles:
+#  - references.bib
 
 # Information about where the book exists on the web
 repository:

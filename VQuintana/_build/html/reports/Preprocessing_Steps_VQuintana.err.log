@@ -1,17 +1,4 @@
 Traceback (most recent call last):
-  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 782, in _async_poll_for_reply
-    msg = await ensure_async(self.kc.shell_channel.get_msg(timeout=new_timeout))
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\jupyter_core\utils\__init__.py", line 198, in ensure_async
-    result = await obj
-             ^^^^^^^^^
-  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\jupyter_client\channels.py", line 313, in get_msg
-    raise Empty
-_queue.Empty
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
   File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\jupyter_cache\executors\utils.py", line 58, in single_nb_execution
     executenb(
   File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 1319, in execute
@@ -25,20 +12,96 @@ Traceback (most recent call last):
            ^^^^^^^^^^^^^^^
   File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 709, in async_execute
     await self.async_execute_cell(
-  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 1005, in async_execute_cell
-    exec_reply = await self.task_poll_for_reply
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 806, in _async_poll_for_reply
-    error_on_timeout_execute_reply = await self._async_handle_timeout(timeout, cell)
-                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 856, in _async_handle_timeout
-    raise CellTimeoutError.error_from_timeout_and_cell(
-nbclient.exceptions.CellTimeoutError: A cell timed out while it was being executed, after 30 seconds.
-The message was: Cell execution timed out.
-Here is a preview of the cell contents:
--------------------
-['# Import libraries', 'import os', 'import flopy', 'import pathlib', 'import matplotlib.pyplot as plt']
-...
-['from rasterio.transform import rowcol', 'from rasterio.mask import mask', 'from shapely.geometry import box, Point, Polygon, LineString', 'from flopy.utils.binaryfile import HeadFile', 'from scipy.interpolate import griddata']
--------------------
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+# Load the budget file
+budget_file = f"{workspace}/{model_name}.cbb"  # Replace with the path to your budget file
+cbb = flopy.utils.CellBudgetFile(budget_file)
+
+# List available records in the budget file
+record_names = cbb.get_unique_record_names()
+print("Available record names in the budget file:", record_names)
+
+# Choose a valid record name from the list
+valid_record_name = b'    FLOW-JA-FACE'  # Replace with the desired record name
+
+# Extract the data for the chosen budget term
+budget_data = cbb.get_data(text=valid_record_name)
+
+# Debugging: Print the shape and type of the extracted data
+print(f"Type of budget_data: {type(budget_data)}")
+print(f"Length of budget_data: {len(budget_data)}")
+if len(budget_data) > 0:
+    print(f"Shape of budget_data[0]: {budget_data[0].shape}")
+
+print(f"Grid dimensions: nlay={nlay}, nrow={nrow}, ncol={ncol}")
+
+idomain = dis.idomain.array
+
+# Determine the grid dimensions from the idomain array
+nlay, nrow, ncol = idomain.shape  # Assuming idomain is already loaded
+
+# Plot the budget data
+fig, ax = plt.subplots(figsize=(10, 6))
+
+# Assuming you want to plot the budget for the first time step and first layer
+time_step = 0
+layer = 0
+
+# Debugging: Check if the time_step and layer indices are valid
+if time_step < len(budget_data):
+    if layer < budget_data[time_step].shape[0]:
+        # Debugging: Print the shape of the data before reshaping
+        print(f"Shape of budget_data[{time_step}][{layer}, :]: {budget_data[time_step][layer, :].shape}")
+
+        # Reshape the data to match the model grid dimensions
+        try:
+            flow_data = budget_data[time_step][layer, :].reshape((nlay, nrow, ncol))
+        except ValueError as e:
+            print(f"Error reshaping data: {e}")
+            print(f"Expected shape: ({nlay}, {nrow}, {ncol}), but got {budget_data[time_step][layer, :].shape}")
+            raise
+
+        # Debugging: Print the shape of the reshaped data
+        print(f"Shape of reshaped flow_data: {flow_data.shape}")
+
+        im = ax.imshow(flow_data[layer, :, :], cmap='viridis', interpolation='nearest', origin='lower')
+        plt.colorbar(im, ax=ax, label=f'{valid_record_name.decode("utf-8")} (m³/day)')
+        ax.set_title(f'{valid_record_name.decode("utf-8")} for Layer {layer + 1}')
+        ax.set_xlabel('Column')
+        ax.set_ylabel('Row')
+
+        plt.tight_layout()
+        plt.show()
+    else:
+        print(f"Invalid layer index: {layer}")
+else:
+    print(f"Invalid time_step index: {time_step}")
+------------------
+
+----- stdout -----
+Available record names in the budget file: [np.bytes_(b'    FLOW-JA-FACE'), np.bytes_(b'      DATA-SPDIS'), np.bytes_(b'        DATA-SAT'), np.bytes_(b'             WEL'), np.bytes_(b'            RCHA'), np.bytes_(b'             CHD')]
+Type of budget_data: <class 'list'>
+Length of budget_data: 1
+Shape of budget_data[0]: (1, 1, 2253260)
+Grid dimensions: nlay=40, nrow=385, ncol=431
+Shape of budget_data[0][0, :]: (1, 2253260)
+Error reshaping data: cannot reshape array of size 2253260 into shape (40,385,431)
+Expected shape: (40, 385, 431), but got (1, 2253260)
+------------------
+
+[1;31m---------------------------------------------------------------------------[0m
+[1;31mValueError[0m                                Traceback (most recent call last)
+Cell [1;32mIn[23], line 43[0m
+[0;32m     41[0m [38;5;66;03m# Reshape the data to match the model grid dimensions[39;00m
+[0;32m     42[0m [38;5;28;01mtry[39;00m:
+[1;32m---> 43[0m     flow_data [38;5;241m=[39m [43mbudget_data[49m[43m[[49m[43mtime_step[49m[43m][49m[43m[[49m[43mlayer[49m[43m,[49m[43m [49m[43m:[49m[43m][49m[38;5;241;43m.[39;49m[43mreshape[49m[43m([49m[43m([49m[43mnlay[49m[43m,[49m[43m [49m[43mnrow[49m[43m,[49m[43m [49m[43mncol[49m[43m)[49m[43m)[49m
+[0;32m     44[0m [38;5;28;01mexcept[39;00m [38;5;167;01mValueError[39;00m [38;5;28;01mas[39;00m e:
+[0;32m     45[0m     [38;5;28mprint[39m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mError reshaping data: [39m[38;5;132;01m{[39;00me[38;5;132;01m}[39;00m[38;5;124m"[39m)
+
+[1;31mValueError[0m: cannot reshape array of size 2253260 into shape (40,385,431)
 

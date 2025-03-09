@@ -1,0 +1,133 @@
+Traceback (most recent call last):
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\jupyter_cache\executors\utils.py", line 58, in single_nb_execution
+    executenb(
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\jupyter_core\utils\__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\asyncio\base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+#---------------------- Define Any Wells ------------------------#
+# Get the bounds of the shapefile
+minx, miny, maxx, maxy = ground_water_domain.total_bounds
+
+# Function to generate a random point within the bounds
+def generate_random_point_within(bounds):
+    minx, miny, maxx, maxy = bounds
+    while True:
+        pnt = Point(random.uniform(minx, maxx), random.uniform(miny, maxy))
+        if ground_water_domain.contains(pnt).any():
+            return pnt
+
+# Generate 3 random points within the shapefile
+random_points = [generate_random_point_within((minx, miny, maxx, maxy)) for _ in range(3)]
+
+# Assign pseudo pumping rates to these points
+pumping_rates = np.random.uniform(-500, -100, 3)  # Example pseudo pumping rates
+
+# Create a GeoDataFrame with the well locations and pumping rates
+well_data = [{'geometry': point, 'pump_rate': rate} for point, rate in zip(random_points, pumping_rates)]
+gdf = gpd.GeoDataFrame(well_data)
+
+# Print the GeoDataFrame
+print(gdf)
+
+# Save the GeoDataFrame as a shapefile
+output_shapefile = 'random_wells.shp'
+gdf.to_file(output_shapefile)
+
+print(f"Random wells shapefile saved as {output_shapefile}")
+
+## Read in Actual Point Shapefile (coordinates of wells + well pumping rates)
+# Define the path to your point file
+## Read in Actual Point Shapefile (coordinates of wells + well pumping rates)
+# Define the path to your point file
+point_file_path = 'random_wells.shp'  # Replace with the actual path to your point file
+
+# Read the point file using geopandas
+gdf = gpd.read_file(point_file_path)
+
+# Reproject the point file to the target CRS
+gdf = gdf.to_crs(hec_ras_crs)
+
+# Print the GeoDataFrame
+print(gdf)
+
+# Extract well locations and pumping rates
+well_locations = gdf['geometry']
+pumping_rates = gdf['pump_rate']
+
+# Print well locations and pumping rates
+print("Well Locations:")
+print(well_locations)
+print("Pumping Rates:")
+print(pumping_rates)
+
+# Print well locations and pumping rates
+print("Well Locations:")
+print(well_locations)
+print("Pumping Rates:")
+print(pumping_rates)
+
+# Define the transform for converting coordinates to model grid indices
+# Replace with your actual transform
+transform = rasterio.transform.from_origin(xorigin, yorigin, cell_size_x, cell_size_y)
+
+# Create the well package data
+wel_data = []
+nrow, ncol = idomain.shape[1], idomain.shape[2]
+
+for idx, row in gdf.iterrows():
+    well_geometry = row.geometry
+    x, y = well_geometry.x, well_geometry.y
+    i, j = ~transform * (x, y)  # Convert coordinates to model grid indices
+    i, j = abs(int(i)), abs(int(j))  # Ensure indices are integers
+    k = 0  # Assuming wells are in the first layer
+    q = row['pump_rate']  # Pull the pumping rate from the point file attribute
+
+    # Check if the well point intersects any cell in the grid
+    for grid_row in range(nrow):
+        for grid_col in range(ncol):
+            cell_geometry = grid_gdf.iloc[grid_row * ncol + grid_col].geometry
+            if well_geometry.intersects(cell_geometry):
+                wel_data.append([k, grid_row, grid_col, float(q)])
+                break  # Exit the loop once the intersecting cell is found
+
+# Print the well package data for verification
+for entry in wel_data:
+    print(entry)
+
+# Monitoring strategy
+def monitor_wells(wel_data):
+    # Example monitoring strategy: Print well locations and pumping rates
+    for well in wel_data:
+        k, i, j, q = well
+        print(f"Monitoring Well at Layer {k}, Row {i}, Column {j} with Pumping Rate {q} cubic feet per day")
+
+# Implement monitoring strategy
+monitor_wells(wel_data)
+------------------
+
+
+[1;31m---------------------------------------------------------------------------[0m
+[1;31mNameError[0m                                 Traceback (most recent call last)
+Cell [1;32mIn[2], line 3[0m
+[0;32m      1[0m [38;5;66;03m#---------------------- Define Any Wells ------------------------#[39;00m
+[0;32m      2[0m [38;5;66;03m# Get the bounds of the shapefile[39;00m
+[1;32m----> 3[0m minx, miny, maxx, maxy [38;5;241m=[39m [43mground_water_domain[49m[38;5;241m.[39mtotal_bounds
+[0;32m      5[0m [38;5;66;03m# Function to generate a random point within the bounds[39;00m
+[0;32m      6[0m [38;5;28;01mdef[39;00m[38;5;250m [39m[38;5;21mgenerate_random_point_within[39m(bounds):
+
+[1;31mNameError[0m: name 'ground_water_domain' is not defined
+
