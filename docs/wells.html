@@ -1,0 +1,800 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>OPTIONAL: Define Wells &#8212; Automating Groudwater Modelling with Python using FloPy</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'wells';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="OPTIONAL: Define Nodes" href="nodes.html" />
+    <link rel="prev" title="Boundary Conditions" href="boundary_conditions.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Automating Groudwater Modelling with Python using FloPy</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="initialization.html">Initializing Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_domain.html">Model Domain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="define_boundary.html">Flood Plain Boundaries and Groundwater Domain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boundary_conditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">OPTIONAL:  Define Wells</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nodes.html">OPTIONAL: Define Nodes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_models.html">Run Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="results.html">Quantifying Ecological Benefits</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/USACE-WRISES/HyporheicFloPy.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/USACE-WRISES/HyporheicFloPy.git/issues/new?title=Issue%20on%20page%20%2Fwells.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/wells.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>OPTIONAL:  Define Wells</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="optional-define-wells">
+<h1>OPTIONAL:  Define Wells<a class="headerlink" href="#optional-define-wells" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import Libraries</span>
+<span class="o">%</span><span class="k">run</span> /Users/u4eeevmq/Documents/Python/HyporheicFloPy/VQuintana/common_imports.py
+
+<span class="c1"># Retrieve stored variables</span>
+<span class="o">%</span><span class="k">store</span> -r md6_exe_path
+<span class="o">%</span><span class="k">store</span> -r md7_exe_path
+<span class="o">%</span><span class="k">store</span> -r sim_name
+<span class="o">%</span><span class="k">store</span> -r workspace
+<span class="o">%</span><span class="k">store</span> -r figs_path
+<span class="o">%</span><span class="k">store</span> -r gwf_name
+<span class="o">%</span><span class="k">store</span> -r mp7_name
+<span class="o">%</span><span class="k">store</span> -r gwf_ws
+<span class="o">%</span><span class="k">store</span> -r mp7_ws
+<span class="o">%</span><span class="k">store</span> -r headfile
+<span class="o">%</span><span class="k">store</span> -r head_filerecord
+<span class="o">%</span><span class="k">store</span> -r budgetfile
+<span class="o">%</span><span class="k">store</span> -r budget_filerecord
+<span class="o">%</span><span class="k">store</span> -r write
+<span class="o">%</span><span class="k">store</span> -r run
+<span class="o">%</span><span class="k">store</span> -r plot
+<span class="o">%</span><span class="k">store</span> -r plot_show
+<span class="o">%</span><span class="k">store</span> -r plot_save
+
+<span class="c1"># Retrieve model parameters</span>
+<span class="o">%</span><span class="k">store</span> -r length_units
+<span class="o">%</span><span class="k">store</span> -r time_units
+<span class="o">%</span><span class="k">store</span> -r nper
+<span class="o">%</span><span class="k">store</span> -r cell_size_x
+<span class="o">%</span><span class="k">store</span> -r cell_size_y
+<span class="o">%</span><span class="k">store</span> -r gw_mod_depth
+<span class="o">%</span><span class="k">store</span> -r z
+<span class="o">%</span><span class="k">store</span> -r kh
+<span class="o">%</span><span class="k">store</span> -r kv
+<span class="o">%</span><span class="k">store</span> -r gw_offset
+<span class="o">%</span><span class="k">store</span> -r porosity
+<span class="o">%</span><span class="k">store</span> -r rch_iface
+<span class="o">%</span><span class="k">store</span> -r rch_iflowface
+<span class="o">%</span><span class="k">store</span> -r recharge_rate
+<span class="o">%</span><span class="k">store</span> -r nstp
+<span class="o">%</span><span class="k">store</span> -r perlen
+<span class="o">%</span><span class="k">store</span> -r tsmult
+
+<span class="c1"># Retrieve spatial data</span>
+<span class="o">%</span><span class="k">store</span> -r hec_ras_crs
+<span class="o">%</span><span class="k">store</span> -r terrain_elevation
+<span class="o">%</span><span class="k">store</span> -r raster_transform
+<span class="o">%</span><span class="k">store</span> -r transform
+<span class="o">%</span><span class="k">store</span> -r raster_crs
+<span class="o">%</span><span class="k">store</span> -r output_raster
+<span class="o">%</span><span class="k">store</span> -r cropped_output_raster
+<span class="o">%</span><span class="k">store</span> -r ground_water_domain
+<span class="o">%</span><span class="k">store</span> -r left_boundary
+<span class="o">%</span><span class="k">store</span> -r right_boundary
+
+<span class="c1"># retrieve model domain data</span>
+<span class="o">%</span><span class="k">store</span> -r terrain_elevation
+<span class="o">%</span><span class="k">store</span> -r raster_transform
+<span class="o">%</span><span class="k">store</span> -r raster_crs
+<span class="o">%</span><span class="k">store</span> -r raster_bounds_box
+<span class="o">%</span><span class="k">store</span> -r bed_elevation
+<span class="o">%</span><span class="k">store</span> -r raster_width
+<span class="o">%</span><span class="k">store</span> -r raster_height
+<span class="o">%</span><span class="k">store</span> -r ncol
+<span class="o">%</span><span class="k">store</span> -r nrow
+<span class="o">%</span><span class="k">store</span> -r top
+<span class="o">%</span><span class="k">store</span> -r nlay
+<span class="o">%</span><span class="k">store</span> -r grid_x
+<span class="o">%</span><span class="k">store</span> -r grid_y
+<span class="o">%</span><span class="k">store</span> -r grid_points
+<span class="o">%</span><span class="k">store</span> -r intersecting_points
+<span class="o">%</span><span class="k">store</span> -r xorigin
+<span class="o">%</span><span class="k">store</span> -r yorigin
+<span class="o">%</span><span class="k">store</span> -r xmin
+<span class="o">%</span><span class="k">store</span> -r ymin
+<span class="o">%</span><span class="k">store</span> -r xmax
+<span class="o">%</span><span class="k">store</span> -r ymax
+<span class="o">%</span><span class="k">store</span> -r tops
+<span class="o">%</span><span class="k">store</span> -r botm
+
+<span class="c1"># retrieve model boundary data</span>
+<span class="o">%</span><span class="k">store</span> -r left_start
+<span class="o">%</span><span class="k">store</span> -r left_end
+<span class="o">%</span><span class="k">store</span> -r right_start
+<span class="o">%</span><span class="k">store</span> -r right_end
+<span class="o">%</span><span class="k">store</span> -r upstream_start_x
+<span class="o">%</span><span class="k">store</span> -r upstream_start_y
+<span class="o">%</span><span class="k">store</span> -r upstream_end_x
+<span class="o">%</span><span class="k">store</span> -r upstream_end_y
+<span class="o">%</span><span class="k">store</span> -r downstream_start_x
+<span class="o">%</span><span class="k">store</span> -r downstream_start_y
+<span class="o">%</span><span class="k">store</span> -r downstream_end_x
+<span class="o">%</span><span class="k">store</span> -r downstream_end_y
+<span class="o">%</span><span class="k">store</span> -r upstream_line
+<span class="o">%</span><span class="k">store</span> -r downstream_line
+<span class="o">%</span><span class="k">store</span> -r upstream_boundary
+<span class="o">%</span><span class="k">store</span> -r downstream_boundary
+<span class="o">%</span><span class="k">store</span> -r grid_cells
+<span class="o">%</span><span class="k">store</span> -r grid_gdf
+<span class="o">%</span><span class="k">store</span> -r idomain
+
+<span class="c1"># retrieve model boundary conditions</span>
+<span class="o">%</span><span class="k">store</span> -r boundary_cells
+<span class="o">%</span><span class="k">store</span> -r left_boundary_cells
+<span class="o">%</span><span class="k">store</span> -r right_boundary_cells
+<span class="o">%</span><span class="k">store</span> -r upstream_boundary_cells
+<span class="o">%</span><span class="k">store</span> -r downstream_boundary_cells
+<span class="o">%</span><span class="k">store</span> -r all_boundary_cells
+<span class="o">%</span><span class="k">store</span> -r unique_boundary_cells
+<span class="o">%</span><span class="k">store</span> -r left_boundary_cells_first_layer
+<span class="o">%</span><span class="k">store</span> -r right_boundary_cells_first_layer
+<span class="o">%</span><span class="k">store</span> -r upstream_boundary_cells_first_layer
+<span class="o">%</span><span class="k">store</span> -r downstream_boundary_cells_first_layer
+<span class="o">%</span><span class="k">store</span> -r max_elevation_upstream
+<span class="o">%</span><span class="k">store</span> -r max_elevation_downstream
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_left_first
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_left_last
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_right_first
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_right_last
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_upstream_first
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_upstream_last
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_downstream_first
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_downstream_last
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_left
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_right
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_upstream
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_downstream
+<span class="o">%</span><span class="k">store</span> -r grid_points_coords
+<span class="o">%</span><span class="k">store</span> -r elevation_values
+<span class="o">%</span><span class="k">store</span> -r grid_points_df
+<span class="o">%</span><span class="k">store</span> -r output_csv
+<span class="o">%</span><span class="k">store</span> -r cropped_df
+<span class="o">%</span><span class="k">store</span> -r river_cells
+<span class="o">%</span><span class="k">store</span> -r river_x
+<span class="o">%</span><span class="k">store</span> -r river_y
+<span class="o">%</span><span class="k">store</span> -r river_elevation
+<span class="o">%</span><span class="k">store</span> -r chd_data
+<span class="o">%</span><span class="k">store</span> -r unique_chd_cells
+<span class="o">%</span><span class="k">store</span> -r duplicate_chd_cells
+<span class="o">%</span><span class="k">store</span> -r chd_data_converted
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#---------------------- Define Any Wells ------------------------#</span>
+<span class="c1"># Get the bounds of the shapefile</span>
+<span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span> <span class="o">=</span> <span class="n">ground_water_domain</span><span class="o">.</span><span class="n">total_bounds</span>
+
+<span class="c1"># Function to generate a random point within the bounds</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_random_point_within</span><span class="p">(</span><span class="n">bounds</span><span class="p">):</span>
+    <span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span> <span class="o">=</span> <span class="n">bounds</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">pnt</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">minx</span><span class="p">,</span> <span class="n">maxx</span><span class="p">),</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">miny</span><span class="p">,</span> <span class="n">maxy</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">ground_water_domain</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">pnt</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">pnt</span>
+
+<span class="c1"># Generate 3 random points within the shapefile</span>
+<span class="n">random_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">generate_random_point_within</span><span class="p">((</span><span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+
+<span class="c1"># Assign pseudo pumping rates to these points</span>
+<span class="n">pumping_rates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">500</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># Example pseudo pumping rates</span>
+
+<span class="c1"># Create a GeoDataFrame with the well locations and pumping rates</span>
+<span class="n">well_data</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;geometry&#39;</span><span class="p">:</span> <span class="n">point</span><span class="p">,</span> <span class="s1">&#39;pump_rate&#39;</span><span class="p">:</span> <span class="n">rate</span><span class="p">}</span> <span class="k">for</span> <span class="n">point</span><span class="p">,</span> <span class="n">rate</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">random_points</span><span class="p">,</span> <span class="n">pumping_rates</span><span class="p">)]</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">well_data</span><span class="p">)</span>
+
+<span class="c1"># Print the GeoDataFrame</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gdf</span><span class="p">)</span>
+
+<span class="c1"># Save the GeoDataFrame as a shapefile</span>
+<span class="n">output_shapefile</span> <span class="o">=</span> <span class="s1">&#39;random_wells.shp&#39;</span>
+<span class="n">gdf</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">output_shapefile</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Random wells shapefile saved as </span><span class="si">{</span><span class="n">output_shapefile</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1">## Read in Actual Point Shapefile (coordinates of wells + well pumping rates)</span>
+<span class="c1"># Define the path to your point file</span>
+<span class="c1">## Read in Actual Point Shapefile (coordinates of wells + well pumping rates)</span>
+<span class="c1"># Define the path to your point file</span>
+<span class="n">point_file_path</span> <span class="o">=</span> <span class="s1">&#39;random_wells.shp&#39;</span>  <span class="c1"># Replace with the actual path to your point file</span>
+
+<span class="c1"># Read the point file using geopandas</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">point_file_path</span><span class="p">)</span>
+
+<span class="c1"># Reproject the point file to the target CRS</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">hec_ras_crs</span><span class="p">)</span>
+
+<span class="c1"># Print the GeoDataFrame</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gdf</span><span class="p">)</span>
+
+<span class="c1"># Extract well locations and pumping rates</span>
+<span class="n">well_locations</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span>
+<span class="n">pumping_rates</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;pump_rate&#39;</span><span class="p">]</span>
+
+<span class="c1"># Print well locations and pumping rates</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Well Locations:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">well_locations</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pumping Rates:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pumping_rates</span><span class="p">)</span>
+
+<span class="c1"># Print well locations and pumping rates</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Well Locations:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">well_locations</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pumping Rates:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pumping_rates</span><span class="p">)</span>
+
+<span class="c1"># Define the transform for converting coordinates to model grid indices</span>
+<span class="c1"># Replace with your actual transform</span>
+<span class="n">transform</span> <span class="o">=</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">from_origin</span><span class="p">(</span><span class="n">xorigin</span><span class="p">,</span> <span class="n">yorigin</span><span class="p">,</span> <span class="n">cell_size_x</span><span class="p">,</span> <span class="n">cell_size_y</span><span class="p">)</span>
+
+<span class="c1"># Create the well package data</span>
+<span class="n">wel_data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">nrow</span><span class="p">,</span> <span class="n">ncol</span> <span class="o">=</span> <span class="n">idomain</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">idomain</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">gdf</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="n">well_geometry</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">geometry</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">well_geometry</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">well_geometry</span><span class="o">.</span><span class="n">y</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="o">~</span><span class="n">transform</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>  <span class="c1"># Convert coordinates to model grid indices</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)),</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>  <span class="c1"># Ensure indices are integers</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Assuming wells are in the first layer</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;pump_rate&#39;</span><span class="p">]</span>  <span class="c1"># Pull the pumping rate from the point file attribute</span>
+
+    <span class="c1"># Check if the well point intersects any cell in the grid</span>
+    <span class="k">for</span> <span class="n">grid_row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nrow</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">grid_col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncol</span><span class="p">):</span>
+            <span class="n">cell_geometry</span> <span class="o">=</span> <span class="n">grid_gdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">grid_row</span> <span class="o">*</span> <span class="n">ncol</span> <span class="o">+</span> <span class="n">grid_col</span><span class="p">]</span><span class="o">.</span><span class="n">geometry</span>
+            <span class="k">if</span> <span class="n">well_geometry</span><span class="o">.</span><span class="n">intersects</span><span class="p">(</span><span class="n">cell_geometry</span><span class="p">):</span>
+                <span class="n">wel_data</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">k</span><span class="p">,</span> <span class="n">grid_row</span><span class="p">,</span> <span class="n">grid_col</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">q</span><span class="p">)])</span>
+                <span class="k">break</span>  <span class="c1"># Exit the loop once the intersecting cell is found</span>
+
+<span class="c1"># Print the well package data for verification</span>
+<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">wel_data</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+
+<span class="c1"># Monitoring strategy</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">monitor_wells</span><span class="p">(</span><span class="n">wel_data</span><span class="p">):</span>
+    <span class="c1"># Example monitoring strategy: Print well locations and pumping rates</span>
+    <span class="k">for</span> <span class="n">well</span> <span class="ow">in</span> <span class="n">wel_data</span><span class="p">:</span>
+        <span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">well</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Monitoring Well at Layer </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">, Row </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, Column </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2"> with Pumping Rate </span><span class="si">{</span><span class="n">q</span><span class="si">}</span><span class="s2"> cubic feet per day&quot;</span><span class="p">)</span>
+
+<span class="c1"># Implement monitoring strategy</span>
+<span class="n">monitor_wells</span><span class="p">(</span><span class="n">wel_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\pyogrio\geopandas.py:662: UserWarning: &#39;crs&#39; was not provided.  The output dataset will not have projection information defined and may not be usable in other systems.
+  write(
+INFO:pyogrio._io:Created 3 records
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                           geometry   pump_rate
+0  POINT (2407118.286 10515465.633) -282.255339
+1   POINT (2407179.05 10515295.094) -346.102629
+2  POINT (2407333.957 10515567.817) -118.084007
+Random wells shapefile saved as random_wells.shp
+    pump_rate                          geometry
+0 -282.255339  POINT (2407118.286 10515465.633)
+1 -346.102629   POINT (2407179.05 10515295.094)
+2 -118.084007  POINT (2407333.957 10515567.817)
+Well Locations:
+0    POINT (2407118.286 10515465.633)
+1     POINT (2407179.05 10515295.094)
+2    POINT (2407333.957 10515567.817)
+Name: geometry, dtype: geometry
+Pumping Rates:
+0   -282.255339
+1   -346.102629
+2   -118.084007
+Name: pump_rate, dtype: float64
+Well Locations:
+0    POINT (2407118.286 10515465.633)
+1     POINT (2407179.05 10515295.094)
+2    POINT (2407333.957 10515567.817)
+Name: geometry, dtype: geometry
+Pumping Rates:
+0   -282.255339
+1   -346.102629
+2   -118.084007
+Name: pump_rate, dtype: float64
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0, 98, 102, -282.25533867938293]
+[0, 81, 108, -346.10262895278737]
+[0, 108, 123, -118.0840068930259]
+Monitoring Well at Layer 0, Row 98, Column 102 with Pumping Rate -282.25533867938293 cubic feet per day
+Monitoring Well at Layer 0, Row 81, Column 108 with Pumping Rate -346.10262895278737 cubic feet per day
+Monitoring Well at Layer 0, Row 108, Column 123 with Pumping Rate -118.0840068930259 cubic feet per day
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Store new variables</span>
+<span class="o">%</span><span class="k">store</span> wel_data
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Stored &#39;wel_data&#39; (list)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="boundary_conditions.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Boundary Conditions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="nodes.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">OPTIONAL: Define Nodes</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vanessa Quintana
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

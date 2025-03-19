@@ -1,0 +1,1359 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Run Models &#8212; Automating Groudwater Modelling with Python using FloPy</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'run_models';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Quantifying Ecological Benefits" href="results.html" />
+    <link rel="prev" title="OPTIONAL: Define Nodes" href="nodes.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Automating Groudwater Modelling with Python using FloPy</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="initialization.html">Initializing Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_domain.html">Model Domain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="define_boundary.html">Flood Plain Boundaries and Groundwater Domain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boundary_conditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wells.html">OPTIONAL:  Define Wells</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nodes.html">OPTIONAL: Define Nodes</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Run Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="results.html">Quantifying Ecological Benefits</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/USACE-WRISES/HyporheicFloPy.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/USACE-WRISES/HyporheicFloPy.git/issues/new?title=Issue%20on%20page%20%2Frun_models.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/run_models.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Run Models</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modflow-6-groundwater-model">MODFLOW 6 Groundwater Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modpath-7-particle-tracking">MODPATH 7 Particle Tracking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-settings">Simulation Settings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-particle-tracking-results">Plot Particle Tracking Results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-simulations">Run Simulations</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="run-models">
+<h1>Run Models<a class="headerlink" href="#run-models" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import Libraries</span>
+<span class="o">%</span><span class="k">run</span> /Users/u4eeevmq/Documents/Python/HyporheicFloPy/VQuintana/common_imports.py
+
+<span class="c1"># Retrieve stored variables</span>
+<span class="o">%</span><span class="k">store</span> -r md6_exe_path
+<span class="o">%</span><span class="k">store</span> -r md7_exe_path
+<span class="o">%</span><span class="k">store</span> -r sim_name
+<span class="o">%</span><span class="k">store</span> -r workspace
+<span class="o">%</span><span class="k">store</span> -r figs_path
+<span class="o">%</span><span class="k">store</span> -r gwf_name
+<span class="o">%</span><span class="k">store</span> -r mp7_name
+<span class="o">%</span><span class="k">store</span> -r gwf_ws
+<span class="o">%</span><span class="k">store</span> -r mp7_ws
+<span class="o">%</span><span class="k">store</span> -r headfile
+<span class="o">%</span><span class="k">store</span> -r head_filerecord
+<span class="o">%</span><span class="k">store</span> -r budgetfile
+<span class="o">%</span><span class="k">store</span> -r budget_filerecord
+<span class="o">%</span><span class="k">store</span> -r write
+<span class="o">%</span><span class="k">store</span> -r run
+<span class="o">%</span><span class="k">store</span> -r plot
+<span class="o">%</span><span class="k">store</span> -r plot_show
+<span class="o">%</span><span class="k">store</span> -r plot_save
+
+<span class="c1"># Retrieve model parameters</span>
+<span class="o">%</span><span class="k">store</span> -r length_units
+<span class="o">%</span><span class="k">store</span> -r time_units
+<span class="o">%</span><span class="k">store</span> -r nper
+<span class="o">%</span><span class="k">store</span> -r cell_size_x
+<span class="o">%</span><span class="k">store</span> -r cell_size_y
+<span class="o">%</span><span class="k">store</span> -r gw_mod_depth
+<span class="o">%</span><span class="k">store</span> -r z
+<span class="o">%</span><span class="k">store</span> -r kh
+<span class="o">%</span><span class="k">store</span> -r kv
+<span class="o">%</span><span class="k">store</span> -r gw_offset
+<span class="o">%</span><span class="k">store</span> -r porosity
+<span class="o">%</span><span class="k">store</span> -r rch_iface
+<span class="o">%</span><span class="k">store</span> -r rch_iflowface
+<span class="o">%</span><span class="k">store</span> -r recharge_rate
+<span class="o">%</span><span class="k">store</span> -r nstp
+<span class="o">%</span><span class="k">store</span> -r perlen
+<span class="o">%</span><span class="k">store</span> -r tsmult
+
+<span class="c1"># Retrieve spatial data</span>
+<span class="o">%</span><span class="k">store</span> -r hec_ras_crs
+<span class="o">%</span><span class="k">store</span> -r terrain_elevation
+<span class="o">%</span><span class="k">store</span> -r raster_transform
+<span class="o">%</span><span class="k">store</span> -r transform
+<span class="o">%</span><span class="k">store</span> -r raster_crs
+<span class="o">%</span><span class="k">store</span> -r output_raster
+<span class="o">%</span><span class="k">store</span> -r cropped_output_raster
+<span class="o">%</span><span class="k">store</span> -r ground_water_domain
+<span class="o">%</span><span class="k">store</span> -r left_boundary
+<span class="o">%</span><span class="k">store</span> -r right_boundary
+
+<span class="c1"># retrieve model domain data</span>
+<span class="o">%</span><span class="k">store</span> -r terrain_elevation
+<span class="o">%</span><span class="k">store</span> -r raster_transform
+<span class="o">%</span><span class="k">store</span> -r raster_crs
+<span class="o">%</span><span class="k">store</span> -r raster_bounds_box
+<span class="o">%</span><span class="k">store</span> -r bed_elevation
+<span class="o">%</span><span class="k">store</span> -r raster_width
+<span class="o">%</span><span class="k">store</span> -r raster_height
+<span class="o">%</span><span class="k">store</span> -r ncol
+<span class="o">%</span><span class="k">store</span> -r nrow
+<span class="o">%</span><span class="k">store</span> -r top
+<span class="o">%</span><span class="k">store</span> -r nlay
+<span class="o">%</span><span class="k">store</span> -r grid_x
+<span class="o">%</span><span class="k">store</span> -r grid_y
+<span class="o">%</span><span class="k">store</span> -r grid_points
+<span class="o">%</span><span class="k">store</span> -r intersecting_points
+<span class="o">%</span><span class="k">store</span> -r xorigin
+<span class="o">%</span><span class="k">store</span> -r yorigin
+<span class="o">%</span><span class="k">store</span> -r xmin
+<span class="o">%</span><span class="k">store</span> -r ymin
+<span class="o">%</span><span class="k">store</span> -r xmax
+<span class="o">%</span><span class="k">store</span> -r ymax
+<span class="o">%</span><span class="k">store</span> -r tops
+<span class="o">%</span><span class="k">store</span> -r botm
+
+<span class="c1"># retrieve model boundary data</span>
+<span class="o">%</span><span class="k">store</span> -r left_start
+<span class="o">%</span><span class="k">store</span> -r left_end
+<span class="o">%</span><span class="k">store</span> -r right_start
+<span class="o">%</span><span class="k">store</span> -r right_end
+<span class="o">%</span><span class="k">store</span> -r upstream_start_x
+<span class="o">%</span><span class="k">store</span> -r upstream_start_y
+<span class="o">%</span><span class="k">store</span> -r upstream_end_x
+<span class="o">%</span><span class="k">store</span> -r upstream_end_y
+<span class="o">%</span><span class="k">store</span> -r downstream_start_x
+<span class="o">%</span><span class="k">store</span> -r downstream_start_y
+<span class="o">%</span><span class="k">store</span> -r downstream_end_x
+<span class="o">%</span><span class="k">store</span> -r downstream_end_y
+<span class="o">%</span><span class="k">store</span> -r upstream_line
+<span class="o">%</span><span class="k">store</span> -r downstream_line
+<span class="o">%</span><span class="k">store</span> -r upstream_boundary
+<span class="o">%</span><span class="k">store</span> -r downstream_boundary
+<span class="o">%</span><span class="k">store</span> -r grid_cells
+<span class="o">%</span><span class="k">store</span> -r grid_gdf
+<span class="o">%</span><span class="k">store</span> -r idomain
+
+<span class="c1"># retrieve model boundary conditions</span>
+<span class="o">%</span><span class="k">store</span> -r boundary_cells
+<span class="o">%</span><span class="k">store</span> -r left_boundary_cells
+<span class="o">%</span><span class="k">store</span> -r right_boundary_cells
+<span class="o">%</span><span class="k">store</span> -r upstream_boundary_cells
+<span class="o">%</span><span class="k">store</span> -r downstream_boundary_cells
+<span class="o">%</span><span class="k">store</span> -r all_boundary_cells
+<span class="o">%</span><span class="k">store</span> -r unique_boundary_cells
+<span class="o">%</span><span class="k">store</span> -r left_boundary_cells_first_layer
+<span class="o">%</span><span class="k">store</span> -r right_boundary_cells_first_layer
+<span class="o">%</span><span class="k">store</span> -r upstream_boundary_cells_first_layer
+<span class="o">%</span><span class="k">store</span> -r downstream_boundary_cells_first_layer
+<span class="o">%</span><span class="k">store</span> -r max_elevation_upstream
+<span class="o">%</span><span class="k">store</span> -r max_elevation_downstream
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_left_first
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_left_last
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_right_first
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_right_last
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_upstream_first
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_upstream_last
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_downstream_first
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_downstream_last
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_left
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_right
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_upstream
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_downstream
+<span class="o">%</span><span class="k">store</span> -r grid_points_coords
+<span class="o">%</span><span class="k">store</span> -r elevation_values
+<span class="o">%</span><span class="k">store</span> -r grid_points_df
+<span class="o">%</span><span class="k">store</span> -r output_csv
+<span class="o">%</span><span class="k">store</span> -r cropped_df
+<span class="o">%</span><span class="k">store</span> -r river_cells
+<span class="o">%</span><span class="k">store</span> -r river_x
+<span class="o">%</span><span class="k">store</span> -r river_y
+<span class="o">%</span><span class="k">store</span> -r river_elevation
+<span class="o">%</span><span class="k">store</span> -r chd_data
+<span class="o">%</span><span class="k">store</span> -r unique_chd_cells
+<span class="o">%</span><span class="k">store</span> -r duplicate_chd_cells
+<span class="o">%</span><span class="k">store</span> -r chd_data_converted
+
+<span class="c1"># retrieve well data</span>
+<span class="o">%</span><span class="k">store</span> -r wel_data
+
+<span class="c1"># retrieve nodes</span>
+<span class="c1"># %store -r nodes</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="modflow-6-groundwater-model">
+<h2>MODFLOW 6 Groundwater Model<a class="headerlink" href="#modflow-6-groundwater-model" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#----------------------Model Setup Functions ------------------------#</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_gwf_model</span><span class="p">(</span><span class="n">example_name</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Building GWF model for </span><span class="si">{</span><span class="n">example_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Instantiate the MODFLOW 6 GWF simulation object</span>
+    <span class="n">gwfsim</span> <span class="o">=</span> <span class="n">flopy</span><span class="o">.</span><span class="n">mf6</span><span class="o">.</span><span class="n">MFSimulation</span><span class="p">(</span>
+        <span class="n">sim_name</span><span class="o">=</span><span class="n">gwf_name</span><span class="p">,</span> <span class="n">exe_name</span><span class="o">=</span><span class="n">md6_exe_path</span><span class="p">,</span> <span class="n">sim_ws</span><span class="o">=</span><span class="n">gwf_ws</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Instantiate the MODFLOW 6 temporal discretization package</span>
+    <span class="n">flopy</span><span class="o">.</span><span class="n">mf6</span><span class="o">.</span><span class="n">modflow</span><span class="o">.</span><span class="n">mftdis</span><span class="o">.</span><span class="n">ModflowTdis</span><span class="p">(</span>
+        <span class="n">gwfsim</span><span class="p">,</span>
+        <span class="n">pname</span><span class="o">=</span><span class="s2">&quot;tdis&quot;</span><span class="p">,</span>
+        <span class="n">time_units</span><span class="o">=</span><span class="s2">&quot;DAYS&quot;</span><span class="p">,</span>
+        <span class="n">nper</span><span class="o">=</span><span class="n">nper</span><span class="p">,</span>
+        <span class="n">perioddata</span><span class="o">=</span><span class="p">[(</span><span class="n">perlen</span><span class="p">,</span> <span class="n">nstp</span><span class="p">,</span> <span class="n">tsmult</span><span class="p">)],</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Instantiate the MODFLOW 6 gwf (groundwater-flow) model</span>
+    <span class="n">gwf</span> <span class="o">=</span> <span class="n">flopy</span><span class="o">.</span><span class="n">mf6</span><span class="o">.</span><span class="n">ModflowGwf</span><span class="p">(</span>
+        <span class="n">gwfsim</span><span class="p">,</span> <span class="n">modelname</span><span class="o">=</span><span class="n">gwf_name</span><span class="p">,</span> <span class="n">model_nam_file</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">gwf_name</span><span class="si">}</span><span class="s2">.nam&quot;</span><span class="p">,</span> <span class="n">save_flows</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Instantiate the MODFLOW 6 gwf discretization package</span>
+    <span class="n">flopy</span><span class="o">.</span><span class="n">mf6</span><span class="o">.</span><span class="n">modflow</span><span class="o">.</span><span class="n">mfgwfdis</span><span class="o">.</span><span class="n">ModflowGwfdis</span><span class="p">(</span>
+        <span class="n">gwf</span><span class="p">,</span>
+        <span class="n">nlay</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">botm</span><span class="p">),</span>  <span class="c1"># Number of layers (based on `botm` list length)</span>
+        <span class="n">nrow</span><span class="o">=</span><span class="n">nrow</span><span class="p">,</span>       <span class="c1"># Number of rows in the grid</span>
+        <span class="n">ncol</span><span class="o">=</span><span class="n">ncol</span><span class="p">,</span>       <span class="c1"># Number of columns in the grid</span>
+        <span class="n">delr</span><span class="o">=</span><span class="n">cell_size_x</span><span class="p">,</span>  <span class="c1"># Cell width</span>
+        <span class="n">delc</span><span class="o">=</span><span class="n">cell_size_y</span><span class="p">,</span>  <span class="c1"># Cell height</span>
+        <span class="n">top</span><span class="o">=</span><span class="n">tops</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>       <span class="c1"># List of dynamically calculated top elevation of the first layer</span>
+        <span class="n">botm</span><span class="o">=</span><span class="n">botm</span><span class="p">,</span>          <span class="c1"># List of bottom elevations for all layers</span>
+        <span class="n">idomain</span><span class="o">=</span><span class="n">idomain</span><span class="p">,</span>    <span class="c1"># List of dynamically calculated active and inactive cells in the model domain</span>
+        <span class="n">xorigin</span><span class="o">=</span><span class="n">xorigin</span><span class="p">,</span>  <span class="c1"># Assign dynamically calculated xorigin</span>
+        <span class="n">yorigin</span><span class="o">=</span><span class="n">yorigin</span>   <span class="c1"># Assign dynamically calculated yorigin</span>
+    <span class="p">)</span>
+    
+    <span class="c1"># Add initial conditions (IC package)</span>
+    <span class="n">strt_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">botm</span><span class="p">),</span> <span class="n">nrow</span><span class="p">,</span> <span class="n">ncol</span><span class="p">),</span> <span class="n">bed_elevation</span><span class="p">)</span>
+
+    <span class="c1"># Instantiate the MODFLOW 6 gwf initial conditions package</span>
+    <span class="n">flopy</span><span class="o">.</span><span class="n">mf6</span><span class="o">.</span><span class="n">modflow</span><span class="o">.</span><span class="n">mfgwfic</span><span class="o">.</span><span class="n">ModflowGwfic</span><span class="p">(</span><span class="n">gwf</span><span class="p">,</span> <span class="n">pname</span><span class="o">=</span><span class="s2">&quot;ic&quot;</span><span class="p">,</span> <span class="n">strt</span><span class="o">=</span><span class="n">strt_array</span><span class="p">)</span>
+    
+    <span class="c1"># Instantiate the MODFLOW 6 gwf node property flow package</span>
+    <span class="n">flopy</span><span class="o">.</span><span class="n">mf6</span><span class="o">.</span><span class="n">modflow</span><span class="o">.</span><span class="n">mfgwfnpf</span><span class="o">.</span><span class="n">ModflowGwfnpf</span><span class="p">(</span>
+        <span class="n">gwf</span><span class="p">,</span>
+        <span class="n">pname</span><span class="o">=</span><span class="s2">&quot;npf&quot;</span><span class="p">,</span>
+        <span class="n">icelltype</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">k</span><span class="o">=</span><span class="n">kh</span><span class="p">,</span>
+        <span class="n">k33</span><span class="o">=</span><span class="n">kv</span><span class="p">,</span>
+        <span class="n">save_flows</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">save_saturation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">save_specific_discharge</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Create an iterative model solution (IMS) for the MODFLOW 6 gwf model</span>
+    <span class="n">flopy</span><span class="o">.</span><span class="n">mf6</span><span class="o">.</span><span class="n">ModflowIms</span><span class="p">(</span>
+        <span class="n">gwfsim</span><span class="p">,</span>
+        <span class="n">print_option</span><span class="o">=</span><span class="s2">&quot;SUMMARY&quot;</span><span class="p">,</span>
+        <span class="n">outer_dvclose</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>  <span class="c1"># Increase convergence criteria for outer iterations</span>
+        <span class="n">outer_maximum</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>  <span class="c1"># Increase maximum number of outer iterations</span>
+        <span class="n">under_relaxation</span><span class="o">=</span><span class="s2">&quot;NONE&quot;</span><span class="p">,</span>
+        <span class="n">inner_maximum</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>  <span class="c1"># Increase maximum number of inner iterations</span>
+        <span class="n">inner_dvclose</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>  <span class="c1"># Increase convergence criteria for inner iterations</span>
+        <span class="n">rcloserecord</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>  <span class="c1"># Increase residual convergence criteria</span>
+        <span class="n">linear_acceleration</span><span class="o">=</span><span class="s2">&quot;BICGSTAB&quot;</span><span class="p">,</span>  <span class="c1"># Switch to Bi-Conjugate Gradient Stabilized method</span>
+        <span class="n">scaling_method</span><span class="o">=</span><span class="s2">&quot;NONE&quot;</span><span class="p">,</span>
+        <span class="n">reordering_method</span><span class="o">=</span><span class="s2">&quot;NONE&quot;</span><span class="p">,</span>
+        <span class="n">relaxation_factor</span><span class="o">=</span><span class="mf">0.97</span><span class="p">,</span>  <span class="c1"># Adjust relaxation factor</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Assign CHD Package to the model if there are valid unique boundary cells</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">chd_data_converted</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;❌ No CHD boundary cells assigned. Please check the input data and conditions.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Format the CHD values to ensure they are not in scientific notation</span>
+        <span class="n">formatted_chd_data</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nb">float</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)]</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">chd_data_converted</span>
+        <span class="p">]</span>
+    
+        <span class="c1"># Assuming &#39;gwf&#39; is your groundwater flow model instance</span>
+        <span class="n">flopy</span><span class="o">.</span><span class="n">mf6</span><span class="o">.</span><span class="n">ModflowGwfchd</span><span class="p">(</span>
+            <span class="n">gwf</span><span class="p">,</span>
+            <span class="n">maxbound</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">formatted_chd_data</span><span class="p">),</span>  <span class="c1"># Set to actual assigned CHD cells</span>
+            <span class="n">stress_period_data</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">formatted_chd_data</span><span class="p">},</span>  <span class="c1"># Apply the boundary conditions in stress period 0</span>
+            <span class="n">pname</span><span class="o">=</span><span class="s2">&quot;CHD&quot;</span><span class="p">,</span>
+            <span class="n">save_flows</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">filename</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">gwf_name</span><span class="si">}</span><span class="s2">.chd&quot;</span>
+        <span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ Assigned </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">formatted_chd_data</span><span class="p">)</span><span class="si">}</span><span class="s2"> unique CHD boundary cells.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Instantiate the MODFLOW 6 prt output control package</span>
+    <span class="n">saverecord</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;HEAD&quot;</span><span class="p">,</span> <span class="s2">&quot;ALL&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;BUDGET&quot;</span><span class="p">,</span> <span class="s2">&quot;ALL&quot;</span><span class="p">)]</span>
+    <span class="n">printrecord</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;HEAD&quot;</span><span class="p">,</span> <span class="s2">&quot;LAST&quot;</span><span class="p">)]</span>
+    <span class="n">flopy</span><span class="o">.</span><span class="n">mf6</span><span class="o">.</span><span class="n">ModflowGwfoc</span><span class="p">(</span>
+        <span class="n">gwf</span><span class="p">,</span>
+        <span class="n">saverecord</span><span class="o">=</span><span class="n">saverecord</span><span class="p">,</span>
+        <span class="n">head_filerecord</span><span class="o">=</span><span class="n">head_filerecord</span><span class="p">,</span>
+        <span class="n">budget_filerecord</span><span class="o">=</span><span class="n">budget_filerecord</span><span class="p">,</span>
+        <span class="n">printrecord</span><span class="o">=</span><span class="n">printrecord</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">gwfsim</span><span class="p">,</span> <span class="n">gwf</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="modpath-7-particle-tracking">
+<h2>MODPATH 7 Particle Tracking<a class="headerlink" href="#modpath-7-particle-tracking" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_particle_models</span><span class="p">(</span><span class="n">example_name</span><span class="p">,</span> <span class="n">gwf</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Building MODPATH 7 model for </span><span class="si">{</span><span class="n">example_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Define the MODPATH 7 model name and workspace</span>
+    <span class="n">mpnamf</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">example_name</span><span class="si">}</span><span class="s2">_mp_forward&quot;</span>
+
+    <span class="c1"># Create the MODPATH 7 forward tracking simulation</span>
+    <span class="n">mp</span> <span class="o">=</span> <span class="n">flopy</span><span class="o">.</span><span class="n">modpath</span><span class="o">.</span><span class="n">Modpath7</span><span class="o">.</span><span class="n">create_mp7</span><span class="p">(</span>
+        <span class="n">modelname</span><span class="o">=</span><span class="n">mp7_name</span><span class="p">,</span>
+        <span class="n">trackdir</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">,</span>
+        <span class="n">flowmodel</span><span class="o">=</span><span class="n">gwf</span><span class="p">,</span>
+        <span class="n">model_ws</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">mp7_ws</span><span class="p">),</span>
+        <span class="n">rowcelldivisions</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">columncelldivisions</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">layercelldivisions</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">exe_name</span><span class="o">=</span><span class="n">md7_exe_path</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Write MODPATH 7 input files</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">write_input</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">mp</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="simulation-settings">
+<h2>Simulation Settings<a class="headerlink" href="#simulation-settings" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">write_models</span><span class="p">(</span><span class="o">*</span><span class="n">sims</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">sim</span> <span class="ow">in</span> <span class="n">sims</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">flopy</span><span class="o">.</span><span class="n">mf6</span><span class="o">.</span><span class="n">MFSimulation</span><span class="p">):</span>
+            <span class="n">sim</span><span class="o">.</span><span class="n">write_simulation</span><span class="p">(</span><span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sim</span><span class="o">.</span><span class="n">write_input</span><span class="p">()</span>
+
+<span class="nd">@timed</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_models</span><span class="p">(</span><span class="o">*</span><span class="n">sims</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">sim</span> <span class="ow">in</span> <span class="n">sims</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">flopy</span><span class="o">.</span><span class="n">mf6</span><span class="o">.</span><span class="n">MFSimulation</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running simulation: </span><span class="si">{</span><span class="n">sim</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">success</span><span class="p">,</span> <span class="n">buff</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">run_simulation</span><span class="p">(</span><span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span> <span class="n">report</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running model: </span><span class="si">{</span><span class="n">sim</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">success</span><span class="p">,</span> <span class="n">buff</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">run_model</span><span class="p">(</span><span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span> <span class="n">report</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">success</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Simulation </span><span class="si">{</span><span class="n">sim</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> failed.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">buff</span><span class="p">)</span>
+            <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Simulation </span><span class="si">{</span><span class="n">sim</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> succeeded.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Plot Groundwater Model Results</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">load_head</span><span class="p">():</span>
+    <span class="c1"># Assuming you have a head file to load</span>
+    <span class="n">head_file</span> <span class="o">=</span> <span class="n">gwf_ws</span> <span class="o">/</span> <span class="n">headfile</span>
+    <span class="n">head_obj</span> <span class="o">=</span> <span class="n">flopy</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">HeadFile</span><span class="p">(</span><span class="n">head_file</span><span class="p">)</span>
+    <span class="n">head</span> <span class="o">=</span> <span class="n">head_obj</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">head</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_gwf_all</span><span class="p">(</span><span class="n">gwfsim</span><span class="p">):</span>
+    <span class="c1"># get gwf model</span>
+    <span class="n">gwf</span> <span class="o">=</span> <span class="n">gwfsim</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">gwf_name</span><span class="p">)</span>
+    <span class="n">head</span> <span class="o">=</span> <span class="n">load_head</span><span class="p">()</span>
+
+    <span class="c1"># Load the discretization file to access model grid information</span>
+    <span class="n">dis</span> <span class="o">=</span> <span class="n">gwf</span><span class="o">.</span><span class="n">get_package</span><span class="p">(</span><span class="s2">&quot;DIS&quot;</span><span class="p">)</span>
+    <span class="n">nlay</span><span class="p">,</span> <span class="n">nrow</span><span class="p">,</span> <span class="n">ncol</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">nlay</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">dis</span><span class="o">.</span><span class="n">nrow</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">dis</span><span class="o">.</span><span class="n">ncol</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="c1"># Load the idomain array to identify active cells</span>
+    <span class="n">idomain</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">idomain</span><span class="o">.</span><span class="n">array</span> <span class="c1"># No results will be visible otherwise</span>
+
+    <span class="c1"># Choose the layer you want to plot, e.g., the first layer (layer 0)</span>
+    <span class="n">layer_to_plot</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># You can change this to any other layer (0-based index)</span>
+
+    <span class="c1"># Extract the groundwater head for the specified layer (nrow, ncol)</span>
+    <span class="n">head_layer</span> <span class="o">=</span> <span class="n">head</span><span class="p">[</span><span class="n">layer_to_plot</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+
+    <span class="c1"># Mask the inactive cells in the head_layer array</span>
+    <span class="n">head_layer_masked</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="n">idomain</span><span class="p">[</span><span class="n">layer_to_plot</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">head_layer</span><span class="p">)</span>
+
+    <span class="c1"># Plot the groundwater head for the chosen layer</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">head_layer_masked</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">ncol</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nrow</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Groundwater Head (m)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Groundwater Head at Layer </span><span class="si">{</span><span class="n">layer_to_plot</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Column&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Row&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="c1"># Load the surface elevation data</span>
+    <span class="n">surface_elevation</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">array</span>
+
+    <span class="c1"># Choose the layers you want to plot, e.g., the first layer (layer 0) and the last layer</span>
+    <span class="n">layer_to_plot_first</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># First layer (0-based index)</span>
+    <span class="n">layer_to_plot_last</span> <span class="o">=</span> <span class="n">nlay</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># Last layer (0-based index)</span>
+
+    <span class="c1"># Extract the groundwater head for the specified layers (nrow, ncol)</span>
+    <span class="n">head_layer_first</span> <span class="o">=</span> <span class="n">head</span><span class="p">[</span><span class="n">layer_to_plot_first</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+    <span class="n">head_layer_last</span> <span class="o">=</span> <span class="n">head</span><span class="p">[</span><span class="n">layer_to_plot_last</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+
+    <span class="c1"># Mask the inactive cells in the head_layer arrays</span>
+    <span class="n">head_layer_first_masked</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="n">idomain</span><span class="p">[</span><span class="n">layer_to_plot_first</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">head_layer_first</span><span class="p">)</span>
+    <span class="n">head_layer_last_masked</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="n">idomain</span><span class="p">[</span><span class="n">layer_to_plot_last</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">head_layer_last</span><span class="p">)</span>
+
+    <span class="c1"># Plot the surface elevation for active cells and overlay groundwater head contours</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+    <span class="c1"># Plot for the first layer</span>
+    <span class="n">top_active_first</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="n">idomain</span><span class="p">[</span><span class="n">layer_to_plot_first</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">surface_elevation</span><span class="p">)</span>
+    <span class="n">im1</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">top_active_first</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;terrain&quot;</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span>
+                        <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">ncol</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nrow</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Surface Elevation (m)&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Check if the minimum and maximum values are different before creating contour levels</span>
+    <span class="k">if</span> <span class="n">head_layer_first_masked</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">!=</span> <span class="n">head_layer_first_masked</span><span class="o">.</span><span class="n">max</span><span class="p">():</span>
+        <span class="n">contour_first</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">head_layer_first_masked</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">head_layer_first_masked</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">head_layer_first_masked</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="mi">10</span><span class="p">),</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">ncol</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nrow</span><span class="p">])</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">contour_first</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.1f</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Surface Elevation and Groundwater Head Contours at Layer </span><span class="si">{</span><span class="n">layer_to_plot_first</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Column&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Row&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Plot for the last layer</span>
+    <span class="n">top_active_last</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="n">idomain</span><span class="p">[</span><span class="n">layer_to_plot_last</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">surface_elevation</span><span class="p">)</span>
+    <span class="n">im2</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">top_active_last</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;terrain&quot;</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span>
+                        <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">ncol</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nrow</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Surface Elevation (m)&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Check if the minimum and maximum values are different before creating contour levels</span>
+    <span class="k">if</span> <span class="n">head_layer_last_masked</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">!=</span> <span class="n">head_layer_last_masked</span><span class="o">.</span><span class="n">max</span><span class="p">():</span>
+        <span class="n">contour_last</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">head_layer_last_masked</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">head_layer_last_masked</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">head_layer_last_masked</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="mi">10</span><span class="p">),</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">ncol</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nrow</span><span class="p">])</span>
+        <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">contour_last</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.1f</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Surface Elevation and Groundwater Head Contours at Layer </span><span class="si">{</span><span class="n">layer_to_plot_last</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Column&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Row&#39;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="c1">#---------------------- Zoom In to idomain ------------------------#</span>
+    <span class="c1"># Choose the layers you want to plot</span>
+    <span class="n">layers_to_plot</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">39</span><span class="p">]</span>  <span class="c1"># 1st, 20th, and 40th layers (0-based index)</span>
+
+    <span class="c1"># Extract the groundwater head for the specified layers (nrow, ncol)</span>
+    <span class="n">head_layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">head</span><span class="p">[</span><span class="n">layer</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">layers_to_plot</span><span class="p">]</span>
+
+    <span class="c1"># Mask the inactive cells in the head_layer arrays</span>
+    <span class="n">head_layers_masked</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="n">idomain</span><span class="p">[</span><span class="n">layer</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">head_layers</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">layers_to_plot</span><span class="p">)]</span>
+
+    <span class="c1"># Determine the extent of the active cells</span>
+    <span class="n">active_cells</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">idomain</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">active_rows</span><span class="p">,</span> <span class="n">active_cols</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">active_cells</span><span class="p">)</span>
+    <span class="n">row_min</span><span class="p">,</span> <span class="n">row_max</span> <span class="o">=</span> <span class="n">active_rows</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">active_rows</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">col_min</span><span class="p">,</span> <span class="n">col_max</span> <span class="o">=</span> <span class="n">active_cols</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">active_cols</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+    <span class="c1"># Define the extent for the plots</span>
+    <span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="n">col_min</span><span class="p">,</span> <span class="n">col_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">row_min</span><span class="p">,</span> <span class="n">row_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Plot the surface elevation for active cells and overlay groundwater head contours</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">layers_to_plot</span><span class="p">):</span>
+        <span class="c1"># Plot for each layer</span>
+        <span class="n">top_active</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="n">idomain</span><span class="p">[</span><span class="n">layer</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">surface_elevation</span><span class="p">)</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">top_active</span><span class="p">[</span><span class="n">row_min</span><span class="p">:</span><span class="n">row_max</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">col_min</span><span class="p">:</span><span class="n">col_max</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;terrain&quot;</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span>
+                           <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Surface Elevation (m)&#39;</span><span class="p">)</span>
+        <span class="n">contour</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">head_layers_masked</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">row_min</span><span class="p">:</span><span class="n">row_max</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">col_min</span><span class="p">:</span><span class="n">col_max</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">levels</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">head_layers_masked</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">head_layers_masked</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="mi">10</span><span class="p">),</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">contour</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.1f</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Surface Elevation and Groundwater Head Contours at Layer </span><span class="si">{</span><span class="n">layer</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Column&#39;</span><span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Row&#39;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="c1">#---------------------- 3D Plot of the Model ------------------------#</span>
+    <span class="n">top</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">top</span><span class="o">.</span><span class="n">array</span>
+    <span class="n">botm</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">botm</span><span class="o">.</span><span class="n">array</span>
+    <span class="n">idomain</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">idomain</span><span class="o">.</span><span class="n">array</span>  <span class="c1"># Assuming idomain is part of the dis object</span>
+
+    <span class="c1"># Combine top and botm to get the elevation data for all layers</span>
+    <span class="n">elevation_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="n">top</span><span class="p">],</span> <span class="n">botm</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Get the number of rows and columns</span>
+    <span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span> <span class="o">=</span> <span class="n">top</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="c1"># Layer to plot for terrain</span>
+    <span class="n">terrain_layer</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Create a meshgrid for x and y coordinates</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ncols</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nrows</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nrows</span><span class="p">)</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="c1"># Mask the elevation data using the idomain array</span>
+    <span class="c1">#z = np.ma.masked_where(idomain[terrain_layer, :, :] == 0, elevation_data[terrain_layer, :, :])</span>
+
+    <span class="c1"># Set up plot</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">subplot_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">))</span>
+
+    <span class="c1"># Light source for hillshading</span>
+    <span class="n">ls</span> <span class="o">=</span> <span class="n">LightSource</span><span class="p">(</span><span class="mi">270</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span>
+
+    <span class="c1"># Plot the masked elevation data</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">elevation_data</span><span class="p">[</span><span class="n">terrain_layer</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+    <span class="n">rgb</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">shade</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">gist_earth</span><span class="p">,</span> <span class="n">vert_exag</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">blend_mode</span><span class="o">=</span><span class="s1">&#39;soft&#39;</span><span class="p">)</span>
+    <span class="n">surf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">rstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolors</span><span class="o">=</span><span class="n">rgb</span><span class="p">,</span>
+                        <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">antialiased</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">shade</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Set plot labels and title</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;3D Terrain Elevation&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Column&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Row&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;Elevation (ft)&#39;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1">## Code from:</span>
+<span class="c1"># https://github.com/matplotlib/matplotlib/tree/cfe5bf75eaf378b9523830908036f2123acfe4e7/examples/frontpage/3D.py</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="plot-particle-tracking-results">
+<h2>Plot Particle Tracking Results<a class="headerlink" href="#plot-particle-tracking-results" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_modpath7_results</span><span class="p">(</span><span class="n">mpnamf</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">gwf</span><span class="p">,</span> <span class="n">nlay</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_particles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layers_to_plot</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Optimized function to read and plot MODPATH 7 results, including residence times and particle pathlines.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - mpnamf: str, MODPATH 7 model name</span>
+<span class="sd">    - ws: str, workspace directory for MODPATH 7</span>
+<span class="sd">    - gwf: flopy.mf6.ModflowGwf, MODFLOW 6 groundwater flow model</span>
+<span class="sd">    - nlay: int, number of layers in the model</span>
+<span class="sd">    - max_particles: int, maximum number of particles to process and plot (default: 100)</span>
+<span class="sd">    - layers_to_plot: list, specific layers to plot (default: 1, plot 1 layer)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">flopy</span>
+
+    <span class="c1"># Load forward tracking pathline data</span>
+    <span class="n">fpth</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mpnamf</span><span class="si">}</span><span class="s2">.mppth&quot;</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">flopy</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">PathlineFile</span><span class="p">(</span><span class="n">fpth</span><span class="p">)</span>
+
+    <span class="c1"># Get all pathline data</span>
+    <span class="n">pathlines</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get_alldata</span><span class="p">()</span>
+
+    <span class="c1"># Limit the number of particles if max_particles is specified</span>
+    <span class="k">if</span> <span class="n">max_particles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">pathlines</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_particles</span><span class="p">:</span>
+        <span class="n">pathlines</span> <span class="o">=</span> <span class="n">pathlines</span><span class="p">[:</span><span class="n">max_particles</span><span class="p">]</span>
+
+    <span class="c1"># Load forward tracking endpoint data</span>
+    <span class="n">fpth</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mpnamf</span><span class="si">}</span><span class="s2">.mpend&quot;</span><span class="p">)</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">flopy</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">EndpointFile</span><span class="p">(</span><span class="n">fpth</span><span class="p">)</span>
+
+    <span class="c1"># Get all endpoint data</span>
+    <span class="n">endpoints</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_alldata</span><span class="p">()</span>
+
+    <span class="c1"># Extract residence times from endpoint data</span>
+    <span class="n">residence_times</span> <span class="o">=</span> <span class="n">endpoints</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Calculate residence time statistics</span>
+    <span class="n">avg_time</span> <span class="o">=</span> <span class="n">residence_times</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">min_time</span> <span class="o">=</span> <span class="n">residence_times</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">max_time</span> <span class="o">=</span> <span class="n">residence_times</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+    <span class="c1"># Print residence time statistics</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Residence Time Statistics:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Average Residence Time: </span><span class="si">{</span><span class="n">avg_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Minimum Residence Time: </span><span class="si">{</span><span class="n">min_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Maximum Residence Time: </span><span class="si">{</span><span class="n">max_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Determine layers to plot</span>
+    <span class="k">if</span> <span class="n">layers_to_plot</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">layers_to_plot</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">nlay</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>  <span class="c1"># Default to the bottom 3 layers</span>
+
+    <span class="c1"># Plot particle pathlines for the specified layers</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">]</span>
+    <span class="n">f</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">layers_to_plot</span><span class="p">),</span> <span class="mi">3</span><span class="p">),</span> <span class="n">nrows</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">layers_to_plot</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">//</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+    <span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">layers_to_plot</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">axes</span><span class="p">):</span>  <span class="c1"># Avoid plotting more layers than available subplots</span>
+            <span class="k">break</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Particle Pathlines - Layer </span><span class="si">{</span><span class="n">k</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">mm</span> <span class="o">=</span> <span class="n">flopy</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">PlotMapView</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">gwf</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+        <span class="n">mm</span><span class="o">.</span><span class="n">plot_grid</span><span class="p">(</span><span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">mm</span><span class="o">.</span><span class="n">plot_pathline</span><span class="p">(</span><span class="n">pathlines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">k</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)],</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+
+    <span class="c1"># Hide unused subplots</span>
+    <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">layers_to_plot</span><span class="p">):]:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="c1"># Plot residence times as a histogram</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">residence_times</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;skyblue&quot;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Residence Time Distribution&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Residence Time&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Frequency&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="run-simulations">
+<h2>Run Simulations<a class="headerlink" href="#run-simulations" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#---------------------- Simulation Scenario ------------------------#</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">scenario</span><span class="p">(</span><span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Orchestrates the building, running, and plotting of the MODFLOW 6 and MODPATH 7 models.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - sim_name: str, simulation name</span>
+<span class="sd">    - gwf_name: str, groundwater flow model name</span>
+<span class="sd">    - md6_exe_path: str, path to the MODFLOW 6 executable</span>
+<span class="sd">    - gwf_ws: str, workspace for the GWF model</span>
+<span class="sd">    - nper: int, number of stress periods</span>
+<span class="sd">    - perlen: float, length of each stress period</span>
+<span class="sd">    - nstp: int, number of time steps per stress period</span>
+<span class="sd">    - tsmult: float, time step multiplier</span>
+<span class="sd">    - botm: list, bottom elevations of the layers</span>
+<span class="sd">    - nrow: int, number of rows in the grid</span>
+<span class="sd">    - ncol: int, number of columns in the grid</span>
+<span class="sd">    - cell_size_x: float, cell width</span>
+<span class="sd">    - cell_size_y: float, cell height</span>
+<span class="sd">    - tops: list, top elevations of the layers</span>
+<span class="sd">    - idomain: list, active/inactive cell array</span>
+<span class="sd">    - xorigin: float, x-coordinate origin</span>
+<span class="sd">    - yorigin: float, y-coordinate origin</span>
+<span class="sd">    - bed_elevation: float, bed elevation</span>
+<span class="sd">    - kh: float, horizontal hydraulic conductivity</span>
+<span class="sd">    - kv: float, vertical hydraulic conductivity</span>
+<span class="sd">    - chd_data_converted: list, constant head boundary data</span>
+<span class="sd">    - head_filerecord: str, head file record</span>
+<span class="sd">    - budget_filerecord: str, budget file record</span>
+<span class="sd">    - mp7_ws: str, workspace for MODPATH 7</span>
+<span class="sd">    - write: bool, whether to write input files</span>
+<span class="sd">    - run: bool, whether to run the models</span>
+<span class="sd">    - plot: bool, whether to plot results</span>
+<span class="sd">    - silent: bool, whether to suppress output</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Build the GWF model</span>
+    <span class="n">gwfsim</span><span class="p">,</span> <span class="n">gwf</span> <span class="o">=</span> <span class="n">build_gwf_model</span><span class="p">(</span><span class="n">sim_name</span><span class="p">)</span>
+    
+    <span class="c1"># Debug print to check if the GWF model is built</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;GWF model built:&quot;</span><span class="p">,</span> <span class="n">gwfsim</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">write</span><span class="p">:</span>
+        <span class="n">write_models</span><span class="p">(</span><span class="n">gwfsim</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">)</span>
+        
+        <span class="c1"># Debug print to check if files are written</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;GWF files written to:&quot;</span><span class="p">,</span> <span class="n">gwf_ws</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">run</span><span class="p">:</span>
+        <span class="c1"># Run the MODFLOW model</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running MODFLOW model...&quot;</span><span class="p">)</span>
+        <span class="n">run_models</span><span class="p">(</span><span class="n">gwfsim</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;FINISHED! Running GWF MODFLOW 6&quot;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Plotting Groundwater Flow Model&quot;</span><span class="p">)</span>
+        <span class="n">plot_gwf_all</span><span class="p">(</span><span class="n">gwfsim</span><span class="p">)</span>
+    
+    <span class="c1"># Attempt to build, run, and plot the MODPATH 7 particle tracking model</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Build the MODPATH 7 model</span>
+        <span class="n">mp7</span> <span class="o">=</span> <span class="n">build_particle_models</span><span class="p">(</span><span class="n">sim_name</span><span class="p">,</span> <span class="n">gwf</span><span class="p">)</span>
+        
+        <span class="c1"># Debug print to check if the MODPATH 7 model is built</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MODPATH 7 model built:&quot;</span><span class="p">,</span> <span class="n">mp7</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">write</span><span class="p">:</span>
+            <span class="n">write_models</span><span class="p">(</span><span class="n">mp7</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">)</span>
+            
+            <span class="c1"># Debug print to check if files are written</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MODPATH 7 files written to:&quot;</span><span class="p">,</span> <span class="n">mp7_ws</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">run</span><span class="p">:</span>
+            <span class="c1"># Run the MODPATH 7 model</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running MODPATH 7...&quot;</span><span class="p">)</span>
+            <span class="n">run_models</span><span class="p">(</span><span class="n">mp7</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;FINISHED! Running MODPATH 7&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Plotting MODPATH 7 Results&quot;</span><span class="p">)</span>
+            
+            <span class="c1"># No wells or rivers, so pass None for nodes</span>
+            <span class="c1"># plot_modpath7_results(</span>
+            <span class="c1">#     mpnamf=mp7_name,</span>
+            <span class="c1">#     ws=str(mp7_ws),</span>
+            <span class="c1">#     gwf=gwf,</span>
+            <span class="c1">#     nlay=len(botm),</span>
+            <span class="c1">#     max_particles=10</span>
+            <span class="c1"># )</span>
+    
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;An error occurred while building, running, or plotting the MODPATH 7 model: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Example usage:</span>
+<span class="n">scenario</span><span class="p">(</span><span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building GWF model for Hyporheic_Project
+✅ Assigned 18080 unique CHD boundary cells.
+GWF model built: sim_name = gwf_model
+sim_path = C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\VQuintana\HP_workspace\gwf_workspace
+exe_name = C:\Users\u4eeevmq\Documents\Python\Flo_Py\flopy\modflowExe\mf6.exe
+
+###################
+Package mfsim.nam
+###################
+
+package_name = mfsim.nam
+filename = mfsim.nam
+package_type = nam
+model_or_simulation_package = simulation
+simulation_name = gwf_model
+
+
+###################
+Package tdis
+###################
+
+package_name = tdis
+filename = gwf_model.tdis
+package_type = tdis
+model_or_simulation_package = simulation
+simulation_name = gwf_model
+
+
+###################
+Package ims_-1
+###################
+
+package_name = ims_-1
+filename = gwf_model.ims
+package_type = ims
+model_or_simulation_package = simulation
+simulation_name = gwf_model
+
+
+@@@@@@@@@@@@@@@@@@@@
+Model gwf_model
+@@@@@@@@@@@@@@@@@@@@
+
+name = gwf_model
+model_type = gwf6
+version = mf6
+model_relative_path = .
+
+###################
+Package dis
+###################
+
+package_name = dis
+filename = gwf_model.dis
+package_type = dis
+model_or_simulation_package = model
+model_name = gwf_model
+
+
+###################
+Package ic
+###################
+
+package_name = ic
+filename = gwf_model.ic
+package_type = ic
+model_or_simulation_package = model
+model_name = gwf_model
+
+
+###################
+Package npf
+###################
+
+package_name = npf
+filename = gwf_model.npf
+package_type = npf
+model_or_simulation_package = model
+model_name = gwf_model
+
+
+###################
+Package chd
+###################
+
+package_name = chd
+filename = gwf_model.chd
+package_type = chd
+model_or_simulation_package = model
+model_name = gwf_model
+
+
+###################
+Package oc
+###################
+
+package_name = oc
+filename = gwf_model.oc
+package_type = oc
+model_or_simulation_package = model
+model_name = gwf_model
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GWF files written to: HP_workspace\gwf_workspace
+Running MODFLOW model...
+Running simulation: gwf_model
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Simulation gwf_model succeeded.
+run_models took 2358.57 ms
+FINISHED! Running GWF MODFLOW 6
+Plotting Groundwater Flow Model
+</pre></div>
+</div>
+<img alt="_images/9c50002e9f6ef02e3f4d6eae52e08b5fb82cc742902aa04cf4afb0037de4edd8.png" src="_images/9c50002e9f6ef02e3f4d6eae52e08b5fb82cc742902aa04cf4afb0037de4edd8.png" />
+<img alt="_images/6a8688c1e7c38fd589d6d7af5ea8eb032bde5215fccfc6fdec89d4269a60841e.png" src="_images/6a8688c1e7c38fd589d6d7af5ea8eb032bde5215fccfc6fdec89d4269a60841e.png" />
+<img alt="_images/822da5aa02211afa8a8a3567e3f755f7d12355f299188afc0a7f5a296b6916d0.png" src="_images/822da5aa02211afa8a8a3567e3f755f7d12355f299188afc0a7f5a296b6916d0.png" />
+<img alt="_images/d65a13299469e891bb67786bf191dd8ff7c13b33f3ec4ba11711b1f4a5e266d4.png" src="_images/d65a13299469e891bb67786bf191dd8ff7c13b33f3ec4ba11711b1f4a5e266d4.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building MODPATH 7 model for Hyporheic_Project
+MODPATH 7 model built: MODPATH 7 model
+MODPATH 7 files written to: HP_workspace\mp7_workspace
+Running MODPATH 7...
+Running model: mp7_model
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Simulation mp7_model succeeded.
+run_models took 574363.08 ms
+FINISHED! Running MODPATH 7
+Plotting MODPATH 7 Results
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="nodes.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">OPTIONAL: Define Nodes</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="results.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Quantifying Ecological Benefits</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modflow-6-groundwater-model">MODFLOW 6 Groundwater Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modpath-7-particle-tracking">MODPATH 7 Particle Tracking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-settings">Simulation Settings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-particle-tracking-results">Plot Particle Tracking Results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-simulations">Run Simulations</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vanessa Quintana
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
