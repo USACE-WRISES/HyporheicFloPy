@@ -3,7 +3,6 @@ venv/
 env/
 .venv/
 
-
 # VS Code settings
 .vscode/
 
@@ -14,4 +13,7 @@ env/
 !**/*_gitignore/**/.gitkeep
 
 # Ignore all files in HP_Workspace
-HP_Workspace/
+HP_Workspace/ 
+
+# Ignore all .tif
+.tif

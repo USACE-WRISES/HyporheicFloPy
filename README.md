@@ -36,3 +36,37 @@ If you add packages to your virtual environment, you'll need to update requireme
 <br/> 'pip freeze > requirements.txt'
 
 You can push changes with source control.  Always use a concise commit message to describe the change.
+
+--Directory Notes--
+
+Notebook Files:
+- intro.ipynb
+- preprocessing.ipynb
+- initialization.ipynb
+- model_domain.ipynb
+- define_boundary.ipynb
+- boundary_conditions.ipynb
+- wells.ipynb
+- nodes.ipynb
+- run_models.ipynb
+- results.ipynb
+
+Extra:
+- hyporheic_project.ipynb
+- Preprocessing_Steps_VQuintana.ipynb
+
+Directories:
+
+- _build
+    - .doctrees
+    - html
+        - sphinx_design_static
+        - reports
+    - jupyter_execute
+
+- HP_Workspace
+    - gwf_workspace
+    - mp7_workspace
+
+
+
