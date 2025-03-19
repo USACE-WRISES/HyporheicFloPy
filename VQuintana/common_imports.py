@@ -70,3 +70,8 @@ from matplotlib import cbook, cm
 from matplotlib.colors import LightSource
 from modflow_devtools.misc import get_env, timed
 import jupyter_book
+
+# Runtime Settings
+import asyncio
+if asyncio.get_event_loop_policy().__class__.__name__ == "ProactorEventLoopPolicy":
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())

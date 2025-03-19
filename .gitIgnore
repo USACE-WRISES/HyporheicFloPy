@@ -12,3 +12,6 @@ env/
 **/*_gitignore/**
 !**/*_gitignore/**/
 !**/*_gitignore/**/.gitkeep
+
+# Ignore all files in HP_Workspace
+HP_Workspace/

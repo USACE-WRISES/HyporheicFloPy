@@ -10,12 +10,7 @@ chapters:
 - file: define_boundary
 - file: boundary_conditions
 - file: wells
-- file: particle_release
 - file: nodes
-- file: groundwater
-- file: plotting
-- file: particles
-- file: particle_plotting
 - file: run_models
 - file: results
 
