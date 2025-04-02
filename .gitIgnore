@@ -15,6 +15,5 @@ env/
 # Ignore all files in HP_Workspace
 HP_Workspace/ 
 
-# Ignore all .tif
-.tif
+# Ignore all large data files
 .zip

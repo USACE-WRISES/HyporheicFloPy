@@ -434,11 +434,16 @@ document.write(`
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#------------------ STEPS TO CREATE JUPYTER BOOK ------------------#</span>
-<span class="c1"># STEP 1. Make sure you&#39;re in a virtual environment by running &quot;.\\.venv\Scripts\activate&quot; or creating a virtual environment in the terminal</span>
-<span class="c1"># STEP 2. Run &quot;jupyter-book build VQuintana/&quot; to build jupyter book from directory</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NOTE: Install jupyter notebook by running &quot;pip install jupyter_book&quot; in the terminal</span>
 
-<span class="c1"># NOTE: Install jupyter notebook by running &quot;pip install jupyter_book&quot; in the terminal</span>
+<span class="c1"># Run Batch file to create Jupyter Book</span>
+<span class="c1"># Step 1. Run &quot;.\move_book.bat&quot; to run batch file to compile and move book</span>
+
+<span class="c1">#------------------ Batch File Steps ------------------#</span>
+<span class="c1"># STEP 1. Make sure you&#39;re in a virtual environment by running &quot;.\\.venv\Scripts\activate&quot; or creating a virtual environment in the terminal</span>
+<span class="c1"># STEP 2. Remove old build files  using &quot;Remove-Item -Recurse -Force C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\docs\*&quot; </span>
+<span class="c1"># STEP 3. Run &quot;jupyter-book build VQuintana/&quot; to build jupyter book from directory</span>
+<span class="c1"># Step 4. To move book built to another directory run &quot;move VQuintana/_build/html/* C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\docs&quot;</span>
 </pre></div>
 </div>
 </div>
