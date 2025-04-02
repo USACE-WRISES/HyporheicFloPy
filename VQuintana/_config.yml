@@ -32,3 +32,4 @@ repository:
 html:
   use_issues_button: true
   use_repository_button: true
+  output_folder: ../../docs  # Save the output to the "docs" folder
