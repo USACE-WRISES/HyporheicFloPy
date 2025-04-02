@@ -40,33 +40,22 @@ You can push changes with source control.  Always use a concise commit message t
 --Directory Notes--
 
 Notebook Files:
-- intro.ipynb
-- preprocessing.ipynb
-- initialization.ipynb
-- model_domain.ipynb
-- define_boundary.ipynb
-- boundary_conditions.ipynb
-- wells.ipynb
-- nodes.ipynb
-- run_models.ipynb
-- results.ipynb
+<br/> - intro.ipynb
+<br/> - preprocessing.ipynb
+<br/> - initialization.ipynb
+<br/> - model_domain.ipynb
+<br/> - define_boundary.ipynb
+<br/> - boundary_conditions.ipynb
+<br/> - wells.ipynb
+<br/> - nodes.ipynb
+<br/> - run_models.ipynb
+<br/> - results.ipynb
 
-Extra:
-- hyporheic_project.ipynb
-- Preprocessing_Steps_VQuintana.ipynb
+Results Directories:
+<br/> - HP_Workspace
+<br/> &nbsp;&nbsp;&nbsp;&nbsp;- gwf_workspace
+<br/> &nbsp;&nbsp;&nbsp;&nbsp;- mp7_workspace
 
-Directories:
-
-- _build
-    - .doctrees
-    - html
-        - sphinx_design_static
-        - reports
-    - jupyter_execute
-
-- HP_Workspace
-    - gwf_workspace
-    - mp7_workspace
-
-
+To build the html document and run MODFLOW6 with MODPATH 7 in command prompt use: 
+<br/> '.\run_build_models.bat'
 

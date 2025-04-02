@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Introduction &#8212; Automating Groudwater Modelling with Python using FloPy</title>
+    <title>OPTIONAL: Define Nodes &#8212; Automating Groudwater Modelling with Python using FloPy</title>
   
   
   
@@ -57,10 +57,11 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'intro';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'nodes';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Preprocessing Data" href="preprocessing.html" />
+    <link rel="next" title="Run Models" href="run_models.html" />
+    <link rel="prev" title="OPTIONAL: Define Wells" href="wells.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -123,8 +124,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -143,7 +142,7 @@
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="intro.html">
   
   
   
@@ -168,18 +167,20 @@
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1 current active">
-                <a class="reference internal" href="#">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
                     Introduction
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="initialization.html">Initializing Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model_domain.html">Model Domain</a></li>
 <li class="toctree-l1"><a class="reference internal" href="define_boundary.html">Flood Plain Boundaries and Groundwater Domain</a></li>
 <li class="toctree-l1"><a class="reference internal" href="boundary_conditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wells.html">OPTIONAL:  Define Wells</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">OPTIONAL: Define Nodes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run_models.html">Run Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="results.html">Quantifying Ecological Benefits</a></li>
 </ul>
@@ -253,7 +254,7 @@
       
       
       
-      <li><a href="https://github.com/USACE-WRISES/HyporheicFloPy.git/issues/new?title=Issue%20on%20page%20%2Fintro.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/USACE-WRISES/HyporheicFloPy.git/issues/new?title=Issue%20on%20page%20%2Fnodes.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -283,7 +284,7 @@
       
       
       
-      <li><a href="_sources/intro.ipynb" target="_blank"
+      <li><a href="_sources/nodes.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -354,9 +355,7 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -367,22 +366,11 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Introduction</h1>
+    <h1>OPTIONAL: Define Nodes</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objectives">Objectives</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structure">Structure</a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -392,44 +380,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="introduction">
-<h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h1>
-<section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
-<p>The Hyporheic Project aims to automate the integration of surface water inputs into groundwater flow modeling using FloPy (ModFlow6) in Python. This project is designed to ease the difficulty and enhance the efficiency of groundwater modeling by streamlining the processing of surface water inputs from HEC-RAS, which is a widely-used software for simulating the hydraulics of water flow through natural rivers and other channels.</p>
-</section>
-<section id="motivation">
-<h2>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
-<p>Learning the process of integrating surface water and groundwater modeling is often difficult and time-consuming. If these processes were easier to learn and run, we could incorporate groundwater more widely and quantify the ecological benefits of groundwater, specifically the hyporheic zone.</p>
-<p>The hyporheic zone is a critical area where groundwater and surface water interact, providing essential ecological functions such as nutrient cycling and habitat for aquatic organisms. By automating the inclusion of surface water inputs into groundwater models, this project aims to provide more reliable results for water resource management, environmental assessments, and hydrological studies while highlighting the importance of the hyporheic zone.</p>
-</section>
-<section id="objectives">
-<h2>Objectives<a class="headerlink" href="#objectives" title="Link to this heading">#</a></h2>
-<p>The primary objectives of this notebook are as follows:</p>
-<ol class="arabic simple">
-<li><p><strong>Streamline Data Processing</strong>: Develop a comprehensive workflow to preprocess surface water data from HEC-RAS for integration into ModFlow6 models, including data acquisition, cleaning, and formatting procedures.</p></li>
-<li><p><strong>Automate Model Initialization</strong>: Implement automated routines utilize FloPy to manage and configure ModFlow6 packages.</p></li>
-<li><p><strong>Simulate Groundwater Flow</strong>: Conduct groundwater flow simulations using ModFlow6, incorporating the processed surface water inputs to evaluate their impact on groundwater dynamics.</p></li>
-<li><p><strong>Visualize and Analyze Groundwater Results</strong>: Develop visualization techniques for analyzing groundwater model results, including the creation of contour plots, time-series graphs, and cross-sectional views to interpret the effects of surface water interactions.</p></li>
-<li><p><strong>Simulate Particle Tracking</strong>: Conduct particle tracking simulations using ModFlow6 and ModPath7, incorporating the groundwater flow outputs.</p></li>
-<li><p><strong>Visualize and Analyze Particle Results</strong>: Develop visualization techniques for analyzing particle model results, including the creation of contour plots, time-series graphs, and cross-sectional views to interpret the effects of surface water interactions.</p></li>
-<li><p><strong>Quantify Ecological Benefits</strong>: Investigate the ecological benefits of groundwater and the hyporheic zone by analyzing the simulation results, providing insights into nutrient cycling, habitat provision, and overall water resource management.</p></li>
-</ol>
-</section>
-<section id="structure">
-<h2>Structure<a class="headerlink" href="#structure" title="Link to this heading">#</a></h2>
-<p>This executable document is organized into the following chapters:</p>
-<ol class="arabic simple">
-<li><p><strong>Preprocessing Data</strong>: This chapter covers the preprocessing steps required to prepare surface water data from HEC-RAS for integration into ModFlow6 models. It includes data acquisition, cleaning, and formatting procedures.</p></li>
-<li><p><strong>Initializing Variables</strong>: This chapter details the initialization process of ModFlow6 models, including the setup of directories, model executables, grid definition, and package parameters.</p></li>
-<li><p><strong>Model Domain</strong>: This chapter defines the model grid using the extent and spatial resolution of the terrain raster. Here we also define elevation values for each layer in the model domain using the values from the terrain elevation raster.</p></li>
-<li><p><strong>Define Boundaries</strong>: This chapter explains how to define the boundaries of the model domain, including the specification of boundary conditions and the delineation of the model area.</p></li>
-<li><p><strong>Boundary Conditions</strong>: This chapter details the setup of boundary conditions for the ModFlow6 model, including the specification of head boundaries, flux boundaries, and other relevant conditions.</p></li>
-<li><p><strong>Optional: Define Wells</strong>: This chapter explains the configuration and management of various ModFlow6 packages using FloPy, specifically focusing on the definition and management of wells within the model.</p></li>
-<li><p><strong>Optional: Define Nodes</strong>: This chapter explains the configuration and management of various ModFlow6 packages using FloPy, specifically focusing on the definition and management of nodes within the model.</p></li>
-<li><p><strong>Run Models</strong>: This chapter provides funtions to run the complete set of models and view the results. It includes debugging statements for troubleshooting and optimizing model performance.</p></li>
-<li><p><strong>Quantifying Ecological Benefits</strong>: This chapter runs, and plots the model simulations. It also quantifies the ecological benefits of groundwater and the hyporheic zone.</p></li>
-</ol>
+  <section class="tex2jax_ignore mathjax_ignore" id="optional-define-nodes">
+<h1>OPTIONAL: Define Nodes<a class="headerlink" href="#optional-define-nodes" title="Link to this heading">#</a></h1>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -437,17 +389,196 @@ document.write(`
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NOTE: Install jupyter notebook by running &quot;pip install jupyter_book&quot; in the terminal</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import Libraries</span>
+<span class="o">%</span><span class="k">run</span> /Users/u4eeevmq/Documents/Python/HyporheicFloPy/VQuintana/common_imports.py
 
-<span class="c1"># Step 1. Activate virtual environment &quot;.venv\scripts\activate&quot;</span>
-<span class="c1"># Step 2. Run &quot;.\run_build_models.bat&quot; to run batch file to compile and move book</span>
+<span class="c1"># Retrieve stored variables</span>
+<span class="o">%</span><span class="k">store</span> -r md6_exe_path
+<span class="o">%</span><span class="k">store</span> -r md7_exe_path
+<span class="o">%</span><span class="k">store</span> -r sim_name
+<span class="o">%</span><span class="k">store</span> -r workspace
+<span class="o">%</span><span class="k">store</span> -r figs_path
+<span class="o">%</span><span class="k">store</span> -r gwf_name
+<span class="o">%</span><span class="k">store</span> -r mp7_name
+<span class="o">%</span><span class="k">store</span> -r gwf_ws
+<span class="o">%</span><span class="k">store</span> -r mp7_ws
+<span class="o">%</span><span class="k">store</span> -r headfile
+<span class="o">%</span><span class="k">store</span> -r head_filerecord
+<span class="o">%</span><span class="k">store</span> -r budgetfile
+<span class="o">%</span><span class="k">store</span> -r budget_filerecord
+<span class="o">%</span><span class="k">store</span> -r write
+<span class="o">%</span><span class="k">store</span> -r run
+<span class="o">%</span><span class="k">store</span> -r plot
+<span class="o">%</span><span class="k">store</span> -r plot_show
+<span class="o">%</span><span class="k">store</span> -r plot_save
+
+<span class="c1"># Retrieve model parameters</span>
+<span class="o">%</span><span class="k">store</span> -r length_units
+<span class="o">%</span><span class="k">store</span> -r time_units
+<span class="o">%</span><span class="k">store</span> -r nper
+<span class="o">%</span><span class="k">store</span> -r cell_size_x
+<span class="o">%</span><span class="k">store</span> -r cell_size_y
+<span class="o">%</span><span class="k">store</span> -r gw_mod_depth
+<span class="o">%</span><span class="k">store</span> -r z
+<span class="o">%</span><span class="k">store</span> -r kh
+<span class="o">%</span><span class="k">store</span> -r kv
+<span class="o">%</span><span class="k">store</span> -r gw_offset
+<span class="o">%</span><span class="k">store</span> -r porosity
+<span class="o">%</span><span class="k">store</span> -r rch_iface
+<span class="o">%</span><span class="k">store</span> -r rch_iflowface
+<span class="o">%</span><span class="k">store</span> -r recharge_rate
+<span class="o">%</span><span class="k">store</span> -r nstp
+<span class="o">%</span><span class="k">store</span> -r perlen
+<span class="o">%</span><span class="k">store</span> -r tsmult
+
+<span class="c1"># Retrieve spatial data</span>
+<span class="o">%</span><span class="k">store</span> -r hec_ras_crs
+<span class="o">%</span><span class="k">store</span> -r terrain_elevation
+<span class="o">%</span><span class="k">store</span> -r raster_transform
+<span class="o">%</span><span class="k">store</span> -r transform
+<span class="o">%</span><span class="k">store</span> -r raster_crs
+<span class="o">%</span><span class="k">store</span> -r output_raster
+<span class="o">%</span><span class="k">store</span> -r cropped_output_raster
+<span class="o">%</span><span class="k">store</span> -r ground_water_domain
+<span class="o">%</span><span class="k">store</span> -r left_boundary
+<span class="o">%</span><span class="k">store</span> -r right_boundary
+
+<span class="c1"># retrieve model domain data</span>
+<span class="o">%</span><span class="k">store</span> -r terrain_elevation
+<span class="o">%</span><span class="k">store</span> -r raster_transform
+<span class="o">%</span><span class="k">store</span> -r raster_crs
+<span class="o">%</span><span class="k">store</span> -r raster_bounds_box
+<span class="o">%</span><span class="k">store</span> -r bed_elevation
+<span class="o">%</span><span class="k">store</span> -r raster_width
+<span class="o">%</span><span class="k">store</span> -r raster_height
+<span class="o">%</span><span class="k">store</span> -r ncol
+<span class="o">%</span><span class="k">store</span> -r nrow
+<span class="o">%</span><span class="k">store</span> -r top
+<span class="o">%</span><span class="k">store</span> -r nlay
+<span class="o">%</span><span class="k">store</span> -r grid_x
+<span class="o">%</span><span class="k">store</span> -r grid_y
+<span class="o">%</span><span class="k">store</span> -r grid_points
+<span class="o">%</span><span class="k">store</span> -r intersecting_points
+<span class="o">%</span><span class="k">store</span> -r xorigin
+<span class="o">%</span><span class="k">store</span> -r yorigin
+<span class="o">%</span><span class="k">store</span> -r xmin
+<span class="o">%</span><span class="k">store</span> -r ymin
+<span class="o">%</span><span class="k">store</span> -r xmax
+<span class="o">%</span><span class="k">store</span> -r ymax
+<span class="o">%</span><span class="k">store</span> -r tops
+<span class="o">%</span><span class="k">store</span> -r botm
+
+<span class="c1"># retrieve model boundary data</span>
+<span class="o">%</span><span class="k">store</span> -r left_start
+<span class="o">%</span><span class="k">store</span> -r left_end
+<span class="o">%</span><span class="k">store</span> -r right_start
+<span class="o">%</span><span class="k">store</span> -r right_end
+<span class="o">%</span><span class="k">store</span> -r upstream_start_x
+<span class="o">%</span><span class="k">store</span> -r upstream_start_y
+<span class="o">%</span><span class="k">store</span> -r upstream_end_x
+<span class="o">%</span><span class="k">store</span> -r upstream_end_y
+<span class="o">%</span><span class="k">store</span> -r downstream_start_x
+<span class="o">%</span><span class="k">store</span> -r downstream_start_y
+<span class="o">%</span><span class="k">store</span> -r downstream_end_x
+<span class="o">%</span><span class="k">store</span> -r downstream_end_y
+<span class="o">%</span><span class="k">store</span> -r upstream_line
+<span class="o">%</span><span class="k">store</span> -r downstream_line
+<span class="o">%</span><span class="k">store</span> -r upstream_boundary
+<span class="o">%</span><span class="k">store</span> -r downstream_boundary
+<span class="o">%</span><span class="k">store</span> -r grid_cells
+<span class="o">%</span><span class="k">store</span> -r grid_gdf
+<span class="o">%</span><span class="k">store</span> -r idomain
+
+<span class="c1"># retrieve model boundary conditions</span>
+<span class="o">%</span><span class="k">store</span> -r boundary_cells
+<span class="o">%</span><span class="k">store</span> -r left_boundary_cells
+<span class="o">%</span><span class="k">store</span> -r right_boundary_cells
+<span class="o">%</span><span class="k">store</span> -r upstream_boundary_cells
+<span class="o">%</span><span class="k">store</span> -r downstream_boundary_cells
+<span class="o">%</span><span class="k">store</span> -r all_boundary_cells
+<span class="o">%</span><span class="k">store</span> -r unique_boundary_cells
+<span class="o">%</span><span class="k">store</span> -r left_boundary_cells_first_layer
+<span class="o">%</span><span class="k">store</span> -r right_boundary_cells_first_layer
+<span class="o">%</span><span class="k">store</span> -r upstream_boundary_cells_first_layer
+<span class="o">%</span><span class="k">store</span> -r downstream_boundary_cells_first_layer
+<span class="o">%</span><span class="k">store</span> -r max_elevation_upstream
+<span class="o">%</span><span class="k">store</span> -r max_elevation_downstream
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_left_first
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_left_last
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_right_first
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_right_last
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_upstream_first
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_upstream_last
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_downstream_first
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_downstream_last
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_left
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_right
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_upstream
+<span class="o">%</span><span class="k">store</span> -r gw_elevation_downstream
+<span class="o">%</span><span class="k">store</span> -r grid_points_coords
+<span class="o">%</span><span class="k">store</span> -r elevation_values
+<span class="o">%</span><span class="k">store</span> -r grid_points_df
+<span class="o">%</span><span class="k">store</span> -r output_csv
+<span class="o">%</span><span class="k">store</span> -r cropped_df
+<span class="o">%</span><span class="k">store</span> -r river_cells
+<span class="o">%</span><span class="k">store</span> -r river_x
+<span class="o">%</span><span class="k">store</span> -r river_y
+<span class="o">%</span><span class="k">store</span> -r river_elevation
+<span class="o">%</span><span class="k">store</span> -r chd_data
+<span class="o">%</span><span class="k">store</span> -r unique_chd_cells
+<span class="o">%</span><span class="k">store</span> -r duplicate_chd_cells
+<span class="o">%</span><span class="k">store</span> -r chd_data_converted
+
+<span class="c1"># retrieve well data</span>
+<span class="o">%</span><span class="k">store</span> -r wel_data
+
+<span class="c1"># retrieve particle data</span>
+<span class="o">%</span><span class="k">store</span> -r particle_data
+<span class="o">%</span><span class="k">store</span> -r mp7_particle_data_1a
+<span class="c1"># %store -r lrcregions</span>
+<span class="c1"># %store -r mp7_particle_data_1b</span>
 </pre></div>
 </div>
 </div>
 </details>
 </div>
-</section>
-<div class="toctree-wrapper compound">
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#---------------------- OPTIONAL: Create Any Nodes ------------------------#</span>
+<span class="c1"># # Get well and river cell numbers</span>
+<span class="c1"># nodes = {}</span>
+
+<span class="c1"># # Well location (k, i, j) where k is the layer, i is the row, and j is the column</span>
+<span class="c1"># nodes[&quot;well&quot;] = []</span>
+<span class="c1"># for well in wel_data:</span>
+<span class="c1">#     k, i, j, q = well</span>
+<span class="c1">#     # Calculate the cell number for the well</span>
+<span class="c1">#     # Cell number is calculated as: ncol * (nrow * k + i) + j</span>
+<span class="c1">#     cell_number = ncol * (nrow * k + i) + j</span>
+<span class="c1">#     nodes[&quot;well&quot;].append(cell_number)</span>
+
+<span class="c1"># # Print the calculated cell numbers for verification</span>
+<span class="c1"># print(&quot;Well cell numbers:&quot;, nodes[&quot;well&quot;])</span>
+
+<span class="c1"># nodes[&quot;river&quot;] = []</span>
+<span class="c1"># for rivspec in rd:</span>
+<span class="c1">#     k, i, j, q, r, s = rivspec  # Unpack all four elements</span>
+<span class="c1">#     node = ncol * (nrow * k + i) + j</span>
+<span class="c1">#     nodes[&quot;river&quot;].append(node)</span>
+
+<span class="c1"># # Print the calculated cell numbers for verification</span>
+<span class="c1"># print(&quot;River cell numbers:&quot;, nodes[&quot;river&quot;])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Store new variable</span>
+<span class="c1"># %store nodes</span>
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 
@@ -481,12 +612,21 @@ document.write(`
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="wells.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">OPTIONAL:  Define Wells</p>
+      </div>
+    </a>
     <a class="right-next"
-       href="preprocessing.html"
+       href="run_models.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Preprocessing Data</p>
+        <p class="prev-next-title">Run Models</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -496,24 +636,6 @@ document.write(`
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objectives">Objectives</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structure">Structure</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>

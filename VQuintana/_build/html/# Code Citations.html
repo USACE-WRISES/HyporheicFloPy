@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Introduction &#8212; Automating Groudwater Modelling with Python using FloPy</title>
+    <title>Code Citations &#8212; Automating Groudwater Modelling with Python using FloPy</title>
   
   
   
@@ -57,10 +57,9 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'intro';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '# Code Citations';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Preprocessing Data" href="preprocessing.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -143,7 +142,7 @@
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="intro.html">
   
   
   
@@ -168,8 +167,8 @@
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1 current active">
-                <a class="reference internal" href="#">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
                     Introduction
                 </a>
             </li>
@@ -180,6 +179,8 @@
 <li class="toctree-l1"><a class="reference internal" href="model_domain.html">Model Domain</a></li>
 <li class="toctree-l1"><a class="reference internal" href="define_boundary.html">Flood Plain Boundaries and Groundwater Domain</a></li>
 <li class="toctree-l1"><a class="reference internal" href="boundary_conditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wells.html">OPTIONAL:  Define Wells</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nodes.html">OPTIONAL: Define Nodes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run_models.html">Run Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="results.html">Quantifying Ecological Benefits</a></li>
 </ul>
@@ -253,7 +254,7 @@
       
       
       
-      <li><a href="https://github.com/USACE-WRISES/HyporheicFloPy.git/issues/new?title=Issue%20on%20page%20%2Fintro.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/USACE-WRISES/HyporheicFloPy.git/issues/new?title=Issue%20on%20page%20%2F# Code Citations.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -283,7 +284,7 @@
       
       
       
-      <li><a href="_sources/intro.ipynb" target="_blank"
+      <li><a href="_sources/# Code Citations.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -293,7 +294,7 @@
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.ipynb</span>
+<span class="btn__text-container">.md</span>
 </a>
 </li>
       
@@ -367,7 +368,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Introduction</h1>
+    <h1>Code Citations</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -377,10 +378,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objectives">Objectives</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structure">Structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#license-unknown">License: unknown</a></li>
 </ul>
             </nav>
         </div>
@@ -392,63 +390,17 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="introduction">
-<h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h1>
-<section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
-<p>The Hyporheic Project aims to automate the integration of surface water inputs into groundwater flow modeling using FloPy (ModFlow6) in Python. This project is designed to ease the difficulty and enhance the efficiency of groundwater modeling by streamlining the processing of surface water inputs from HEC-RAS, which is a widely-used software for simulating the hydraulics of water flow through natural rivers and other channels.</p>
-</section>
-<section id="motivation">
-<h2>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
-<p>Learning the process of integrating surface water and groundwater modeling is often difficult and time-consuming. If these processes were easier to learn and run, we could incorporate groundwater more widely and quantify the ecological benefits of groundwater, specifically the hyporheic zone.</p>
-<p>The hyporheic zone is a critical area where groundwater and surface water interact, providing essential ecological functions such as nutrient cycling and habitat for aquatic organisms. By automating the inclusion of surface water inputs into groundwater models, this project aims to provide more reliable results for water resource management, environmental assessments, and hydrological studies while highlighting the importance of the hyporheic zone.</p>
-</section>
-<section id="objectives">
-<h2>Objectives<a class="headerlink" href="#objectives" title="Link to this heading">#</a></h2>
-<p>The primary objectives of this notebook are as follows:</p>
-<ol class="arabic simple">
-<li><p><strong>Streamline Data Processing</strong>: Develop a comprehensive workflow to preprocess surface water data from HEC-RAS for integration into ModFlow6 models, including data acquisition, cleaning, and formatting procedures.</p></li>
-<li><p><strong>Automate Model Initialization</strong>: Implement automated routines utilize FloPy to manage and configure ModFlow6 packages.</p></li>
-<li><p><strong>Simulate Groundwater Flow</strong>: Conduct groundwater flow simulations using ModFlow6, incorporating the processed surface water inputs to evaluate their impact on groundwater dynamics.</p></li>
-<li><p><strong>Visualize and Analyze Groundwater Results</strong>: Develop visualization techniques for analyzing groundwater model results, including the creation of contour plots, time-series graphs, and cross-sectional views to interpret the effects of surface water interactions.</p></li>
-<li><p><strong>Simulate Particle Tracking</strong>: Conduct particle tracking simulations using ModFlow6 and ModPath7, incorporating the groundwater flow outputs.</p></li>
-<li><p><strong>Visualize and Analyze Particle Results</strong>: Develop visualization techniques for analyzing particle model results, including the creation of contour plots, time-series graphs, and cross-sectional views to interpret the effects of surface water interactions.</p></li>
-<li><p><strong>Quantify Ecological Benefits</strong>: Investigate the ecological benefits of groundwater and the hyporheic zone by analyzing the simulation results, providing insights into nutrient cycling, habitat provision, and overall water resource management.</p></li>
-</ol>
-</section>
-<section id="structure">
-<h2>Structure<a class="headerlink" href="#structure" title="Link to this heading">#</a></h2>
-<p>This executable document is organized into the following chapters:</p>
-<ol class="arabic simple">
-<li><p><strong>Preprocessing Data</strong>: This chapter covers the preprocessing steps required to prepare surface water data from HEC-RAS for integration into ModFlow6 models. It includes data acquisition, cleaning, and formatting procedures.</p></li>
-<li><p><strong>Initializing Variables</strong>: This chapter details the initialization process of ModFlow6 models, including the setup of directories, model executables, grid definition, and package parameters.</p></li>
-<li><p><strong>Model Domain</strong>: This chapter defines the model grid using the extent and spatial resolution of the terrain raster. Here we also define elevation values for each layer in the model domain using the values from the terrain elevation raster.</p></li>
-<li><p><strong>Define Boundaries</strong>: This chapter explains how to define the boundaries of the model domain, including the specification of boundary conditions and the delineation of the model area.</p></li>
-<li><p><strong>Boundary Conditions</strong>: This chapter details the setup of boundary conditions for the ModFlow6 model, including the specification of head boundaries, flux boundaries, and other relevant conditions.</p></li>
-<li><p><strong>Optional: Define Wells</strong>: This chapter explains the configuration and management of various ModFlow6 packages using FloPy, specifically focusing on the definition and management of wells within the model.</p></li>
-<li><p><strong>Optional: Define Nodes</strong>: This chapter explains the configuration and management of various ModFlow6 packages using FloPy, specifically focusing on the definition and management of nodes within the model.</p></li>
-<li><p><strong>Run Models</strong>: This chapter provides funtions to run the complete set of models and view the results. It includes debugging statements for troubleshooting and optimizing model performance.</p></li>
-<li><p><strong>Quantifying Ecological Benefits</strong>: This chapter runs, and plots the model simulations. It also quantifies the ecological benefits of groundwater and the hyporheic zone.</p></li>
-</ol>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NOTE: Install jupyter notebook by running &quot;pip install jupyter_book&quot; in the terminal</span>
-
-<span class="c1"># Step 1. Activate virtual environment &quot;.venv\scripts\activate&quot;</span>
-<span class="c1"># Step 2. Run &quot;.\run_build_models.bat&quot; to run batch file to compile and move book</span>
+  <section class="tex2jax_ignore mathjax_ignore" id="code-citations">
+<h1>Code Citations<a class="headerlink" href="#code-citations" title="Link to this heading">#</a></h1>
+<section id="license-unknown">
+<h2>License: unknown<a class="headerlink" href="#license-unknown" title="Link to this heading">#</a></h2>
+<p><a class="github reference external" href="https://github.com/matplotlib/matplotlib/tree/cfe5bf75eaf378b9523830908036f2123acfe4e7/examples/frontpage/3D.py">matplotlib/matplotlib</a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rgb</span> <span class="o">=</span> <span class="n">ls</span><span class="o">.</span><span class="n">shade</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">gist_earth</span><span class="p">,</span> <span class="n">vert_exag</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">blend_mode</span><span class="o">=</span><span class="s1">&#39;soft&#39;</span><span class="p">)</span>
+<span class="n">surf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">rstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolors</span><span class="o">=</span><span class="n">rgb</span><span class="p">,</span>
+                       <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">antialiased</span>
 </pre></div>
 </div>
-</div>
-</details>
-</div>
 </section>
-<div class="toctree-wrapper compound">
-</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -481,15 +433,6 @@ document.write(`
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="right-next"
-       href="preprocessing.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Preprocessing Data</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -506,10 +449,7 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objectives">Objectives</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structure">Structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#license-unknown">License: unknown</a></li>
 </ul>
   </nav></div>
 
