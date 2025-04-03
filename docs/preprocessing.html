@@ -419,6 +419,7 @@ document.write(`
 <span class="c1"># from matplotlib import cbook, cm</span>
 <span class="c1"># from matplotlib.colors import LightSource</span>
 <span class="c1"># from modflow_devtools.misc import get_env, timed</span>
+<span class="c1"># import papermill as pm</span>
 
 <span class="o">%</span><span class="k">run</span> /Users/u4eeevmq/Documents/Python/HyporheicFloPy/VQuintana/common_imports.py
 </pre></div>
@@ -426,27 +427,49 @@ document.write(`
 </div>
 </details>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_parameters docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#---------------------- Directories ----------------------#</span>
-<span class="c1">## Data Paths</span>
-<span class="n">water_surface_elevation_raster</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\GMS\WSE (Max).USGS_1m_FebApril2018_DEM.U_USGS-3DEP_dtm_hyrdo_flattened_20240412.2041_1.tif&quot;</span>
-<span class="n">terrain_elevation_raster</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\GMS\BlendedTerrain.LoweredTerrain.tif&quot;</span>
-<span class="n">ground_water_domain_shapefile</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\InputShapefiles\GWDomain.shp&quot;</span>
-<span class="n">left_boundary_floodplain</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\InputShapefiles\L_FPL.shp&quot;</span>
-<span class="n">right_boundary_floodplain</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\InputShapefiles\R_FPL.shp&quot;</span>
+<span class="c1"># Data Paths</span>
+<span class="c1"># Can be updated using the batch file &quot;run_build_models.bat&quot; or manually</span>
+<span class="n">water_surface_elevation_raster</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">terrain_elevation_raster</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">ground_water_domain_shapefile</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">left_boundary_floodplain</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">right_boundary_floodplain</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="c1">## Projection File Path</span>
-<span class="n">projection_file</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\RAS\GIS_Data\102739_TX_central.prj&quot;</span>
+<span class="n">projection_file</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="c1">### NOTE: This script can be adapted to run groundwater modeling simulations for other locations by changing the directories above to designated inputs</span>
 </pre></div>
 </div>
 </div>
 </div>
+<div class="cell tag_injected-parameters docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parameters</span>
+<span class="n">water_surface_elevation_raster</span> <span class="o">=</span> <span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Users</span><span class="se">\\</span><span class="s2">u4eeevmq</span><span class="se">\\</span><span class="s2">Documents</span><span class="se">\\</span><span class="s2">Python</span><span class="se">\\</span><span class="s2">HyporheicFloPy</span><span class="se">\\</span><span class="s2">CH00365</span><span class="se">\\</span><span class="s2">GMS</span><span class="se">\\</span><span class="s2">WSE (Max).USGS_1m_FebApril2018_DEM.U_USGS-3DEP_dtm_hyrdo_flattened_20240412.2041_1.tif&quot;</span>
+<span class="n">terrain_elevation_raster</span> <span class="o">=</span> <span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Users</span><span class="se">\\</span><span class="s2">u4eeevmq</span><span class="se">\\</span><span class="s2">Documents</span><span class="se">\\</span><span class="s2">Python</span><span class="se">\\</span><span class="s2">HyporheicFloPy</span><span class="se">\\</span><span class="s2">CH00365</span><span class="se">\\</span><span class="s2">GMS</span><span class="se">\\</span><span class="s2">BlendedTerrain.LoweredTerrain.tif&quot;</span>
+<span class="n">ground_water_domain_shapefile</span> <span class="o">=</span> <span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Users</span><span class="se">\\</span><span class="s2">u4eeevmq</span><span class="se">\\</span><span class="s2">Documents</span><span class="se">\\</span><span class="s2">Python</span><span class="se">\\</span><span class="s2">HyporheicFloPy</span><span class="se">\\</span><span class="s2">CH00365</span><span class="se">\\</span><span class="s2">InputShapefiles</span><span class="se">\\</span><span class="s2">GWDomain.shp&quot;</span>
+<span class="n">left_boundary_floodplain</span> <span class="o">=</span> <span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Users</span><span class="se">\\</span><span class="s2">u4eeevmq</span><span class="se">\\</span><span class="s2">Documents</span><span class="se">\\</span><span class="s2">Python</span><span class="se">\\</span><span class="s2">HyporheicFloPy</span><span class="se">\\</span><span class="s2">CH00365</span><span class="se">\\</span><span class="s2">InputShapefiles</span><span class="se">\\</span><span class="s2">L_FPL.shp&quot;</span>
+<span class="n">right_boundary_floodplain</span> <span class="o">=</span> <span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Users</span><span class="se">\\</span><span class="s2">u4eeevmq</span><span class="se">\\</span><span class="s2">Documents</span><span class="se">\\</span><span class="s2">Python</span><span class="se">\\</span><span class="s2">HyporheicFloPy</span><span class="se">\\</span><span class="s2">CH00365</span><span class="se">\\</span><span class="s2">InputShapefiles</span><span class="se">\\</span><span class="s2">R_FPL.shp&quot;</span>
+<span class="n">projection_file</span> <span class="o">=</span> <span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Users</span><span class="se">\\</span><span class="s2">u4eeevmq</span><span class="se">\\</span><span class="s2">Documents</span><span class="se">\\</span><span class="s2">Python</span><span class="se">\\</span><span class="s2">HyporheicFloPy</span><span class="se">\\</span><span class="s2">CH00365</span><span class="se">\\</span><span class="s2">RAS</span><span class="se">\\</span><span class="s2">GIS_Data</span><span class="se">\\</span><span class="s2">102739_TX_central.prj&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#--------------------------------- Load Projection FIle -----------------------------------------#</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print the parameters to verify</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Water Surface Elevation Raster: </span><span class="si">{</span><span class="n">water_surface_elevation_raster</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Terrain Elevation Raster: </span><span class="si">{</span><span class="n">terrain_elevation_raster</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Groundwater Domain Shapefile: </span><span class="si">{</span><span class="n">ground_water_domain_shapefile</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Left Boundary Floodplain: </span><span class="si">{</span><span class="n">left_boundary_floodplain</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Right Boundary Floodplain: </span><span class="si">{</span><span class="n">right_boundary_floodplain</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Projection File: </span><span class="si">{</span><span class="n">projection_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1">#--------------------------------- Load Projection FIle -----------------------------------------#</span>
 <span class="c1">## HEC-RAS Projection File</span>
 <span class="n">hec_ras_crs</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">projection_file</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
 
@@ -457,7 +480,13 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Stored &#39;hec_ras_crs&#39; (CRS)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Water Surface Elevation Raster: C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\GMS\WSE (Max).USGS_1m_FebApril2018_DEM.U_USGS-3DEP_dtm_hyrdo_flattened_20240412.2041_1.tif
+Terrain Elevation Raster: C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\GMS\BlendedTerrain.LoweredTerrain.tif
+Groundwater Domain Shapefile: C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\InputShapefiles\GWDomain.shp
+Left Boundary Floodplain: C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\InputShapefiles\L_FPL.shp
+Right Boundary Floodplain: C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\InputShapefiles\R_FPL.shp
+Projection File: C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\RAS\GIS_Data\102739_TX_central.prj
+Stored &#39;hec_ras_crs&#39; (CRS)
 </pre></div>
 </div>
 </div>
@@ -486,10 +515,10 @@ document.write(`
     <span class="p">})</span>
 
     <span class="c1"># Define output file name</span>
-    <span class="n">output_raster</span> <span class="o">=</span> <span class="s2">&quot;reprojected_terrain_raster.tif&quot;</span>
+    <span class="n">terrain_output_raster</span> <span class="o">=</span> <span class="s2">&quot;reprojected_terrain_raster.tif&quot;</span>
 
     <span class="c1"># Reproject and save</span>
-    <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">output_raster</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">new_meta</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">terrain_output_raster</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">new_meta</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
         <span class="n">reproject</span><span class="p">(</span>
             <span class="n">source</span><span class="o">=</span><span class="n">rasterio</span><span class="o">.</span><span class="n">band</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
             <span class="n">destination</span><span class="o">=</span><span class="n">rasterio</span><span class="o">.</span><span class="n">band</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
@@ -500,24 +529,39 @@ document.write(`
             <span class="n">resampling</span><span class="o">=</span><span class="n">Resampling</span><span class="o">.</span><span class="n">nearest</span>
         <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reprojected raster saved as </span><span class="si">{</span><span class="n">output_raster</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1">## Store the terrain elevation raster</span>
-<span class="o">%</span><span class="k">store</span> terrain_elevation
-<span class="o">%</span><span class="k">store</span> raster_transform
-<span class="o">%</span><span class="k">store</span> transform
-<span class="o">%</span><span class="k">store</span> raster_crs
-<span class="o">%</span><span class="k">store</span> output_raster
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reprojected raster saved as </span><span class="si">{</span><span class="n">terrain_output_raster</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reprojected raster saved as reprojected_terrain_raster.tif
-Stored &#39;terrain_elevation&#39; (ndarray)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Store the terrain elevation raster</span>
+<span class="o">%</span><span class="k">store</span> terrain_elevation
+<span class="o">%</span><span class="k">store</span> raster_transform
+<span class="o">%</span><span class="k">store</span> transform
+<span class="o">%</span><span class="k">store</span> raster_crs
+<span class="o">%</span><span class="k">store</span> terrain_output_raster
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Stored &#39;terrain_elevation&#39; (ndarray)
 Stored &#39;raster_transform&#39; (Affine)
 Stored &#39;transform&#39; (Affine)
 Stored &#39;raster_crs&#39; (CRS)
-Stored &#39;output_raster&#39; (str)
+Stored &#39;terrain_output_raster&#39; (str)
 </pre></div>
 </div>
 </div>
@@ -546,10 +590,10 @@ Stored &#39;output_raster&#39; (str)
     <span class="p">})</span>
 
     <span class="c1"># Define output file name</span>
-    <span class="n">output_raster</span> <span class="o">=</span> <span class="s2">&quot;reprojected_terrain_raster.tif&quot;</span>
+    <span class="n">water_surface_output_raster</span> <span class="o">=</span> <span class="s2">&quot;reprojected_terrain_raster.tif&quot;</span>
 
     <span class="c1"># Reproject and save</span>
-    <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">output_raster</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">new_meta</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">water_surface_output_raster</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">new_meta</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
         <span class="n">reproject</span><span class="p">(</span>
             <span class="n">source</span><span class="o">=</span><span class="n">rasterio</span><span class="o">.</span><span class="n">band</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
             <span class="n">destination</span><span class="o">=</span><span class="n">rasterio</span><span class="o">.</span><span class="n">band</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
@@ -560,24 +604,41 @@ Stored &#39;output_raster&#39; (str)
             <span class="n">resampling</span><span class="o">=</span><span class="n">Resampling</span><span class="o">.</span><span class="n">nearest</span>
         <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reprojected raster saved as </span><span class="si">{</span><span class="n">output_raster</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1">## Store the terrain elevation raster</span>
-<span class="o">%</span><span class="k">store</span> terrain_elevation
-<span class="o">%</span><span class="k">store</span> raster_transform
-<span class="o">%</span><span class="k">store</span> transform
-<span class="o">%</span><span class="k">store</span> raster_crs
-<span class="o">%</span><span class="k">store</span> output_raster
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reprojected raster saved as </span><span class="si">{</span><span class="n">water_surface_output_raster</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reprojected raster saved as reprojected_terrain_raster.tif
-Stored &#39;terrain_elevation&#39; (ndarray)
-Stored &#39;raster_transform&#39; (Affine)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Store the terrain elevation raster</span>
+<span class="o">%</span><span class="k">store</span> terrain_elevation
+<span class="o">%</span><span class="k">store</span> raster_transform
+<span class="o">%</span><span class="k">store</span> transform
+<span class="o">%</span><span class="k">store</span> raster_crs
+<span class="o">%</span><span class="k">store</span> water_surface_output_raster
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Stored &#39;terrain_elevation&#39; (ndarray)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Stored &#39;raster_transform&#39; (Affine)
 Stored &#39;transform&#39; (Affine)
 Stored &#39;raster_crs&#39; (CRS)
-Stored &#39;output_raster&#39; (str)
+Stored &#39;water_surface_output_raster&#39; (str)
 </pre></div>
 </div>
 </div>
@@ -642,15 +703,12 @@ Stored &#39;output_raster&#39; (str)
             <span class="n">dst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">out_image</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cropped water surface elevation raster saved as </span><span class="si">{</span><span class="n">cropped_output_raster</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="o">%</span><span class="k">store</span> cropped_output_raster
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reprojected raster saved as reprojected_water_surface_elevation_raster.tif
 Cropped water surface elevation raster saved as cropped_water_surface_elevation_raster.tif
-Stored &#39;cropped_output_raster&#39; (str)
 </pre></div>
 </div>
 </div>
@@ -673,7 +731,8 @@ Stored &#39;cropped_output_raster&#39; (str)
 <span class="expanded">Hide code cell source</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Save the reprojected shapefiles</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Save the reprojected files</span>
+<span class="o">%</span><span class="k">store</span> cropped_output_raster
 <span class="o">%</span><span class="k">store</span> ground_water_domain
 <span class="o">%</span><span class="k">store</span> left_boundary
 <span class="o">%</span><span class="k">store</span> right_boundary
@@ -682,7 +741,8 @@ Stored &#39;cropped_output_raster&#39; (str)
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Stored &#39;ground_water_domain&#39; (GeoDataFrame)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Stored &#39;cropped_output_raster&#39; (str)
+Stored &#39;ground_water_domain&#39; (GeoDataFrame)
 Stored &#39;left_boundary&#39; (GeoDataFrame)
 Stored &#39;right_boundary&#39; (GeoDataFrame)
 </pre></div>

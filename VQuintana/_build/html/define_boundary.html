@@ -435,7 +435,8 @@ document.write(`
 <span class="o">%</span><span class="k">store</span> -r raster_transform
 <span class="o">%</span><span class="k">store</span> -r transform
 <span class="o">%</span><span class="k">store</span> -r raster_crs
-<span class="o">%</span><span class="k">store</span> -r output_raster
+<span class="o">%</span><span class="k">store</span> -r terrain_output_raster
+<span class="o">%</span><span class="k">store</span> -r water_surface_output_raster
 <span class="o">%</span><span class="k">store</span> -r cropped_output_raster
 <span class="o">%</span><span class="k">store</span> -r ground_water_domain
 <span class="o">%</span><span class="k">store</span> -r left_boundary
@@ -567,7 +568,7 @@ Downstream Line: LINESTRING (2407570.6507961783 10515177.034472264, 2407188.1320
 ✅ Total Inactive Cells: 1570120
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\u4eeevmq\AppData\Local\Temp\ipykernel_14524\709847143.py:16: DeprecationWarning: The &#39;unary_union&#39; attribute is deprecated, use the &#39;union_all()&#39; method instead.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\u4eeevmq\AppData\Local\Temp\ipykernel_30172\709847143.py:16: DeprecationWarning: The &#39;unary_union&#39; attribute is deprecated, use the &#39;union_all()&#39; method instead.
   grid_gdf[&quot;inside_domain&quot;] = grid_gdf.geometry.intersects(ground_water_domain.unary_union)
 </pre></div>
 </div>

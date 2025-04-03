@@ -449,7 +449,8 @@ document.write(`
 <span class="o">%</span><span class="k">store</span> -r raster_transform
 <span class="o">%</span><span class="k">store</span> -r transform
 <span class="o">%</span><span class="k">store</span> -r raster_crs
-<span class="o">%</span><span class="k">store</span> -r output_raster
+<span class="o">%</span><span class="k">store</span> -r terrain_output_raster
+<span class="o">%</span><span class="k">store</span> -r water_surface_output_raster
 <span class="o">%</span><span class="k">store</span> -r cropped_output_raster
 <span class="o">%</span><span class="k">store</span> -r ground_water_domain
 <span class="o">%</span><span class="k">store</span> -r left_boundary
@@ -611,6 +612,15 @@ document.write(`
         <span class="n">save_specific_discharge</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
 
+    <span class="c1"># # Instantiate the MODFLOW 6 gwf recharge package</span>
+    <span class="c1"># flopy.mf6.modflow.mfgwfrcha.ModflowGwfrcha(</span>
+    <span class="c1">#     gwf,</span>
+    <span class="c1">#     recharge=recharge_rate,</span>
+    <span class="c1">#     auxiliary=[&quot;iface&quot;, &quot;iflowface&quot;],</span>
+    <span class="c1">#     aux=[rch_iface, rch_iflowface],</span>
+    <span class="c1">#     save_flows=True,</span>
+    <span class="c1"># )</span>
+    
     <span class="c1"># Create an iterative model solution (IMS) for the MODFLOW 6 gwf model</span>
     <span class="n">flopy</span><span class="o">.</span><span class="n">mf6</span><span class="o">.</span><span class="n">ModflowIms</span><span class="p">(</span>
         <span class="n">gwfsim</span><span class="p">,</span>
@@ -1210,7 +1220,7 @@ Running simulation: gwf_model
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Simulation gwf_model succeeded.
-run_models took 2616.64 ms
+run_models took 2633.00 ms
 FINISHED! Running GWF MODFLOW 6
 Plotting Groundwater Flow Model
 </pre></div>
@@ -1221,13 +1231,15 @@ Plotting Groundwater Flow Model
 <img alt="_images/d65a13299469e891bb67786bf191dd8ff7c13b33f3ec4ba11711b1f4a5e266d4.png" src="_images/d65a13299469e891bb67786bf191dd8ff7c13b33f3ec4ba11711b1f4a5e266d4.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building MODPATH 7 model for Hyporheic_Project
 MODPATH 7 model built: MODPATH 7 model
-MODPATH 7 files written to: HP_workspace\mp7_workspace
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MODPATH 7 files written to: HP_workspace\mp7_workspace
 Running MODPATH 7...
 Running model: mp7_model
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Simulation mp7_model succeeded.
-run_models took 470333.29 ms
+run_models took 467820.70 ms
 FINISHED! Running MODPATH 7
 Plotting MODPATH 7 Results
 </pre></div>

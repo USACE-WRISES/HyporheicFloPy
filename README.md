@@ -53,9 +53,15 @@ Notebook Files:
 
 Results Directories:
 <br/> - HP_Workspace
-<br/> &nbsp;&nbsp;&nbsp;&nbsp;- gwf_workspace
-<br/> &nbsp;&nbsp;&nbsp;&nbsp;- mp7_workspace
+<br/> - gwf_workspace
+<br/> - mp7_workspace
 
-To build the html document and run MODFLOW6 with MODPATH 7 in command prompt use: 
-<br/> '.\run_build_models.bat'
+
+Running MODFLOW6 with MODPATH7 Simulations:
+
+To run the MODFLOW6 with MODPATH7 simulations and save the results, use the following command in the command prompt:
+<br/> '.\run_models.bat'
+
+To build the html document and run MODFLOW6 with MODPATH 7 for hosting Webpage, use the following command in the command prompt:
+<br/> '.\build_notebook.bat'
 

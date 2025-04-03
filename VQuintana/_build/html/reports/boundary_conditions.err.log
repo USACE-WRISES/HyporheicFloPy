@@ -18,135 +18,98 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-#---------------------- Calculate Graoundwater Elevation ------------------------#
-## Interpolate Groundwater Elevation Across Boundary Cells
-def interpolate_gw_elevation(boundary_cells_first_layer, gw_elevation_first, gw_elevation_last, nlay):
-    
-    n = len(boundary_cells_first_layer)
-    if n <= 1:
-        # If there's only one cell, apply the same value to all layers
-        interpolated_gw_elevations_first_layer = [gw_elevation_first] * n
-    else:
-        # Interpolate values across the first layer
-        interpolated_gw_elevations_first_layer = [
-            gw_elevation_first + (gw_elevation_last - gw_elevation_first) * i / (n - 1)
-            for i in range(n)
-        ]
+#----------------------Calculate Ground Water Elevation------------------------#
+## Define the grid points (assuming grid_points is a GeoDataFrame with 'geometry' column)
+grid_points_coords = [(point.x, point.y) for point in grid_points.geometry]
 
-    # Replicate the interpolated values for the first layer across all layers
-    gw_elevations_all_layers = []
-    for _ in range(nlay):
-        gw_elevations_all_layers.extend(interpolated_gw_elevations_first_layer)
+## Extract elevation values at grid points
+elevation_values = []
+with rasterio.open(cropped_output_raster) as src:
+    for x, y in grid_points_coords:
+        row, col = rowcol(src.transform, x, y)
+        if 0 <= row < src.height and 0 <= col < src.width:
+            elevation = src.read(1)[row, col]
+            elevation_values.append(elevation)
+        else:
+            elevation_values.append(None)  # Append None if the point is out of bounds
 
-    return gw_elevations_all_layers
+## Create a DataFrame with the grid points and their corresponding elevation values
+grid_points_df = pd.DataFrame({
+    'x': [coord[0] for coord in grid_points_coords],
+    'y': [coord[1] for coord in grid_points_coords],
+    'elevation': elevation_values
+})
 
-## Function to find intersections and interpolate groundwater elevations
-def interpolate_gw_elevation_with_river(boundary_cells_first_layer, gw_elevation_first, gw_elevation_last, nlay, river_cells):
-    
-    # Extract river cell coordinates and elevations
-    river_cell_dict = {(y, x): river_height for k, y, x, river_height in river_cells}
+## Save the DataFrame to a CSV file
+output_csv = "grid_points_elevation.csv"
+grid_points_df.to_csv(output_csv, index=False)
 
-    # Interpolate values across the first layer
-    n = len(boundary_cells_first_layer)
-    if n <= 1:
-        interpolated_gw_elevations_first_layer = [gw_elevation_first] * n
-    else:
-        interpolated_gw_elevations_first_layer = [
-            gw_elevation_first + (gw_elevation_last - gw_elevation_first) * i / (n - 1)
-            for i in range(n)
-        ]
+print(f"Grid points elevation values saved as {output_csv}")
 
-    # Replace interpolated values with river elevations where they intersect
-    for i, (y, x) in enumerate(boundary_cells_first_layer):
-        if (y, x) in river_cell_dict:
-            interpolated_gw_elevations_first_layer[i] = river_cell_dict[(y, x)]
+## Read the CSV file
+grid_points_df = pd.read_csv(output_csv)
 
-    # Replicate the interpolated values for the first layer across all layers
-    gw_elevations_all_layers = []
-    for _ in range(nlay):
-        gw_elevations_all_layers.extend(interpolated_gw_elevations_first_layer)
+## Function to get max elevation for boundary cells
+def get_max_elevation(boundary_cells_coords, grid_points_df):
+    elevations = []
+    for x, y in boundary_cells_coords:
+        elevation = grid_points_df.loc[(grid_points_df['x'] == x) & (grid_points_df['y'] == y), 'elevation'].values
+        if elevation.size > 0:
+            elevations.append(elevation[0])
+    return max(elevations) if elevations else None
 
-    return gw_elevations_all_layers
+## Find matching coordinates for boundary cells
+upstream_boundary_cells_coords = [(grid_x[row, col], grid_y[row, col]) for _, row, col in upstream_boundary_cells_first_layer]
+downstream_boundary_cells_coords = [(grid_x[row, col], grid_y[row, col]) for _, row, col in downstream_boundary_cells_first_layer]
 
-## Interpolate groundwater elevations for each boundary
-gw_elevation_left = interpolate_gw_elevation(
-left_boundary_cells_first_layer,    # List of (y, x) for left boundary cells in the first layer
-left_boundary_cells,                # List of (y, x) for left boundary cells
-gw_elevation_left_first,            # First elevation for interpolation
-gw_elevation_left_last,             # Last elevation for interpolation
-nlay)                               # Number of layers
+## Calculate max surface water elevation for upstream and downstream boundary cells
+max_elevation_upstream = get_max_elevation(upstream_boundary_cells_coords, grid_points_df)
+max_elevation_downstream = get_max_elevation(downstream_boundary_cells_coords, grid_points_df)
 
-gw_elevation_right = interpolate_gw_elevation(
-    right_boundary_cells_first_layer,   # List of (y, x) for right boundary cells in the first layer
-    right_boundary_cells,               # List of (y, x) for right boundary cells
-    gw_elevation_right_first,           # First elevation for interpolation
-    gw_elevation_right_last,            # Last elevation for interpolation
-    nlay)                               # Number of layers
-
-gw_elevation_upstream = interpolate_gw_elevation_with_river(
-    upstream_boundary_cells_first_layer,  # List of (y, x) for upstream boundary cells in the first layer
-    gw_elevation_upstream_first,          # First elevation for interpolation
-    gw_elevation_upstream_last,           # Last elevation for interpolation
-    nlay,                                 # Number of layers
-    river_cells                           # List of river cells
-)
-
-gw_elevation_downstream = interpolate_gw_elevation_with_river(
-    downstream_boundary_cells_first_layer,  # List of (y, x) for downstream boundary cells in the first layer
-    gw_elevation_downstream_first,          # First elevation for interpolation
-    gw_elevation_downstream_last,           # Last elevation for interpolation
-    nlay,                                   # Number of layers
-    river_cells                             # List of river cells
-)
-
-# DEBUGGING: Check if the interpolated values are correct
-cell_id_to_inspect = left_boundary_cells_first_layer[0]  # Replace with the desired cell ID
-
-# DEBUGGING: Find the index of the cell in the first layer
-cell_index = left_boundary_cells_first_layer.index(cell_id_to_inspect)
-
-# DEBUGGING: Extract the groundwater elevations for the cell across all layers
-gw_elevation_for_cell = [
-    gw_elevation_left[layer * len(left_boundary_cells_first_layer) + cell_index]
-    for layer in range(nlay)
-]
-
-# DEBUGGING: Print the groundwater elevations for the cell across all layers
-print(f"Groundwater elevations for cell {cell_id_to_inspect} across all layers:")
-for layer, elevation in enumerate(gw_elevation_for_cell):
-    print(f"  Layer {layer + 1}: {elevation}")
-
-# DEBUGGING: Print the interpolated groundwater elevations
-print("Left Boundary Groundwater Elevations:", gw_elevation_left)
-print("Right Boundary Groundwater Elevations:", gw_elevation_right)
-print("Upstream Boundary Groundwater Elevations:", gw_elevation_upstream)
-print("Downstream Boundary Groundwater Elevations:", gw_elevation_downstream)
+## Print max elevations
+print("Max Elevation Upstream Boundary:", max_elevation_upstream)
+print("Max Elevation Downstream Boundary:", max_elevation_downstream)
 ------------------
 
+----- stderr -----
+INFO:rasterio._env:GDAL signalled an error: err_no=4, msg='cropped_water_surface_elevation_raster.tif: No such file or directory'
+------------------
 
 [1;31m---------------------------------------------------------------------------[0m
-[1;31mTypeError[0m                                 Traceback (most recent call last)
-Cell [1;32mIn[6], line 52[0m
-[0;32m     49[0m     [38;5;28;01mreturn[39;00m gw_elevations_all_layers
-[0;32m     51[0m [38;5;66;03m## Interpolate groundwater elevations for each boundary[39;00m
-[1;32m---> 52[0m gw_elevation_left [38;5;241m=[39m [43minterpolate_gw_elevation[49m[43m([49m
-[0;32m     53[0m [43mleft_boundary_cells_first_layer[49m[43m,[49m[43m    [49m[38;5;66;43;03m# List of (y, x) for left boundary cells in the first layer[39;49;00m
-[0;32m     54[0m [43mleft_boundary_cells[49m[43m,[49m[43m                [49m[38;5;66;43;03m# List of (y, x) for left boundary cells[39;49;00m
-[0;32m     55[0m [43mgw_elevation_left_first[49m[43m,[49m[43m            [49m[38;5;66;43;03m# First elevation for interpolation[39;49;00m
-[0;32m     56[0m [43mgw_elevation_left_last[49m[43m,[49m[43m             [49m[38;5;66;43;03m# Last elevation for interpolation[39;49;00m
-[0;32m     57[0m [43mnlay[49m[43m)[49m                               [38;5;66;03m# Number of layers[39;00m
-[0;32m     59[0m gw_elevation_right [38;5;241m=[39m interpolate_gw_elevation(
-[0;32m     60[0m     right_boundary_cells_first_layer,   [38;5;66;03m# List of (y, x) for right boundary cells in the first layer[39;00m
-[0;32m     61[0m     right_boundary_cells,               [38;5;66;03m# List of (y, x) for right boundary cells[39;00m
-[0;32m     62[0m     gw_elevation_right_first,           [38;5;66;03m# First elevation for interpolation[39;00m
-[0;32m     63[0m     gw_elevation_right_last,            [38;5;66;03m# Last elevation for interpolation[39;00m
-[0;32m     64[0m     nlay)                               [38;5;66;03m# Number of layers[39;00m
-[0;32m     66[0m gw_elevation_upstream [38;5;241m=[39m interpolate_gw_elevation_with_river(
-[0;32m     67[0m     upstream_boundary_cells_first_layer,  [38;5;66;03m# List of (y, x) for upstream boundary cells in the first layer[39;00m
-[0;32m     68[0m     gw_elevation_upstream_first,          [38;5;66;03m# First elevation for interpolation[39;00m
-[1;32m   (...)[0m
-[0;32m     71[0m     river_cells                           [38;5;66;03m# List of river cells[39;00m
-[0;32m     72[0m )
+[1;31mCPLE_OpenFailedError[0m                      Traceback (most recent call last)
+File [1;32mrasterio\\_base.pyx:310[0m, in [0;36mrasterio._base.DatasetBase.__init__[1;34m()[0m
 
-[1;31mTypeError[0m: interpolate_gw_elevation() takes 4 positional arguments but 5 were given
+File [1;32mrasterio\\_base.pyx:221[0m, in [0;36mrasterio._base.open_dataset[1;34m()[0m
+
+File [1;32mrasterio\\_err.pyx:359[0m, in [0;36mrasterio._err.exc_wrap_pointer[1;34m()[0m
+
+[1;31mCPLE_OpenFailedError[0m: cropped_water_surface_elevation_raster.tif: No such file or directory
+
+During handling of the above exception, another exception occurred:
+
+[1;31mRasterioIOError[0m                           Traceback (most recent call last)
+Cell [1;32mIn[3], line 7[0m
+[0;32m      5[0m [38;5;66;03m## Extract elevation values at grid points[39;00m
+[0;32m      6[0m elevation_values [38;5;241m=[39m []
+[1;32m----> 7[0m [38;5;28;01mwith[39;00m [43mrasterio[49m[38;5;241;43m.[39;49m[43mopen[49m[43m([49m[43mcropped_output_raster[49m[43m)[49m [38;5;28;01mas[39;00m src:
+[0;32m      8[0m     [38;5;28;01mfor[39;00m x, y [38;5;129;01min[39;00m grid_points_coords:
+[0;32m      9[0m         row, col [38;5;241m=[39m rowcol(src[38;5;241m.[39mtransform, x, y)
+
+File [1;32mc:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\rasterio\env.py:463[0m, in [0;36mensure_env_with_credentials.<locals>.wrapper[1;34m(*args, **kwds)[0m
+[0;32m    460[0m     session [38;5;241m=[39m DummySession()
+[0;32m    462[0m [38;5;28;01mwith[39;00m env_ctor(session[38;5;241m=[39msession):
+[1;32m--> 463[0m     [38;5;28;01mreturn[39;00m [43mf[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwds[49m[43m)[49m
+
+File [1;32mc:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\rasterio\__init__.py:368[0m, in [0;36mopen[1;34m(fp, mode, driver, width, height, count, crs, transform, dtype, nodata, sharing, opener, **kwargs)[0m
+[0;32m    365[0m     path [38;5;241m=[39m _parse_path(raw_dataset_path)
+[0;32m    367[0m [38;5;28;01mif[39;00m mode [38;5;241m==[39m [38;5;124m"[39m[38;5;124mr[39m[38;5;124m"[39m:
+[1;32m--> 368[0m     dataset [38;5;241m=[39m [43mDatasetReader[49m[43m([49m[43mpath[49m[43m,[49m[43m [49m[43mdriver[49m[38;5;241;43m=[39;49m[43mdriver[49m[43m,[49m[43m [49m[43msharing[49m[38;5;241;43m=[39;49m[43msharing[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
+[0;32m    369[0m [38;5;28;01melif[39;00m mode [38;5;241m==[39m [38;5;124m"[39m[38;5;124mr+[39m[38;5;124m"[39m:
+[0;32m    370[0m     dataset [38;5;241m=[39m get_writer_for_path(path, driver[38;5;241m=[39mdriver)(
+[0;32m    371[0m         path, mode, driver[38;5;241m=[39mdriver, sharing[38;5;241m=[39msharing, [38;5;241m*[39m[38;5;241m*[39mkwargs
+[0;32m    372[0m     )
+
+File [1;32mrasterio\\_base.pyx:312[0m, in [0;36mrasterio._base.DatasetBase.__init__[1;34m()[0m
+
+[1;31mRasterioIOError[0m: cropped_water_surface_elevation_raster.tif: No such file or directory
 

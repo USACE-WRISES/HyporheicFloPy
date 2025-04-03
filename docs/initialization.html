@@ -426,14 +426,52 @@ document.write(`
 </div>
 </details>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_parameters docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#------------------------ Define Modeling Workspaces -----------------------#</span>
+<span class="c1"># Modeling Executables</span>
+<span class="c1"># Update these paths to your local MODFLOW-6 and MODPATH-7 executable paths</span>
+<span class="n">md6_exe_path</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">md7_exe_path</span> <span class="o">=</span> <span class="kc">None</span>
+
 <span class="c1"># Project workspace</span>
-<span class="n">md6_exe_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\u4eeevmq\Documents\Python\Flo_Py\flopy\modflowExe\mf6.exe&quot;</span>  <span class="c1"># Update to your MODFLOW-6 executable path</span>
-<span class="n">md7_exe_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\u4eeevmq\Documents\Python\Flo_Py\flopy\modflowExe\mp7.exe&quot;</span>  <span class="c1"># Update to your MODPATH-7 executable path</span>
 <span class="n">sim_name</span> <span class="o">=</span> <span class="s2">&quot;Hyporheic_Project&quot;</span>
-<span class="n">workspace</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./HP_workspace&quot;</span><span class="p">)</span>  <span class="c1"># Convert to Path object</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="s2">&quot;HP_workspace&quot;</span>  <span class="c1"># Default workspace directory </span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_injected-parameters docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parameters</span>
+<span class="n">md6_exe_path</span> <span class="o">=</span> <span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Users</span><span class="se">\\</span><span class="s2">u4eeevmq</span><span class="se">\\</span><span class="s2">Documents</span><span class="se">\\</span><span class="s2">Python</span><span class="se">\\</span><span class="s2">Flo_Py</span><span class="se">\\</span><span class="s2">flopy</span><span class="se">\\</span><span class="s2">modflowExe</span><span class="se">\\</span><span class="s2">mf6.exe&quot;</span>
+<span class="n">md7_exe_path</span> <span class="o">=</span> <span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Users</span><span class="se">\\</span><span class="s2">u4eeevmq</span><span class="se">\\</span><span class="s2">Documents</span><span class="se">\\</span><span class="s2">Python</span><span class="se">\\</span><span class="s2">Flo_Py</span><span class="se">\\</span><span class="s2">flopy</span><span class="se">\\</span><span class="s2">modflowExe</span><span class="se">\\</span><span class="s2">mp7.exe&quot;</span>
+<span class="n">sim_name</span> <span class="o">=</span> <span class="s2">&quot;Hyporheic_Project&quot;</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="s2">&quot;HP_workspace&quot;</span>
+<span class="n">length_units</span> <span class="o">=</span> <span class="s2">&quot;feet&quot;</span>
+<span class="n">time_units</span> <span class="o">=</span> <span class="s2">&quot;days&quot;</span>
+<span class="n">cell_size_x</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">cell_size_y</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">gw_mod_depth</span> <span class="o">=</span> <span class="mf">20.0</span>
+<span class="n">z</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">kh</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">kv</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">gw_offset</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">porosity</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">rch_iface</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">rch_iflowface</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">recharge_rate</span> <span class="o">=</span> <span class="mf">0.005</span>
+<span class="n">nstp</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">perlen</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">tsmult</span> <span class="o">=</span> <span class="mf">1.0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert workspace to a Path object</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">workspace</span><span class="p">)</span>
 
 <span class="c1"># Clear the workspace directory if it exists</span>
 <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">workspace</span><span class="p">):</span>
@@ -470,7 +508,7 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_parameters docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#--------------------------Model Parameters-------------------------#</span>
 <span class="c1"># Model units</span>
