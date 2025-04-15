@@ -4,10 +4,11 @@
 <br/> https://flopy.readthedocs.io/
 <br/> https://flopy.readthedocs.io/en/3.4.2/examples.html
 
---Modflow Notes--
+## Modflow Notes
+
 <br/> We can use UGSS ModelMuse and USGS ModelViewer, which are standalone executibles, to verify our created models.  We can ship this with the script we produce.
 
---Programming Notes--
+## Programming Notes
 
 We are using python version: 3.11.4
 
@@ -37,7 +38,7 @@ If you add packages to your virtual environment, you'll need to update requireme
 
 You can push changes with source control.  Always use a concise commit message to describe the change.
 
---Directory Notes--
+## Directory Notes
 
 Notebook Files:
 <br/> - intro.ipynb
@@ -57,7 +58,7 @@ Results Directories:
 <br/> - mp7_workspace
 
 
-Running MODFLOW6 with MODPATH7 Simulations:
+## Running MODFLOW6 with MODPATH7 Simulations:
 
 To run the MODFLOW6 with MODPATH7 simulations and save the results, use the following command in the command prompt:
 <br/> '.\run_models.bat'
