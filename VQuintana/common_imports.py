@@ -54,7 +54,7 @@ import scipy
 import pathlib as pl
 import papermill as pm
 from pathlib import Path
-from rasterio.crs import CRS
+from pyproj import CRS  # Import the CRS class from pyproj
 from rasterio.plot import show
 from rasterio.warp import calculate_default_transform, reproject, Resampling
 from rasterio.transform import from_bounds
@@ -71,6 +71,8 @@ from matplotlib import cbook, cm
 from matplotlib.colors import LightSource
 from modflow_devtools.misc import get_env, timed
 import jupyter_book
+from concurrent.futures import ProcessPoolExecutor, as_completed
+
 
 # Runtime Settings
 import asyncio
