@@ -40,6 +40,7 @@ for package in required_packages:
 
 # Importing Libraries
 import os
+import json
 import flopy
 import pathlib
 import matplotlib.pyplot as plt

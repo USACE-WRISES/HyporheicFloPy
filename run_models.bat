@@ -92,6 +92,10 @@ echo Activating virtual environment...
 call .\.venv\Scripts\activate
 
 echo Running preprocessing and initialization notebooks with inputs...
+:: Execute introduction notebook
+papermill VQuintana/intro.ipynb VQuintana/intro.ipynb
+
+:: Execute preprocessing notebook
 papermill VQuintana/preprocessing.ipynb VQuintana/preprocessing.ipynb ^
     -p water_surface_elevation_raster "%WATER_SURFACE_RASTER%" ^
     -p terrain_elevation_raster "%TERRAIN_RASTER%" ^
@@ -100,6 +104,7 @@ papermill VQuintana/preprocessing.ipynb VQuintana/preprocessing.ipynb ^
     -p right_boundary_floodplain "%RIGHT_BOUNDARY_SHAPEFILE%" ^
     -p projection_file "%PROJECTION_FILE%"
 
+:: Execute initialization notebook
 papermill VQuintana/initialization.ipynb VQuintana/initialization.ipynb ^
     -p md6_exe_path "%MODFLOW6_EXE%" ^
     -p md7_exe_path "%MODPATH7_EXE%" ^
