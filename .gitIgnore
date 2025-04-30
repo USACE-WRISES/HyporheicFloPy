@@ -17,3 +17,4 @@ HP_Workspace/
 
 # Ignore all large data files
 .zip
+.pkg
