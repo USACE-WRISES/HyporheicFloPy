@@ -16,28 +16,6 @@ importlib.reload(common_imports)
 import logging
 from pathlib import Path                         # exported as Path
 
-<<<<<<< HEAD
-# -------------------- Third-party libraries -------------------------
-import shutil
-import os
-import numpy as np                               # exported as np
-import pandas as pd                              # exported as pd
-import matplotlib.pyplot as plt                  # exported as plt
-import flopy                                     # exported as flopy
-import geopandas as gpd                          # exported as gpd
-import rasterio                                  # exported as rasterio
-import VQuintana.functions.path_utils as hf
-from shapely.geometry import box, Point, Polygon, LineString
-from scipy.interpolate import griddata           # exported as griddata
-
-# Utility re-exports (optional)
-from pprint import pformat                       # exported as pformat
-from modflow_devtools.misc import get_env, timed # exported as get_env, timed
-
-#rasterio imports
-from rasterio.warp import calculate_default_transform, reproject, Resampling
-from rasterio.crs import CRS
-=======
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -90,13 +68,10 @@ import pathlib as pl
 import papermill as pm
 from pathlib import Path
 from pyproj import CRS  # Import the CRS class from pyproj
->>>>>>> 14f66d47a4d1128743fe022b46d7b1062bf1347d
 from rasterio.plot import show
 from rasterio.transform import from_bounds
 from rasterio.transform import rowcol
 from rasterio.mask import mask
-<<<<<<< HEAD
-=======
 from shapely.geometry import box, Point, Polygon, LineString
 from flopy.utils.binaryfile import HeadFile
 from scipy.interpolate import griddata
@@ -110,7 +85,6 @@ from modflow_devtools.misc import get_env, timed
 import jupyter_book
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
->>>>>>> 14f66d47a4d1128743fe022b46d7b1062bf1347d
 
 # -------------------- Runtime tweaks --------------------------------
 # Fix Windows event-loop quirk so async libraries (e.g., rasterio) behave:
