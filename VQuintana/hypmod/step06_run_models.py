@@ -99,7 +99,7 @@
 # Import Libraries
 # #%run ./common_imports.py
 
-import common_imports
+import VQuintana.common_imports_for_main as common_imports_for_main
 
 # Retrieve stored variables
 # %store -r md6_exe_path

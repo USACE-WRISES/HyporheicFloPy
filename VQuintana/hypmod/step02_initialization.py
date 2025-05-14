@@ -18,7 +18,7 @@
 # This section defines the modeling executables, directories, and parameters used to run the model. The user can define the model grid through cell size and depth, and also define the depth of the groundwater model.
 
 # %% papermill={"duration": 2.839236, "end_time": "2025-04-09T19:17:54.530331", "exception": false, "start_time": "2025-04-09T19:17:51.691095", "status": "completed"} tags=["hide-input"]
-from common_imports import *
+from VQuintana.common_imports_for_main import *
 from inputs import cfg
 
 def run_notebook(cfg):

@@ -22,7 +22,7 @@ from functions import model_utils as mu
 project_root = pu.find_project_root(pathlib.Path(__file__).parent)
 sys.path.append(str(project_root))
 
-from common_imports import *
+from VQuintana.common_imports_for_main import *
 
 # Only the first run actually downloads; later calls are near-instant
 pu.download_modflow()                 # or download_modflow("some/other/folder")

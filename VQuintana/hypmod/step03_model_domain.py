@@ -17,7 +17,7 @@
 # # Model Domain
 
 # %%
-from common_imports import *
+from VQuintana.common_imports_for_main import *
 from inputs import cfg
 
 def run_notebook(cfg):

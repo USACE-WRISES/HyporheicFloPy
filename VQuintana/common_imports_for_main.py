@@ -16,75 +16,30 @@ importlib.reload(common_imports)
 import logging
 from pathlib import Path                         # exported as Path
 
-# Set up logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-def install(package):
-    logger.info(f"Installing package: {package}")
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-
-# List of required packages
-required_packages = [
-    "flopy",
-    "matplotlib",
-    "numpy",
-    "geopandas",
-    "pandas",
-    "rasterio",
-    "pyproj",
-    "shutil",
-    "random",
-    "pathlib",
-    "shapely",
-    "scipy",
-    "modflow_devtools",
-    "pickleshare",
-    "warnings"
-]
-
-# Install required packages
-for package in required_packages:
-    try:
-        __import__(package)
-    except ImportError:
-        install(package)
-
-# Importing Libraries
-import os
-import json
-import flopy
-import pathlib
-import matplotlib.pyplot as plt
-import numpy as np
-import geopandas as gpd
-import pandas as pd
-import rasterio
-import pyproj
+# -------------------- Third-party libraries -------------------------
 import shutil
-import random
-import scipy
-import pathlib as pl
-import papermill as pm
-from pathlib import Path
-from pyproj import CRS  # Import the CRS class from pyproj
+import os
+import numpy as np                               # exported as np
+import pandas as pd                              # exported as pd
+import matplotlib.pyplot as plt                  # exported as plt
+import flopy                                     # exported as flopy
+import geopandas as gpd                          # exported as gpd
+import rasterio                                  # exported as rasterio
+import VQuintana.functions.path_utils as hf
+from shapely.geometry import box, Point, Polygon, LineString
+from scipy.interpolate import griddata           # exported as griddata
+
+# Utility re-exports (optional)
+from pprint import pformat                       # exported as pformat
+from modflow_devtools.misc import get_env, timed # exported as get_env, timed
+
+#rasterio imports
+from rasterio.warp import calculate_default_transform, reproject, Resampling
+from rasterio.crs import CRS
 from rasterio.plot import show
 from rasterio.transform import from_bounds
 from rasterio.transform import rowcol
 from rasterio.mask import mask
-from shapely.geometry import box, Point, Polygon, LineString
-from flopy.utils.binaryfile import HeadFile
-from scipy.interpolate import griddata
-from pprint import pformat
-from flopy.plot.styles import styles
-from matplotlib.lines import Line2D
-from flopy.mf6 import MFSimulation
-from matplotlib import cbook, cm
-from matplotlib.colors import LightSource
-from modflow_devtools.misc import get_env, timed
-import jupyter_book
-from concurrent.futures import ProcessPoolExecutor, as_completed
-
 
 # -------------------- Runtime tweaks --------------------------------
 # Fix Windows event-loop quirk so async libraries (e.g., rasterio) behave:

@@ -6,7 +6,7 @@
 # The script will also include error handling to ensure that any issues during execution are reported.
 
 # Workflow Script for HyporheicFloPy Project
-from VQuintana.common_imports import *  # Import all required libraries and utilities
+from VQuintana.common_imports_for_main import *  # Import all required libraries and utilities
 
 import subprocess
 import json

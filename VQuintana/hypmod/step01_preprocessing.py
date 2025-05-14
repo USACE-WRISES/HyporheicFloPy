@@ -24,7 +24,7 @@ project_root = pathlib.Path(__file__).resolve().parents[2]   # ← HyporheicFloP
 if str(project_root) not in sys.path:
     sys.path.append(str(project_root))
 
-from common_imports import *
+from VQuintana.common_imports_for_main import *
 from inputs import cfg
 from functions import path_utils as pu
 
