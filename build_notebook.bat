@@ -25,8 +25,8 @@ set TIME_UNITS=days
 
 :: MODEL PARAMETERS
 :: These parameters define the cell length, width, height, and groundwater modeling depth.
-set CELL_SIZE_X=10.0
-set CELL_SIZE_Y=10.0
+set CELL_SIZE_X=5.0
+set CELL_SIZE_Y=5.0
 set Z=0.5
 set GW_MOD_DEPTH=20.0
 
