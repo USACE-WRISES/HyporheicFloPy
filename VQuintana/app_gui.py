@@ -13,6 +13,7 @@ import sys, io, yaml, subprocess, traceback
 from pathlib import Path
 from collections import OrderedDict
 from typing   import Dict, List, Tuple, Any
+import os
 
 import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -22,12 +23,20 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 import flopy.plot
 
+from inputs import load as cfg_load
+import functions.model_utils as mu
+
 # ───────────────────────────────────────────────────────── paths
 ROOT         = Path(__file__).resolve().parent
-PROJECT_ROOT = ROOT.parent
-MAIN_PY      = PROJECT_ROOT / "VQuintana/__main__.py"
-INPUTS_YAML  = PROJECT_ROOT / "VQuintana/inputs.yaml"
-MP7_ROOT    = PROJECT_ROOT / "HP_workspace/gwf_workspace/mp7_workspace"
+#PROJECT_ROOT = ROOT.parent
+MAIN_PY      = ROOT / "__main__.py"
+INPUTS_YAML  = ROOT / "inputs.yaml"
+GWF_ROOT     = ROOT / "HP_workspace/gwf_workspace"
+MP7_ROOT    = ROOT / "HP_workspace/mp7_workspace"
+
+os.chdir(ROOT)  # Set the root path as the working directory
+
+
 
 # ───────────────────────────────────────────────────────── YAML helpers
 def _parse_yaml(path: Path) -> Tuple[
@@ -590,37 +599,120 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # .............................................................. setup
     def _build_setup(self):
+        # -------- 1.  parse the default YAML ----------------------------
         vals, sections, descs, lm, raw = _parse_yaml(INPUTS_YAML)
         self._yaml_raw, self._line_map, self._yaml_path = raw, lm, INPUTS_YAML
-        self._widgets: Dict[str, QtWidgets.QLineEdit] = {}
 
+        # helper dicts we will need later
+        self._widgets: Dict[str, QtWidgets.QLineEdit] = {}   # key  -> QLineEdit
+        self._section_boxes: Dict[str, QtWidgets.QFormLayout] = {}  # section -> form
+
+        # -------- 2.  ScrollArea + inner frame --------------------------
         area = QtWidgets.QScrollArea(); area.setWidgetResizable(True)
-        inner = QtWidgets.QWidget(); v = QtWidgets.QVBoxLayout(inner)
-        for sect, keys in sections.items():
-            box = QtWidgets.QGroupBox(sect); f = QtWidgets.QFormLayout(box)
+        self._setup_inner = QtWidgets.QWidget()               # keep a handle!
+        self._setup_vlay  = QtWidgets.QVBoxLayout(self._setup_inner)
+
+        #  add at the top, near other “helper dicts”
+        self._labels: dict[str, QtWidgets.QLabel] = {}      # NEW  key → QLabel
+
+        def _add_row(sec: str, key: str, value: str, helper: str):
+            # create (or fetch) the section’s QFormLayout
+            if sec not in self._section_boxes:
+                box  = QtWidgets.QGroupBox(sec)
+                form = QtWidgets.QFormLayout(box)
+                self._section_boxes[sec] = form
+                self._setup_vlay.addWidget(box)
+            else:
+                form = self._section_boxes[sec]
+
+            # single editor
+            le = QtWidgets.QLineEdit(value)
+            le.setToolTip(helper)
+            self._widgets[key] = le
+
+            # label text = key plus helper
+            disp = f"{key} ({helper})" if helper else key
+            lbl  = QtWidgets.QLabel(disp)
+            self._labels[key] = lbl                     # keep handle for later
+
+            form.addRow(lbl, le)                       # <- left  | right
+
+        # populate with whatever was in the default YAML
+        for sec, keys in sections.items():
             for k in keys:
-                le = QtWidgets.QLineEdit(vals.get(k, "")); self._widgets[k] = le
-                le.setToolTip(descs.get(k, "")); f.addRow(k, le)
-            v.addWidget(box)
-        v.addStretch(1); area.setWidget(inner)
+                _add_row(sec, k, vals.get(k, ""), descs.get(k, ""))
 
-        bt_open, bt_save = QtWidgets.QPushButton("Open…"), QtWidgets.QPushButton("Save")
-        h = QtWidgets.QHBoxLayout(); h.addWidget(bt_open); h.addWidget(bt_save); h.addStretch()
+        self._setup_vlay.addStretch(1)
+        area.setWidget(self._setup_inner)
 
-        page = QtWidgets.QWidget(); lay = QtWidgets.QVBoxLayout(page)
-        lay.addWidget(area); lay.addLayout(h)
+        # -------- 3.  bottom buttons ------------------------------------
+        bt_open  = QtWidgets.QPushButton("Open…")
+        bt_save  = QtWidgets.QPushButton("Save")
+        bt_saveas = QtWidgets.QPushButton("Save as…")
+        h        = QtWidgets.QHBoxLayout(); h.addWidget(bt_open); h.addWidget(bt_save); h.addWidget(bt_saveas); h.addStretch()
 
-        bt_open.clicked.connect(self._yaml_open); bt_save.clicked.connect(self._yaml_save)
+        page     = QtWidgets.QWidget()
+        lay_page = QtWidgets.QVBoxLayout(page)
+        lay_page.addWidget(area); lay_page.addLayout(h)
+
+        bt_open.clicked.connect(self._yaml_open)
+        bt_save.clicked.connect(self._yaml_save)
+        bt_saveas.clicked.connect(self._yaml_save_as)
         return page
 
     # helper I/O
     def _yaml_open(self):
-        p, _ = QtWidgets.QFileDialog.getOpenFileName(
-            self, "Open YAML", str(self._yaml_path.parent), "YAML (*.yaml *.yml)")
-        if not p: return
-        vals, *_ = _parse_yaml(Path(p))
-        self._yaml_raw = Path(p).read_text("utf-8").splitlines(); self._yaml_path = Path(p)
-        for k, w in self._widgets.items(): w.setText(vals.get(k, ""))
+        path, _ = QtWidgets.QFileDialog.getOpenFileName(
+            self, "Open YAML", str(self._yaml_path.parent), "YAML (*.yaml *.yml)"
+        )
+        if not path:
+            return
+
+        # ── parse the file --------------------------------------------------
+        vals, sections, descs, lm, raw = _parse_yaml(Path(path))
+        self._yaml_raw, self._line_map, self._yaml_path = raw, lm, Path(path)
+
+        def _add_if_missing(sec: str, key: str):
+            """Create the QLineEdit — incl. the section box — if absent."""
+            if key in self._widgets:
+                return                                    # already there
+
+            # create section box / form if missing
+            if sec not in self._section_boxes:
+                box  = QtWidgets.QGroupBox(sec)
+                form = QtWidgets.QFormLayout(box)
+                self._section_boxes[sec] = form
+                # insert *before* the final stretch
+                self._setup_vlay.insertWidget(
+                    self._setup_vlay.count() - 1, box
+                )
+            else:
+                form = self._section_boxes[sec]
+
+            le  = QtWidgets.QLineEdit()
+            self._widgets[key] = le
+            lbl = QtWidgets.QLabel()          # placeholder, will get text below
+            self._labels[key] = lbl
+            form.addRow(lbl, le)
+
+        # ── make sure every key has a widget -------------------------------
+        for sec, keys in sections.items():
+            for k in keys:
+                _add_if_missing(sec, k)
+
+        # # ── finally, set / update the values --------------------------------
+        # for k, w in self._widgets.items():
+        #     w.setText(vals.get(k, ""))          # silently ignores old extras
+
+        # -- finally, update every widget (value + helper text) ---------------
+        for k, w in self._widgets.items():
+            w.setText(vals.get(k, ""))                 # value
+            helper = descs.get(k, "")
+            w.setToolTip(helper)
+            if k in self._labels:
+                disp = f"{k} ({helper})" if helper else k
+                self._labels[k].setText(disp)
+                self._labels[k].setToolTip(helper)
 
     def _yaml_save(self):
         lines = self._yaml_raw.copy()
@@ -633,6 +725,20 @@ class MainWindow(QtWidgets.QMainWindow):
             lines[idx] = f"{pre}:{indent}{val}" + (f"  # {cmt[0].strip()}" if cmt else "")
         self._yaml_path.write_text("\n".join(lines) + "\n", "utf-8")
         QtWidgets.QMessageBox.information(self, "Saved", f"Wrote {self._yaml_path}")
+
+    def _yaml_save_as(self):
+        """Save to a **new file** chosen by the user and switch the session
+        to that file afterwards."""
+        fn, _ = QtWidgets.QFileDialog.getSaveFileName(
+            self, "Save YAML as…", str(self._yaml_path.parent),
+            "YAML (*.yaml *.yml)"
+        )
+        if not fn:
+            return                                   # user cancelled
+
+        # remember the new location, then delegate to the normal saver
+        self._yaml_path = Path(fn)
+        self._yaml_save()
 
     def _yaml_text(self) -> str:
         lines = self._yaml_raw.copy()
@@ -692,8 +798,6 @@ class MainWindow(QtWidgets.QMainWindow):
         return page
 
     def _geom_load(self):
-        from inputs import load as cfg_load
-        import functions.model_utils as mu
 
         self._busy(True)                     # ← show overlay & hour‑glass
         try:

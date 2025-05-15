@@ -894,7 +894,7 @@ def build_particle_models(
     """
     # ── defaults from the GWF simulation ──────────────────────────────
     if mp7_ws is None:
-        mp7_ws = Path(gwf.simulation.sim_path) / "mp7_workspace"
+        mp7_ws = Path(gwf.simulation.sim_path).parent / "mp7_workspace"
     mp7_ws = Path(mp7_ws).absolute()
     mp7_ws.mkdir(exist_ok=True)
 

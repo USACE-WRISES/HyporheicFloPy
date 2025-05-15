@@ -17,6 +17,13 @@ from typing import Iterable
 import os
 import sys
 
+BASE_DIR = Path(__file__).resolve().parent.parent   # .../dist/app_gui on frozen build
+
+def resource(*parts: str) -> Path:
+    """Return an absolute path inside the bundled folder."""
+    s = BASE_DIR.joinpath(*parts)
+    return s
+
 # Optional import – only required for the download helper
 try:
     from flopy.utils import get_modflow as _get_modflow  # type: ignore

@@ -2,6 +2,7 @@
 
 
 # %%
+import os
 import sys, pathlib
 from pathlib import Path
 
@@ -10,9 +11,21 @@ _project_root = Path(__file__).resolve().parents[1]   # → …/HyporheicFloPy
 sys.path.insert(0, str(_project_root))                # make it importable
 
 import pkg_resources, pprint, sys, pathlib
-print("sys.path   -->"); pprint.pprint(sys.path[:5], width=120)
-print("found at   -->", pkg_resources.get_provider("functions").module_path)
-print("directory  -->", pathlib.Path(pkg_resources.get_provider("functions").module_path).parent)
+# print("sys.path   -->"); pprint.pprint(sys.path[:5], width=120)
+# print("found at   -->", pkg_resources.get_provider("functions").module_path)
+# print("directory  -->", pathlib.Path(pkg_resources.get_provider("functions").module_path).parent)
+
+# ───────────────────────────────────────────────────────── paths
+ROOT         = Path(__file__).resolve().parent
+#PROJECT_ROOT = ROOT.parent
+MAIN_PY      = ROOT / "__main__.py"
+INPUTS_YAML  = ROOT / "inputs.yaml"
+GWF_ROOT     = ROOT / "HP_workspace/gwf_workspace"
+MP7_ROOT    = ROOT / "HP_workspace/mp7_workspace"
+
+os.chdir(ROOT)  # Set the root path as the working directory
+
+print("Starting model run.")
 
 from functions import path_utils as pu
 from functions import raster_utils as ru
