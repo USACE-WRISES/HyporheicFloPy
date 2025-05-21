@@ -53,9 +53,10 @@ import pyproj
 import shutil
 import random
 import scipy
+import types
 import pathlib as pl
 import papermill as pm
-from pathlib import Path
+from pathlib import Path, PurePath
 from pyproj import CRS  # Import the CRS class from pyproj
 from rasterio.plot import show
 from rasterio.warp import calculate_default_transform, reproject, Resampling
@@ -64,6 +65,7 @@ from rasterio.transform import rowcol
 from rasterio.mask import mask
 from shapely.geometry import box, Point, Polygon, LineString
 from flopy.utils.binaryfile import HeadFile
+from flopy.modpath import Modpath7, ParticleGroup, ParticleData
 from scipy.interpolate import griddata
 from pprint import pformat
 from flopy.plot.styles import styles
@@ -74,7 +76,8 @@ from matplotlib.colors import LightSource
 from modflow_devtools.misc import get_env, timed
 import jupyter_book
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from typing import List, Tuple
+from typing import Any, Sequence, Tuple, List
+from types import SimpleNamespace
 
 
 # Runtime Settings
