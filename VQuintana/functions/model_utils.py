@@ -369,25 +369,25 @@ def extract_river_cells(
 # ────────────────────────────────────────────────────────────────────
 # 5.  Groundwater head helpers  
 # ────────────────────────────────────────────────────────────────────
-def interpolate_gw_elevation(
-    first_layer_cells: list[tuple[int, int, int]],
-    head_first: float,
-    head_last: float,
-    nlay: int,
-) -> list[float]:
-    """
-    Linearly interpolate from *head_first* → *head_last* across the first-layer
-    boundary cells, then replicate that 1-D profile down all *nlay* layers.
-    """
-    n = len(first_layer_cells)
-    if n <= 1:
-        profile = [head_first] * n
-    else:
-        profile = [
-            head_first + (head_last - head_first) * idx / (n - 1)
-            for idx in range(n)
-        ]
-    return profile * nlay
+# def interpolate_gw_elevation(
+#     first_layer_cells: list[tuple[int, int, int]],
+#     head_first: float,
+#     head_last: float,
+#     nlay: int,
+# ) -> list[float]:
+#     """
+#     Linearly interpolate from *head_first* → *head_last* across the first-layer
+#     boundary cells, then replicate that 1-D profile down all *nlay* layers.
+#     """
+#     n = len(first_layer_cells)
+#     if n <= 1:
+#         profile = [head_first] * n
+#     else:
+#         profile = [
+#             head_first + (head_last - head_first) * idx / (n - 1)
+#             for idx in range(n)
+#         ]
+#     return profile * nlay
 
 
 def build_chd_data(
