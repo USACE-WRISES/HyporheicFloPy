@@ -28,7 +28,8 @@ required_packages = [
     "scipy",
     "modflow_devtools",
     "pickleshare",
-    "warnings"
+    "warnings",
+    "typing"
 ]
 
 # Install required packages
@@ -73,6 +74,7 @@ from matplotlib.colors import LightSource
 from modflow_devtools.misc import get_env, timed
 import jupyter_book
 from concurrent.futures import ProcessPoolExecutor, as_completed
+from typing import List, Tuple
 
 
 # Runtime Settings
