@@ -54,6 +54,7 @@ import shutil
 import random
 import scipy
 import types
+import alphashape
 import pathlib as pl
 import papermill as pm
 from pathlib import Path, PurePath
