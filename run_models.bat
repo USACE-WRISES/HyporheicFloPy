@@ -93,10 +93,10 @@ call .\.venv\Scripts\activate
 
 echo Running preprocessing and initialization notebooks with inputs...
 :: Execute introduction notebook
-papermill VQuintana/intro.ipynb VQuintana/intro.ipynb
+papermill VQuintana/notebooks/intro.ipynb VQuintana/notebooks/intro.ipynb
 
 :: Execute preprocessing notebook
-papermill VQuintana/preprocessing.ipynb VQuintana/preprocessing.ipynb ^
+papermill VQuintana/notebooks/preprocessing.ipynb VQuintana/notebooks/preprocessing.ipynb ^
     -p water_surface_elevation_raster "%WATER_SURFACE_RASTER%" ^
     -p terrain_elevation_raster "%TERRAIN_RASTER%" ^
     -p ground_water_domain_shapefile "%GW_DOMAIN_SHAPEFILE%" ^
@@ -105,7 +105,7 @@ papermill VQuintana/preprocessing.ipynb VQuintana/preprocessing.ipynb ^
     -p projection_file "%PROJECTION_FILE%"
 
 :: Execute initialization notebook
-papermill VQuintana/initialization.ipynb VQuintana/initialization.ipynb ^
+papermill VQuintana/notebooks/initialization.ipynb VQuintana/notebooks/initialization.ipynb ^
     -p md6_exe_path "%MODFLOW6_EXE%" ^
     -p md7_exe_path "%MODPATH7_EXE%" ^
     -p sim_name "%SIM_NAME%" ^
@@ -128,18 +128,18 @@ papermill VQuintana/initialization.ipynb VQuintana/initialization.ipynb ^
     -p tsmult %TSMULT%
 
 :: Execute model domain notebook
-papermill VQuintana/model_domain.ipynb VQuintana/model_domain.ipynb
+papermill VQuintana/notebooks/model_domain.ipynb VQuintana/notebooks/model_domain.ipynb
 
 :: Execute define boundary notebook
-papermill VQuintana/define_boundary.ipynb VQuintana/define_boundary.ipynb
+papermill VQuintana/notebooks/define_boundary.ipynb VQuintana/notebooks/define_boundary.ipynb
 
 :: Execute boundary conditions notebook
-papermill VQuintana/boundary_conditions.ipynb VQuintana/boundary_conditions.ipynb
+papermill VQuintana/notebooks/boundary_conditions.ipynb VQuintana/notebooks/boundary_conditions.ipynb
 
 :: Execute run models notebook
-papermill VQuintana/run_models.ipynb VQuintana/run_models.ipynb
+papermill VQuintana/notebooks/run_models.ipynb VQuintana/notebooks/run_models.ipynb
 
 :: Execute results notebook
-papermill VQuintana/results.ipynb VQuintana/results.ipynb
+papermill VQuintana/notebooks/results.ipynb VQuintana/notebooks/results.ipynb
 
 echo Models Successfully Ran and Notebook Built!
