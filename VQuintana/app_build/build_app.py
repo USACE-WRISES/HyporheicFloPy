@@ -1,6 +1,7 @@
 # VQuintana/app_build/build_app.py
 """
-Re-create a one-folder PyInstaller build for app_gui.py.
+Re-create a one-folder PyInstaller build for app_gui.py,
+ensuring modflowExe/*, inputs.yaml, inputs.py, and __main__.py are included.
 
 ▶ Run with:
     python build_app.py
@@ -21,56 +22,65 @@ from pathlib import Path
 SCRIPT_DIR   = Path(__file__).resolve().parent          # …/VQuintana/app_build
 PROJECT_ROOT = SCRIPT_DIR.parent                        # …/VQuintana
 
-PYINSTALLER = (
-    Path(sys.executable).with_name("pyinstaller.exe")   # venv / Windows
-    if os.name == "nt"
-    else "pyinstaller"                                  # POSIX
-)
+# Locate PyInstaller in this env (Windows) or fallback to PATH (POSIX)
+if os.name == "nt":
+    PYINSTALLER = Path(sys.executable).with_name("pyinstaller.exe")
+else:
+    PYINSTALLER = "pyinstaller"
 
+# Separator for `--add-data`
 SEP = ";" if os.name == "nt" else ":"
-def add_data(src: Path | str, dest: str) -> str:
+def add_data(src: str, dest: str) -> str:
     return f"{src}{SEP}{dest}"
 
 # ────────────────────────────────────────────────────────────────────
-# 1.  Remove previous artefacts
+# 1.  Clean previous artefacts
 # ────────────────────────────────────────────────────────────────────
-# for artefact in ("build", "dist", "app_gui.spec"):
-#     target = SCRIPT_DIR / artefact
-#     if target.is_dir():
-#         shutil.rmtree(target, ignore_errors=True)
-#     elif target.is_file():
-#         target.unlink()
+for artefact in ("build_gitignore", "dist_gitignore", "app_gui.spec"):
+    target = SCRIPT_DIR / artefact
+    if target.is_dir():
+        shutil.rmtree(target, ignore_errors=True)
+    elif target.is_file():
+        target.unlink()
 
 # ────────────────────────────────────────────────────────────────────
-# 2.  Verify required files / folders exist
+# 2.  Verify required assets exist
 # ────────────────────────────────────────────────────────────────────
 required = {
-    "modflowExe folder" : PROJECT_ROOT / "modflowExe",
-    "inputs.yaml"       : PROJECT_ROOT / "inputs.yaml",
-    "__main__.py"       : PROJECT_ROOT / "__main__.py",
+    "modflowExe": PROJECT_ROOT / "modflowExe",
+    "inputs.yaml": PROJECT_ROOT / "inputs.yaml",
+    "inputs.py":   PROJECT_ROOT / "inputs.py",
+    "__main__.py": PROJECT_ROOT / "__main__.py",
+    "functions":    PROJECT_ROOT / "functions",
 }
-
 missing = [name for name, p in required.items() if not p.exists()]
 if missing:
-    raise FileNotFoundError(
-        "Missing required asset(s): " + ", ".join(missing)
-    )
+    raise FileNotFoundError("Missing required asset(s): " + ", ".join(missing))
 
 # ────────────────────────────────────────────────────────────────────
 # 3.  Assemble PyInstaller command
 # ────────────────────────────────────────────────────────────────────
+# Use wildcard to include all files under modflowExe/
+modflow_pattern = str(required["modflowExe"] / "*")
+
 cmd = [
     str(PYINSTALLER),
     "--onedir",
-    #"--windowed", turned off to make debuggin easier... turn this back on for prod
+    "--windowed",
     "--noconfirm",
-    "--workpath", "build",            # produced inside app_build
-    "--distpath",  "dist",
-    "--specpath",  ".",
-    # "--icon", "icon.ico",           # uncomment if you have an icon
-    "--add-data", add_data(required["modflowExe folder"], "modflowExe"),
-    "--add-data", add_data(required["inputs.yaml"], "."),
-    "--add-data", add_data(required["__main__.py"], "."),
+    "--workpath", "build_gitignore",
+    "--distpath", "dist_gitignore",
+    "--specpath", ".",
+    "--add-data",  add_data(modflow_pattern,  "modflowExe"),
+    "--add-data",  add_data(str(required["inputs.yaml"]), "."),
+    "--add-data",  add_data(str(required["inputs.py"]),    "."),
+    "--add-data",  add_data(str(required["__main__.py"]),  "."),
+    "--add-data", add_data(str(required["functions"]),   "functions"),
+    "--hidden-import", "pydantic",
+    "--hidden-import", "pydantic._internal",
+    "--collect-submodules", "rasterio",
+    "--collect-submodules", "rasterio._io",   # some C-extensions live here
+     "--hidden-import", "tabulate", 
     str(PROJECT_ROOT / "app_gui.py"),
 ]
 
@@ -81,4 +91,4 @@ print("Running PyInstaller:\n  " + " \\\n  ".join(cmd) + "\n")
 # ────────────────────────────────────────────────────────────────────
 subprocess.run(cmd, check=True, cwd=SCRIPT_DIR)
 
-print("\n✅  Fresh build complete — see  VQuintana/app_build/dist/app_gui/")
+print("\n✅  Build complete — see  VQuintana/app_build/dist_gitignore/app_gui/")

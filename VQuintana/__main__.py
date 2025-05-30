@@ -5,6 +5,7 @@
 import os
 import sys, pathlib
 from pathlib import Path
+import textwrap
 
 # ── 1.  Tell Python where the repo lives ──────────────────────────────
 _project_root = Path(__file__).resolve().parents[1]   # → …/HyporheicFloPy
@@ -46,6 +47,7 @@ pu.add_modflow_executables()          # same folder default
 # ––– let the user tweak the YAML before we import it ––––––––––––––––
 
 from inputs import cfg
+from tabulate import tabulate
 
 # ── 2.  Load the YAML file (or read from STDIN) ────────────────────────
 import argparse, io, sys
@@ -57,9 +59,9 @@ parser.add_argument("--yaml-stdin", action="store_true",
                     help="Read YAML contents from STDIN")
 args = parser.parse_args()
 
-print("Arguments passed to the script:")
-for arg, value in vars(args).items():
-    print(f"{arg}: {value}")
+# print("Arguments passed to the script:")
+# for arg, value in vars(args).items():
+#     print(f"{arg}: {value}")
 
 if args.yaml_stdin:
     yaml_source = io.StringIO(sys.stdin.read())
@@ -71,9 +73,11 @@ else:
     # fall back to a path (explicit or default)
     cfg = load(Path(project_root) / "inputs.yaml")
 
-print("Configuration settings:")
-for key, value in cfg.__dict__.items():
-    print(f"{key}: {value}")
+
+
+# ... after you load cfg ...
+pu.print_config_table(cfg, max_value_width=80)
+
 
 # %%
 ## HEC-RAS Projection File

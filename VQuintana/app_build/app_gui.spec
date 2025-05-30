@@ -1,12 +1,17 @@
 # -*- mode: python ; coding: utf-8 -*-
+from PyInstaller.utils.hooks import collect_submodules
+
+hiddenimports = ['pydantic', 'pydantic._internal', 'tabulate']
+hiddenimports += collect_submodules('rasterio')
+hiddenimports += collect_submodules('rasterio._io')
 
 
 a = Analysis(
     ['C:\\Users\\gtmen\\Desktop\\HyporheicFloPy\\VQuintana\\app_gui.py'],
     pathex=[],
     binaries=[],
-    datas=[('C:\\Users\\gtmen\\Desktop\\HyporheicFloPy\\VQuintana\\modflowExe', 'modflowExe'), ('C:\\Users\\gtmen\\Desktop\\HyporheicFloPy\\VQuintana\\inputs.yaml', '.'), ('C:\\Users\\gtmen\\Desktop\\HyporheicFloPy\\VQuintana\\__main__.py', '.')],
-    hiddenimports=[],
+    datas=[('C:\\Users\\gtmen\\Desktop\\HyporheicFloPy\\VQuintana\\modflowExe\\*', 'modflowExe'), ('C:\\Users\\gtmen\\Desktop\\HyporheicFloPy\\VQuintana\\inputs.yaml', '.'), ('C:\\Users\\gtmen\\Desktop\\HyporheicFloPy\\VQuintana\\inputs.py', '.'), ('C:\\Users\\gtmen\\Desktop\\HyporheicFloPy\\VQuintana\\__main__.py', '.'), ('C:\\Users\\gtmen\\Desktop\\HyporheicFloPy\\VQuintana\\functions', 'functions')],
+    hiddenimports=hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -26,7 +31,7 @@ exe = EXE(
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
-    console=True,
+    console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,

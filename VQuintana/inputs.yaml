@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------
-# Paths to spatial rasters & shapefiles (edit to match your machine)
+# Paths to spatial rasters & shapefiles
 # ---------------------------------------------------------------------
 water_surface_elevation_raster: ./CH00365/WSE (Max).USGS_1m_FebApril2018_DEM.U_USGS-3DEP_dtm_hyrdo_flattened_20240412.2041_1.tif   # WSE filepath [tif]
 terrain_elevation_raster: ./CH00365/BlendedTerrain.LoweredTerrain.tif  # Terrain filepath [tif]

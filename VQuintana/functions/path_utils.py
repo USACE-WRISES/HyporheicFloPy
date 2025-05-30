@@ -115,3 +115,54 @@ def download_modflow(folder: str | Path = "modflowExe") -> None:
     print("Contents of the MODFLOW executable directory:")
     for _item in _folder.iterdir():
         print("  •", _item.name)
+
+import shutil
+from tabulate import tabulate
+from typing import Any
+
+def truncate_middle(s: str, max_len: int) -> str:
+    if len(s) <= max_len:
+        return s
+    # grab half of the chars (minus the “...”)
+    n = (max_len - 3) // 2
+    return s[:n] + "..." + s[-n:]
+
+
+def print_config_table(
+    cfg: Any,
+    max_value_width: int | None = None
+) -> None:
+    """
+    Pretty-print cfg.__dict__ in a no-wrap table, truncating long values
+    in the middle.  If max_value_width is None, we auto-calc it from your
+    terminal width; otherwise we use the number you pass.
+    """
+    data = list(cfg.__dict__.items())
+    key_width = max(len(str(k)) for k, _ in data)
+
+    if max_value_width is None:
+        term_width = shutil.get_terminal_size().columns
+        # 7 is just an empirical fudge for the fancy_grid borders & padding
+        val_width = term_width - key_width - 7
+    else:
+        val_width = max_value_width
+
+    # make sure it's at least something
+    val_width = max(val_width, 10)
+
+    # truncate each value
+    truncated = [
+        (k, truncate_middle(str(v), val_width))
+        for k, v in data
+    ]
+
+    print("\nConfiguration settings:\n")
+    print(
+        tabulate(
+            truncated,
+            headers=["Key", "Value"],
+            tablefmt="fancy_grid",
+            stralign="left",
+            showindex=False
+        )
+    )

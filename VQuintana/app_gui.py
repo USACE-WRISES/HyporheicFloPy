@@ -14,6 +14,7 @@ from pathlib import Path
 from collections import OrderedDict
 from typing   import Dict, List, Tuple, Any
 import os
+import re
 
 import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -599,45 +600,71 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # .............................................................. setup
     def _build_setup(self):
-        # -------- 1.  parse the default YAML ----------------------------
+        # parse the default YAML
         vals, sections, descs, lm, raw = _parse_yaml(INPUTS_YAML)
         self._yaml_raw, self._line_map, self._yaml_path = raw, lm, INPUTS_YAML
 
-        # helper dicts we will need later
-        self._widgets: Dict[str, QtWidgets.QLineEdit] = {}   # key  -> QLineEdit
-        self._section_boxes: Dict[str, QtWidgets.QFormLayout] = {}  # section -> form
+        # helper dicts
+        self._widgets: Dict[str, QtWidgets.QLineEdit] = {}
+        self._section_boxes: Dict[str, QtWidgets.QFormLayout] = {}
+        self._labels: Dict[str, QtWidgets.QLabel] = {}
 
-        # -------- 2.  ScrollArea + inner frame --------------------------
-        area = QtWidgets.QScrollArea(); area.setWidgetResizable(True)
-        self._setup_inner = QtWidgets.QWidget()               # keep a handle!
-        self._setup_vlay  = QtWidgets.QVBoxLayout(self._setup_inner)
-
-        #  add at the top, near other “helper dicts”
-        self._labels: dict[str, QtWidgets.QLabel] = {}      # NEW  key → QLabel
-
+        # function to add one row, with optional Browse… for any “filepath”
         def _add_row(sec: str, key: str, value: str, helper: str):
-            # create (or fetch) the section’s QFormLayout
+            # create (or fetch) the section’s form
             if sec not in self._section_boxes:
-                box  = QtWidgets.QGroupBox(sec)
+                box = QtWidgets.QGroupBox(sec)
                 form = QtWidgets.QFormLayout(box)
                 self._section_boxes[sec] = form
                 self._setup_vlay.addWidget(box)
             else:
                 form = self._section_boxes[sec]
 
-            # single editor
+            # label
+            lbl_text = f"{key} ({helper})" if helper else key
+            lbl = QtWidgets.QLabel(lbl_text)
+            lbl.setToolTip(helper)
+            self._labels[key] = lbl
+
+            # line edit
             le = QtWidgets.QLineEdit(value)
             le.setToolTip(helper)
             self._widgets[key] = le
 
-            # label text = key plus helper
-            disp = f"{key} ({helper})" if helper else key
-            lbl  = QtWidgets.QLabel(disp)
-            self._labels[key] = lbl                     # keep handle for later
+            # if the helper mentions “filepath”, give it a Browse… button
+            if "filepath" in helper.lower():
+                container = QtWidgets.QWidget()
+                hl = QtWidgets.QHBoxLayout(container)
+                hl.setContentsMargins(0, 0, 0, 0)
+                hl.addWidget(le)
+                btn = QtWidgets.QPushButton("...")
+                btn.setFixedWidth(36)
 
-            form.addRow(lbl, le)                       # <- left  | right
+                def _browse():
+                    # optional extension filter from “[tif]” in helper
+                    m = re.search(r"\[([A-Za-z0-9]+)\]", helper)
+                    filt = "All Files (*)"
+                    if m:
+                        ext = m.group(1)
+                        filt = f"{ext.upper()} (*.{ext});;All Files (*)"
+                    path, _ = QtWidgets.QFileDialog.getOpenFileName(
+                        self, f"Select {key}", "", filt
+                    )
+                    if path:
+                        le.setText(path)
 
-        # populate with whatever was in the default YAML
+                btn.clicked.connect(_browse)
+                hl.addWidget(btn)
+                form.addRow(lbl, container)
+            else:
+                form.addRow(lbl, le)
+
+        # build the scrollable form
+        area = QtWidgets.QScrollArea()
+        area.setWidgetResizable(True)
+        self._setup_inner = QtWidgets.QWidget()
+        self._setup_vlay = QtWidgets.QVBoxLayout(self._setup_inner)
+
         for sec, keys in sections.items():
             for k in keys:
                 _add_row(sec, k, vals.get(k, ""), descs.get(k, ""))
@@ -645,20 +672,27 @@ class MainWindow(QtWidgets.QMainWindow):
         self._setup_vlay.addStretch(1)
         area.setWidget(self._setup_inner)
 
-        # -------- 3.  bottom buttons ------------------------------------
-        bt_open  = QtWidgets.QPushButton("Open…")
-        bt_save  = QtWidgets.QPushButton("Save")
+        # bottom buttons
+        bt_open   = QtWidgets.QPushButton("Open…")
+        bt_save   = QtWidgets.QPushButton("Save")
         bt_saveas = QtWidgets.QPushButton("Save as…")
-        h        = QtWidgets.QHBoxLayout(); h.addWidget(bt_open); h.addWidget(bt_save); h.addWidget(bt_saveas); h.addStretch()
+        h = QtWidgets.QHBoxLayout()
+        h.addWidget(bt_open)
+        h.addWidget(bt_save)
+        h.addWidget(bt_saveas)
+        h.addStretch()
 
-        page     = QtWidgets.QWidget()
-        lay_page = QtWidgets.QVBoxLayout(page)
-        lay_page.addWidget(area); lay_page.addLayout(h)
+        page = QtWidgets.QWidget()
+        lay = QtWidgets.QVBoxLayout(page)
+        lay.addWidget(area)
+        lay.addLayout(h)
 
         bt_open.clicked.connect(self._yaml_open)
         bt_save.clicked.connect(self._yaml_save)
         bt_saveas.clicked.connect(self._yaml_save_as)
+
         return page
+
 
     # helper I/O
     def _yaml_open(self):
@@ -668,51 +702,75 @@ class MainWindow(QtWidgets.QMainWindow):
         if not path:
             return
 
-        # ── parse the file --------------------------------------------------
         vals, sections, descs, lm, raw = _parse_yaml(Path(path))
         self._yaml_raw, self._line_map, self._yaml_path = raw, lm, Path(path)
 
+        # if a key wasn’t in the form yet, add it (with Browse support)
         def _add_if_missing(sec: str, key: str):
-            """Create the QLineEdit — incl. the section box — if absent."""
             if key in self._widgets:
-                return                                    # already there
-
-            # create section box / form if missing
+                return
+            # make the section/form if needed
             if sec not in self._section_boxes:
-                box  = QtWidgets.QGroupBox(sec)
+                box = QtWidgets.QGroupBox(sec)
                 form = QtWidgets.QFormLayout(box)
                 self._section_boxes[sec] = form
-                # insert *before* the final stretch
-                self._setup_vlay.insertWidget(
-                    self._setup_vlay.count() - 1, box
-                )
+                # insert just before the final stretch
+                self._setup_vlay.insertWidget(self._setup_vlay.count() - 1, box)
             else:
                 form = self._section_boxes[sec]
 
-            le  = QtWidgets.QLineEdit()
-            self._widgets[key] = le
-            lbl = QtWidgets.QLabel()          # placeholder, will get text below
+            lbl = QtWidgets.QLabel()
             self._labels[key] = lbl
-            form.addRow(lbl, le)
+            le = QtWidgets.QLineEdit()
+            self._widgets[key] = le
 
-        # ── make sure every key has a widget -------------------------------
+            helper = descs.get(key, "")
+            lbl_text = f"{key} ({helper})" if helper else key
+            lbl.setText(lbl_text)
+            lbl.setToolTip(helper)
+            le.setToolTip(helper)
+
+            if "filepath" in helper.lower():
+                container = QtWidgets.QWidget()
+                hl = QtWidgets.QHBoxLayout(container)
+                hl.setContentsMargins(0, 0, 0, 0)
+                hl.addWidget(le)
+                btn = QtWidgets.QPushButton("...")
+                btn.setFixedWidth(36)
+
+                def _browse():
+                    m = re.search(r"\[([A-Za-z0-9]+)\]", helper)
+                    filt = "All Files (*)"
+                    if m:
+                        ext = m.group(1)
+                        filt = f"{ext.upper()} (*.{ext});;All Files (*)"
+                    p, _ = QtWidgets.QFileDialog.getOpenFileName(
+                        self, f"Select {key}", "", filt
+                    )
+                    if p:
+                        le.setText(p)
+
+                btn.clicked.connect(_browse)
+                hl.addWidget(btn)
+                form.addRow(lbl, container)
+            else:
+                form.addRow(lbl, le)
+
+        # ensure every key in the new YAML has a widget
         for sec, keys in sections.items():
             for k in keys:
                 _add_if_missing(sec, k)
 
-        # # ── finally, set / update the values --------------------------------
-        # for k, w in self._widgets.items():
-        #     w.setText(vals.get(k, ""))          # silently ignores old extras
-
-        # -- finally, update every widget (value + helper text) ---------------
-        for k, w in self._widgets.items():
-            w.setText(vals.get(k, ""))                 # value
+        # now update all values and labels
+        for k, le in self._widgets.items():
+            le.setText(vals.get(k, ""))
             helper = descs.get(k, "")
-            w.setToolTip(helper)
-            if k in self._labels:
-                disp = f"{k} ({helper})" if helper else k
-                self._labels[k].setText(disp)
-                self._labels[k].setToolTip(helper)
+            le.setToolTip(helper)
+            lbl = self._labels[k]
+            txt = f"{k} ({helper})" if helper else k
+            lbl.setText(txt)
+            lbl.setToolTip(helper)
+
 
     def _yaml_save(self):
         lines = self._yaml_raw.copy()
