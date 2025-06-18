@@ -28,14 +28,14 @@ time_units: days  # days  | seconds
 cell_size_x: 10.0  # units follow length_units
 cell_size_y: 10.0
 gw_mod_depth: 20.0
-z: 0.5  # top-layer thickness
+z: 0.5  # layer thickness
 
 # ---------------------------------------------------------------------
 # Hydraulic parameters
 # ---------------------------------------------------------------------
 kh: 10.0  # horizontal K
 kv: 1.0  # vertical K
-gw_offset: 0.5
+gw_offset: 0.1 # Feet offset between WSE and GW table
 porosity: 0.1  # 0â€“0.6
 rch_iface: 6
 rch_iflowface: -1

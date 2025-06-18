@@ -916,7 +916,7 @@ def build_particle_models(
         #print("Packages in MODPATH model:", mp.packagelist)
 
         # keep only (k, i, j) – ParticleData needs exactly three ints per tuple
-        partlocs = [(k, i, j) for (k, i, j, *_) in river_cells]
+        partlocs = [(k + 4, i, j) for (k, i, j, *_) in river_cells]
 
         # first positional arg = locations, keyword only for 'structured'
         _particledata = flopy.modpath.ParticleData(partlocs, structured=True, drape=0)
