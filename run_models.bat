@@ -32,7 +32,7 @@ set CELL_SIZE_Y=5.0
 set Z=0.5
 set GW_MOD_DEPTH=20.0
 
-:: These parameters define the hydraulic conductivity, vertical hydraulic conductivity, groundwater offset, porosity, recharge interface, and recharge inflow face.
+:: These parameters define the hydraulic conductivity meters/day, vertical hydraulic conductivity, groundwater offset, porosity, recharge interface, and recharge inflow face.
 set KH=10.0
 set KV=1.0
 set GW_OFFSET=0.5
