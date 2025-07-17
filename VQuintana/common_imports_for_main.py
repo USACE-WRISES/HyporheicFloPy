@@ -19,13 +19,13 @@ from pathlib import Path                         # exported as Path
 # -------------------- Third-party libraries -------------------------
 import shutil
 import os
+import ssl
 import numpy as np                               # exported as np
 import pandas as pd                              # exported as pd
 import matplotlib.pyplot as plt                  # exported as plt
 import flopy                                     # exported as flopy
 import geopandas as gpd                          # exported as gpd
 import rasterio                                  # exported as rasterio
-import VQuintana.functions.path_utils as hf
 from shapely.geometry import box, Point, Polygon, LineString
 from scipy.interpolate import griddata           # exported as griddata
 from pyproj import Transformer
