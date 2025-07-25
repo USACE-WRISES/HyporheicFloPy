@@ -26,12 +26,13 @@ Path Depth (z-range, ft)
   max: 699.65
   range: 684.04
 
-Zone Budget Summary (River Cells)
-  Particles starting in river cells: 0
-  Particles ending in river cells: 0
+Particle Start/End Cell Summary
+  Unique starting cells: 1099
+  Unique ending cells: 83
 
-MODFLOW ZoneBudget (River Zone)
-  Error extracting inflow/outflow: name 'ZoneBudget' is not defined
+MODFLOW CellBudget (Particle Start/End Locations)
+MODFLOW CellBudget (Particle Start/End Locations)
+  Error extracting inflow/outflow: The specified text string is not in the budget file.
 
 Per Cell: Total Volume Available (ft³)
   mean: 523.2873
