@@ -32,7 +32,7 @@ Particle Start/End Cell Summary
 
 MODFLOW CellBudget (Particle Start/End Locations)
 MODFLOW CellBudget (Particle Start/End Locations)
-  Error extracting inflow/outflow: The specified text string is not in the budget file.
+  Error extracting inflow/outflow: index 1600 is out of bounds for axis 0 with size 1
 
 Per Cell: Total Volume Available (ft³)
   mean: 523.2873
