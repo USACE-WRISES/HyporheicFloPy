@@ -29,7 +29,10 @@ required_packages = [
     "modflow_devtools",
     "pickleshare",
     "warnings",
-    "typing"
+    "typing",
+    "contextily",
+    "zipfile",
+    "seaborn",
 ]
 
 # Install required packages
@@ -79,7 +82,10 @@ import jupyter_book
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from typing import Any, Sequence, Tuple, List
 from types import SimpleNamespace
-
+from concurrent.futures import ThreadPoolExecutor
+import contextily as ctx # For satellite basemaps
+import zipfile # For creating KMZ files
+import seaborn as sns # For histograms/kde plots
 
 # Runtime Settings
 import asyncio
