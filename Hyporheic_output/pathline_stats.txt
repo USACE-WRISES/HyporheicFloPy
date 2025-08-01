@@ -34,14 +34,14 @@ MODFLOW CellBudget (Particle Start/End Locations)
 MODFLOW CellBudget (Particle Start/End Locations)
   Error extracting inflow/outflow: index 1600 is out of bounds for axis 0 with size 1
 
-Per Cell: Total Volume Available (ft³)
+Per Cell: Total Volume Available (ft )
   mean: 523.2873
   median: 523.0347
   min: 487.5000
   max: 611.3403
   range: 123.8403
 
-Per Cell: Total Hyporheic Volume (ft³)
+Per Cell: Total Hyporheic Volume (ft )
   mean: 237.6470
   median: 36.1389
   min: 0.0000
@@ -90,7 +90,7 @@ Per Cell: Particle Velocity (ft/day)
   max: 1280.0035
   range: 1280.0035
 
-Per Cell: Flow Rate (ft³/day)
+Per Cell: Flow Rate (ft /day)
   mean: 19013.9525
   median: 1.1237
   min: 0.0000
@@ -104,14 +104,14 @@ Per Cell: Hydraulic Gradient
   max: 10666657341859280246991996583936.0000
   range: 12666657103440728559850669211648.0000
 
-Particle Path: Total Volume Available Along Path (ft³)
+Particle Path: Total Volume Available Along Path (ft )
   mean: 17188.1328
   median: 12524.4171
   min: 512.7594
   max: 58631.4026
   range: 58118.6432
 
-Particle Path: Hyporheic Volume Along Path (ft³)
+Particle Path: Hyporheic Volume Along Path (ft )
   mean: 7805.8622
   median: 5115.2985
   min: 2495.7031
@@ -160,7 +160,7 @@ Particle Path: Average Velocity (ft/day)
   max: 113.6265
   range: 113.6116
 
-Particle Path: Average Flow Rate (ft³/day)
+Particle Path: Average Flow Rate (ft /day)
   mean: 26751.5384
   median: 19881.2824
   min: 8531.7159
