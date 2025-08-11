@@ -25,7 +25,8 @@ import pandas as pd                              # exported as pd
 import matplotlib.pyplot as plt                  # exported as plt
 import flopy                                     # exported as flopy
 import geopandas as gpd                          # exported as gpd
-import rasterio                                  # exported as rasterio
+import rasterio
+import alphashape                                  # exported as rasterio
 from shapely.geometry import box, Point, Polygon, LineString
 from scipy.interpolate import griddata           # exported as griddata
 from pyproj import Transformer
