@@ -30,6 +30,7 @@ from shapely.geometry import box, Point, Polygon, LineString
 from scipy.interpolate import griddata           # exported as griddata
 from pyproj import Transformer
 from flopy.utils import ZoneBudget
+from flopy.utils.binaryfile import CellBudgetFile
 
 # Utility re-exports (optional)
 from pprint import pformat                       # exported as pformat
