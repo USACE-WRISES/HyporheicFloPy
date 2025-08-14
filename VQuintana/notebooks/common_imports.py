@@ -68,7 +68,7 @@ from rasterio.transform import from_bounds
 from rasterio.transform import rowcol
 from rasterio.mask import mask
 from shapely.geometry import box, Point, Polygon, LineString
-from flopy.utils.binaryfile import HeadFile
+from flopy.utils.binaryfile import HeadFile, CellBudgetFile
 from flopy.modpath import Modpath7, ParticleGroup, ParticleData
 from scipy.interpolate import griddata
 from pprint import pformat
