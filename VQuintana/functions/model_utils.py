@@ -369,25 +369,25 @@ def extract_river_cells(
 # ────────────────────────────────────────────────────────────────────
 # 5.  Groundwater head helpers  
 # ────────────────────────────────────────────────────────────────────
-# def interpolate_gw_elevation(
-#     first_layer_cells: list[tuple[int, int, int]],
-#     head_first: float,
-#     head_last: float,
-#     nlay: int,
-# ) -> list[float]:
-#     """
-#     Linearly interpolate from *head_first* → *head_last* across the first-layer
-#     boundary cells, then replicate that 1-D profile down all *nlay* layers.
-#     """
-#     n = len(first_layer_cells)
-#     if n <= 1:
-#         profile = [head_first] * n
-#     else:
-#         profile = [
-#             head_first + (head_last - head_first) * idx / (n - 1)
-#             for idx in range(n)
-#         ]
-#     return profile * nlay
+def interpolate_gw_elevation(
+    first_layer_cells: list[tuple[int, int, int]],
+    head_first: float,
+    head_last: float,
+    nlay: int,
+) -> list[float]:
+    """
+    Linearly interpolate from *head_first* → *head_last* across the first-layer
+    boundary cells, then replicate that 1-D profile down all *nlay* layers.
+    """
+    n = len(first_layer_cells)
+    if n <= 1:
+        profile = [head_first] * n
+    else:
+        profile = [
+            head_first + (head_last - head_first) * idx / (n - 1)
+            for idx in range(n)
+        ]
+    return profile * nlay
 
 
 def build_chd_data(
@@ -588,43 +588,43 @@ def layer_for_elevation(tops:  list[np.ndarray],
 # ──────────────────────────────────────────────────────────────────────
 from typing import List, Tuple
 
-def interpolate_gw_elevation(
-    first_layer_cells: List[Tuple[int, int, int]],
-    head_first: float,
-    head_last: float,
-    nlay: int,
-) -> List[float]:
-    """
-    Linearly interpolate heads along the *first–layer* boundary cells and
-    copy the same value straight down through every layer below the cell.
+# def interpolate_gw_elevation(
+#     first_layer_cells: List[Tuple[int, int, int]],
+#     head_first: float,
+#     head_last: float,
+#     nlay: int,
+# ) -> List[float]:
+#     """
+#     Linearly interpolate heads along the *first–layer* boundary cells and
+#     copy the same value straight down through every layer below the cell.
 
-    • The first value (cell 0) gets `head_first`
-    • The last   value (cell ‑1) gets `head_last`
-    • Intermediate cells are linearly spaced
-    • For each cell that head is repeated `nlay` times (one per layer)
+#     • The first value (cell 0) gets `head_first`
+#     • The last   value (cell ‑1) gets `head_last`
+#     • Intermediate cells are linearly spaced
+#     • For each cell that head is repeated `nlay` times (one per layer)
 
-    Returns
-    -------
-    list[float]
-        Flat list of length  ``nlay × len(first_layer_cells)``, ordered
-        like  [(k=0,i,j), (k=1,i,j), …, (k=nlay‑1,i,j)]  for each cell.
-    """
-    n_cells = len(first_layer_cells)
-    if n_cells == 0 or nlay <= 0:
-        return []
+#     Returns
+#     -------
+#     list[float]
+#         Flat list of length  ``nlay × len(first_layer_cells)``, ordered
+#         like  [(k=0,i,j), (k=1,i,j), …, (k=nlay‑1,i,j)]  for each cell.
+#     """
+#     n_cells = len(first_layer_cells)
+#     if n_cells == 0 or nlay <= 0:
+#         return []
 
-    # 1) heads for the boundary cells on layer 0
-    if n_cells == 1:
-        layer0 = [float(head_first)]
-    else:                           # linear interpolation (inclusive)
-        layer0 = np.linspace(head_first, head_last, n_cells).tolist()
+#     # 1) heads for the boundary cells on layer 0
+#     if n_cells == 1:
+#         layer0 = [float(head_first)]
+#     else:                           # linear interpolation (inclusive)
+#         layer0 = np.linspace(head_first, head_last, n_cells).tolist()
 
-    # 2) replicate *down* for every cell →  [c0‑k0, c0‑k1, …, c1‑k0, …]
-    heads = []
-    for h in layer0:
-        heads.extend([h] * nlay)    # same head for all layers below cell
+#     # 2) replicate *down* for every cell →  [c0‑k0, c0‑k1, …, c1‑k0, …]
+#     heads = []
+#     for h in layer0:
+#         heads.extend([h] * nlay)    # same head for all layers below cell
 
-    return heads
+#     return heads
 
 # ──────────────────────────────────────────────────────────────────────
 # Ground-water elevation & CHD helpers
