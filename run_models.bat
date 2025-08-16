@@ -42,9 +42,9 @@ set RCH_IFLOWFACE=-1
 set RECHARGE_RATE=0.005
 
 :: These parameters define the number of time steps, length of each time step, and time step multiplier.
-set NSTP=100
-set PERLEN=10000
-set TSMULT=1.05
+set NSTP=1
+set PERLEN=1.0
+set TSMULT=1.0
 
 :::::::::::::::::::::::::::::: NO USER INPUTS BELOW ::::::::::::::::::::::::::::::
 :: DEBUGGING INPUT FILES
