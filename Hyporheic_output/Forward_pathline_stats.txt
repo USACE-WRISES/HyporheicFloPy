@@ -1,0 +1,35 @@
+Linear Path Length (y-range, ft)
+  mean: 246.34
+  median: 177.50
+  min: 2.50
+  max: 544.61
+  range: 542.11
+
+Path Width (x-range, ft)
+  mean: 148.51
+  median: 158.44
+  min: 1.45
+  max: 351.16
+  range: 349.71
+
+Path Depth (z-range, ft)
+  mean: 5.84
+  median: 1.31
+  min: 0.03
+  max: 21.56
+  range: 21.53
+
+Net Path Length (ft)
+  mean: 326.76
+  median: 261.28
+  min: 15.60
+  max: 692.36
+  range: 676.76
+
+Zone Budget Summary
+Total number of start cells: 1233
+Total start flow: -2.1916794971643707
+Total number of end cells: 28
+Total end flow: -0.5307783814464528
+Average Hyporheic flow rate (ft³/d): -1.3612289393054118
+Hyporheic flow rate (ft³/d): 1.6609011157179179

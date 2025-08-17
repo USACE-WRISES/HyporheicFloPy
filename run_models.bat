@@ -12,6 +12,7 @@ set GW_DOMAIN_SHAPEFILE=C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH0036
 set LEFT_BOUNDARY_SHAPEFILE=C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\InputShapefiles\L_FPL.shp
 set RIGHT_BOUNDARY_SHAPEFILE=C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\InputShapefiles\R_FPL.shp
 set PROJECTION_FILE=C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\RAS\GIS_Data\102739_TX_central.prj
+set SAT_IMAGE_PATH=C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\GMS\HighResOrtho\HighResOrtho_23Oct2014_Clip.tif
 
 :: MODFLOW 6 and MODPATH 7 EXECUTABLES
 :: These executables are used to run the MODFLOW 6 and MODPATH 7 models.
@@ -22,8 +23,10 @@ set MODPATH7_EXE=C:\Users\u4eeevmq\Documents\Python\Flo_Py\flopy\modflowExe\mp7.
 :: These parameters define the simulation settings, including the simulation name, output directory, and units.
 set SIM_NAME=Hyporheic_Project
 set WORKSPACE=HP_workspace
+set OUTPUT_FOLDER=Hyporheic_output
 set LENGTH_UNITS=feet
 set TIME_UNITS=days
+set DIRECTION=Forward
 
 :: MODEL PARAMETERS
 :: These parameters define the cell length, width, height, and groundwater modeling depth.
@@ -137,7 +140,11 @@ papermill VQuintana/notebooks/define_boundary.ipynb VQuintana/notebooks/define_b
 papermill VQuintana/notebooks/boundary_conditions.ipynb VQuintana/notebooks/boundary_conditions.ipynb
 
 :: Execute run models notebook
-papermill VQuintana/notebooks/run_models.ipynb VQuintana/notebooks/run_models.ipynb
+papermill VQuintana/notebooks/run_models.ipynb VQuintana/notebooks/run_models.ipynb ^
+    -p output_folder "%OUTPUT_FOLDER%" ^
+    -p direction "%DIRECTION%" ^
+    -p sat_image_path "%SAT_IMAGE_PATH%" ^
+    -p groundwater_domain_shp_path "%GW_DOMAIN_SHAPEFILE%" 
 
 :: Execute results notebook
 papermill VQuintana/notebooks/results.ipynb VQuintana/notebooks/results.ipynb
