@@ -146,7 +146,4 @@ papermill VQuintana/notebooks/run_models.ipynb VQuintana/notebooks/run_models.ip
     -p sat_image_path "%SAT_IMAGE_PATH%" ^
     -p groundwater_domain_shp_path "%GW_DOMAIN_SHAPEFILE%" 
 
-:: Execute results notebook
-papermill VQuintana/notebooks/results.ipynb VQuintana/notebooks/results.ipynb
-
 echo Models Successfully Ran and Notebook Built!
