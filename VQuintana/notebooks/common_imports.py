@@ -48,6 +48,7 @@ import json
 import flopy
 import pathlib
 import matplotlib.pyplot as plt
+import matplotlib.lines as mlines
 import numpy as np
 import geopandas as gpd
 import pandas as pd
@@ -86,6 +87,8 @@ from concurrent.futures import ThreadPoolExecutor
 import contextily as ctx # For satellite basemaps
 import zipfile # For creating KMZ files
 import seaborn as sns # For histograms/kde plots
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+
 
 # Runtime Settings
 import asyncio
