@@ -64,13 +64,6 @@ To run the MODFLOW6 with MODPATH7 simulations and save the results, use the foll
 <br/> '.\run_models.bat'
 
 To build the html document and run MODFLOW6 with MODPATH 7 for hosting Webpage, use the following command in the command prompt:
-<br/> '.\build_notebook.bat'
+<br/> '.\VQuintana\notebooks\build_notebook.bat'
 
 NOTE: Parameters can be edited within each batch file.
-
-## Running MODFLOW6 with MODPATH7 Simulations without Python installed via executable:
-
-To build an html document and run MODFLOW6 with MODPATH 7, use the following command in the command prompt:
-<
-
-NOTE: Parameters can be edited within the 'config.json' file or directly in the command line 
