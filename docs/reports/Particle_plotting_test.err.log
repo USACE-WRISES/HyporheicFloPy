@@ -1,0 +1,175 @@
+Traceback (most recent call last):
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\jupyter_cache\executors\utils.py", line 58, in single_nb_execution
+    executenb(
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\jupyter_core\utils\__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python311\Lib\asyncio\base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "c:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\nbclient\client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+
+import os
+import numpy as np
+import flopy
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# Define the bed elevation for filtering particles
+bed_elevation = 1599.8125  # Replace with the actual bed elevation value
+ncol = 431
+nrow = 385
+#\Users\u4eeevmq\Documents\Python\HP_workspace
+# Define the workspace and file names
+workspace = r"C:\Users\gtmen\Desktop\HyporheicFloPy\HP_workspace\mp7_workspace" #r"C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\HP_workspace\mp7_workspace"
+workspace_gwf = r"C:\Users\gtmen\Desktop\HyporheicFloPy\HP_workspace\gwf_workspace" #r"C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\HP_workspace\gwf_workspace"
+
+model_name = "Hyporheic_Project"  # Replace with your model name
+gwf_model_name = "gwf_model"  # Replace with your GWF model name
+#    r"C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\HP_workspace\mp7_workspace\Hyporheic_Project_mp_backward.mppth"
+# Correct the simulation workspace path
+model_ws = r"C:\Users\gtmen\Desktop\HyporheicFloPy\HP_workspace\gwf_workspace" #r"C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\HP_workspace\gwf_workspace"
+
+# Load the MODFLOW 6 simulation
+sim = flopy.mf6.MFSimulation.load(sim_ws=workspace_gwf)
+print(sim.model_names)
+
+# Access the groundwater flow (GWF) model
+gwf = sim.get_model("gwf_model")  # Replace "gwf_model" with your model name if different
+
+# Get DIS package and idomain array
+dis = gwf.get_package("DIS")
+idomain = dis.idomain.array  # shape: (nlay, nrow, ncol)
+
+# Load the head file
+hds = flopy.utils.HeadFile(f"{model_ws}\{gwf_model_name}.hds")
+
+# Get the head array (last time step if transient)
+head_array = hds.get_data()
+if head_array.ndim == 4:
+    head_array = head_array[-1]  # Use heads from the last time step
+
+def get_head(row):
+    try:
+        return head_array[int(row['layer']), int(row['row']), int(row['col'])]
+    except Exception:
+        return np.nan
+
+# Get model grid information
+xorigin = dis.xorigin  # Access the numerical value from MFScalar
+yorigin = dis.yorigin
+delr = dis.delr.array  # Column widths
+delc = dis.delc.array  # Row heights
+
+print(f"delr: {delr}")
+print(f"delc: {delc}")
+
+# Calculate spatial extents
+x_min = xorigin.data  # Access the numerical value from MFScalar
+x_max = xorigin.data + delr.sum()  # Access data and perform addition
+y_min = yorigin.data  # Access the numerical value from MFScalar
+y_max = yorigin.data + delc.sum()  # Access data and perform addition
+
+extent = [x_min, x_max, y_min, y_max]
+print(f"Spatial Extent: {extent}")
+
+# Now you can do: layer 0, row 132, column 266
+head_value = head_array[0, 132, 266]
+#print(f"Head Value at (k={k}, j={j}, i={i}): {head_value}")
+
+------------------
+
+----- stdout -----
+An error occurred when trying to create the directory C:\Users\gtmen\Desktop\HyporheicFloPy\HP_workspace\gwf_workspace: Access is denied
+loading simulation...
+  loading simulation name file...
+----- stderr -----
+C:\Users\u4eeevmq\AppData\Local\Temp\ipykernel_24284\2774506303.py:34: DeprecationWarning: invalid escape sequence '\{'
+  hds = flopy.utils.HeadFile(f"{model_ws}\{gwf_model_name}.hds")
+------------------
+
+[1;31m---------------------------------------------------------------------------[0m
+[1;31mFileNotFoundError[0m                         Traceback (most recent call last)
+File [1;32mc:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\flopy\mf6\mfpackage.py:2907[0m, in [0;36mMFPackage.load[1;34m(self, strict)[0m
+[0;32m   2906[0m [38;5;28;01mtry[39;00m:
+[1;32m-> 2907[0m     fd_input_file [38;5;241m=[39m [38;5;28;43mopen[39;49m[43m([49m
+[0;32m   2908[0m [43m        [49m[43mdatautil[49m[38;5;241;43m.[39;49m[43mclean_filename[49m[43m([49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mget_file_path[49m[43m([49m[43m)[49m[43m)[49m[43m,[49m[43m [49m[38;5;124;43m"[39;49m[38;5;124;43mr[39;49m[38;5;124;43m"[39;49m
+[0;32m   2909[0m [43m    [49m[43m)[49m
+[0;32m   2910[0m [38;5;28;01mexcept[39;00m [38;5;167;01mOSError[39;00m [38;5;28;01mas[39;00m e:
+
+[1;31mFileNotFoundError[0m: [Errno 2] No such file or directory: 'C:\\Users\\gtmen\\Desktop\\HyporheicFloPy\\HP_workspace\\gwf_workspace\\mfsim.nam'
+
+During handling of the above exception, another exception occurred:
+
+[1;31mMFDataException[0m                           Traceback (most recent call last)
+Cell [1;32mIn[1], line 23[0m
+[0;32m     20[0m model_ws [38;5;241m=[39m [38;5;124mr[39m[38;5;124m"[39m[38;5;124mC:[39m[38;5;124m\[39m[38;5;124mUsers[39m[38;5;124m\[39m[38;5;124mgtmen[39m[38;5;124m\[39m[38;5;124mDesktop[39m[38;5;124m\[39m[38;5;124mHyporheicFloPy[39m[38;5;124m\[39m[38;5;124mHP_workspace[39m[38;5;124m\[39m[38;5;124mgwf_workspace[39m[38;5;124m"[39m [38;5;66;03m#r"C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\HP_workspace\gwf_workspace"[39;00m
+[0;32m     22[0m [38;5;66;03m# Load the MODFLOW 6 simulation[39;00m
+[1;32m---> 23[0m sim [38;5;241m=[39m [43mflopy[49m[38;5;241;43m.[39;49m[43mmf6[49m[38;5;241;43m.[39;49m[43mMFSimulation[49m[38;5;241;43m.[39;49m[43mload[49m[43m([49m[43msim_ws[49m[38;5;241;43m=[39;49m[43mworkspace_gwf[49m[43m)[49m
+[0;32m     24[0m [38;5;28mprint[39m(sim[38;5;241m.[39mmodel_names)
+[0;32m     26[0m [38;5;66;03m# Access the groundwater flow (GWF) model[39;00m
+
+File [1;32mc:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\flopy\mf6\modflow\mfsimulation.py:153[0m, in [0;36mMFSimulation.load[1;34m(cls, sim_name, version, exe_name, sim_ws, strict, verbosity_level, load_only, verify_data, write_headers, lazy_io, use_pandas)[0m
+[0;32m    138[0m [38;5;129m@classmethod[39m
+[0;32m    139[0m [38;5;28;01mdef[39;00m[38;5;250m [39m[38;5;21mload[39m(
+[0;32m    140[0m     [38;5;28mcls[39m,
+[1;32m   (...)[0m
+[0;32m    151[0m     use_pandas[38;5;241m=[39m[38;5;28;01mTrue[39;00m,
+[0;32m    152[0m ):
+[1;32m--> 153[0m     [38;5;28;01mreturn[39;00m [43mmfsimbase[49m[38;5;241;43m.[39;49m[43mMFSimulationBase[49m[38;5;241;43m.[39;49m[43mload[49m[43m([49m
+[0;32m    154[0m [43m        [49m[38;5;28;43mcls[39;49m[43m,[49m
+[0;32m    155[0m [43m        [49m[43msim_name[49m[43m,[49m
+[0;32m    156[0m [43m        [49m[43mversion[49m[43m,[49m
+[0;32m    157[0m [43m        [49m[43mexe_name[49m[43m,[49m
+[0;32m    158[0m [43m        [49m[43msim_ws[49m[43m,[49m
+[0;32m    159[0m [43m        [49m[43mstrict[49m[43m,[49m
+[0;32m    160[0m [43m        [49m[43mverbosity_level[49m[43m,[49m
+[0;32m    161[0m [43m        [49m[43mload_only[49m[43m,[49m
+[0;32m    162[0m [43m        [49m[43mverify_data[49m[43m,[49m
+[0;32m    163[0m [43m        [49m[43mwrite_headers[49m[43m,[49m
+[0;32m    164[0m [43m        [49m[43mlazy_io[49m[43m,[49m
+[0;32m    165[0m [43m        [49m[43muse_pandas[49m[43m,[49m
+[0;32m    166[0m [43m    [49m[43m)[49m
+
+File [1;32mc:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\flopy\mf6\mfsimbase.py:863[0m, in [0;36mMFSimulationBase.load[1;34m(cls_child, sim_name, version, exe_name, sim_ws, strict, verbosity_level, load_only, verify_data, write_headers, lazy_io, use_pandas)[0m
+[0;32m    861[0m [38;5;28;01mif[39;00m verbosity_level[38;5;241m.[39mvalue [38;5;241m>[39m[38;5;241m=[39m VerbosityLevel[38;5;241m.[39mnormal[38;5;241m.[39mvalue:
+[0;32m    862[0m     [38;5;28mprint[39m([38;5;124m"[39m[38;5;124m  loading simulation name file...[39m[38;5;124m"[39m)
+[1;32m--> 863[0m [43minstance[49m[38;5;241;43m.[39;49m[43mname_file[49m[38;5;241;43m.[39;49m[43mload[49m[43m([49m[43mstrict[49m[43m)[49m
+[0;32m    865[0m [38;5;66;03m# load TDIS file[39;00m
+[0;32m    866[0m tdis_pkg [38;5;241m=[39m [38;5;124mf[39m[38;5;124m"[39m[38;5;124mtdis[39m[38;5;132;01m{[39;00mmfstructure[38;5;241m.[39mMFStructure()[38;5;241m.[39mget_version_string()[38;5;132;01m}[39;00m[38;5;124m"[39m
+
+File [1;32mc:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\.venv\Lib\site-packages\flopy\mf6\mfpackage.py:2916[0m, in [0;36mMFPackage.load[1;34m(self, strict)[0m
+[0;32m   2912[0m         message [38;5;241m=[39m [38;5;124m"[39m[38;5;124mFile [39m[38;5;132;01m{}[39;00m[38;5;124m of type [39m[38;5;132;01m{}[39;00m[38;5;124m could not be opened.[39m[38;5;124m"[39m[38;5;241m.[39mformat(
+[0;32m   2913[0m             [38;5;28mself[39m[38;5;241m.[39mget_file_path(), [38;5;28mself[39m[38;5;241m.[39mpackage_type
+[0;32m   2914[0m         )
+[0;32m   2915[0m         type_, value_, traceback_ [38;5;241m=[39m sys[38;5;241m.[39mexc_info()
+[1;32m-> 2916[0m         [38;5;28;01mraise[39;00m MFDataException(
+[0;32m   2917[0m             [38;5;28mself[39m[38;5;241m.[39mmodel_name,
+[0;32m   2918[0m             [38;5;28mself[39m[38;5;241m.[39mpackage_name,
+[0;32m   2919[0m             [38;5;28mself[39m[38;5;241m.[39mpath,
+[0;32m   2920[0m             [38;5;124m"[39m[38;5;124mloading package file[39m[38;5;124m"[39m,
+[0;32m   2921[0m             [38;5;28;01mNone[39;00m,
+[0;32m   2922[0m             inspect[38;5;241m.[39mstack()[[38;5;241m0[39m][[38;5;241m3[39m],
+[0;32m   2923[0m             type_,
+[0;32m   2924[0m             value_,
+[0;32m   2925[0m             traceback_,
+[0;32m   2926[0m             message,
+[0;32m   2927[0m             [38;5;28mself[39m[38;5;241m.[39msimulation_data[38;5;241m.[39mdebug,
+[0;32m   2928[0m         )
+[0;32m   2930[0m [38;5;28;01mtry[39;00m:
+[0;32m   2931[0m     [38;5;28mself[39m[38;5;241m.[39m_load_blocks(fd_input_file, strict)
+
+[1;31mMFDataException[0m: An error occurred in package "None". The error occurred while loading package file in the "load" method.
+Additional Information:
+(1) File C:\Users\gtmen\Desktop\HyporheicFloPy\HP_workspace\gwf_workspace\mfsim.nam of type nam could not be opened.
+
