@@ -10,6 +10,7 @@ set GW_DOMAIN_SHAPEFILE=C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH0036
 set LEFT_BOUNDARY_SHAPEFILE=C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\InputShapefiles\L_FPL.shp
 set RIGHT_BOUNDARY_SHAPEFILE=C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\InputShapefiles\R_FPL.shp
 set PROJECTION_FILE=C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\RAS\GIS_Data\102739_TX_central.prj
+set SAT_IMAGE_PATH=C:\Users\u4eeevmq\Documents\Python\HyporheicFloPy\CH00365\GMS\HighResOrtho\HighResOrtho_23Oct2014_Clip.tif
 
 :: MODFLOW 6 and MODPATH 7 EXECUTABLES
 :: These executables are used to run the MODFLOW 6 and MODPATH 7 models.
