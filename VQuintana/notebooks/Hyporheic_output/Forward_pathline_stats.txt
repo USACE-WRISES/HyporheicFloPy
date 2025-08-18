@@ -1,0 +1,175 @@
+Linear Path Length (y-range, ft)
+  mean: 246.34
+  median: 177.50
+  min: 2.50
+  max: 544.61
+  range: 542.11
+
+Path Width (x-range, ft)
+  mean: 148.51
+  median: 158.44
+  min: 1.45
+  max: 351.16
+  range: 349.71
+
+Path Depth (z-range, ft)
+  mean: 5.84
+  median: 1.31
+  min: 0.03
+  max: 21.56
+  range: 21.53
+
+Net Path Length (ft)
+  mean: 326.76
+  median: 261.28
+  min: 15.60
+  max: 692.36
+  range: 676.76
+
+Zone Budget Summary
+Total number of start cells: 1233
+Total start flow: -2.1916794971643707
+Total number of end cells: 28
+Total end flow: -0.5307783814464528
+Average Hyporheic flow rate (ft³/d): -1.3612289393054118
+Hyporheic flow rate (ft³/d): 1.6609011157179179
+Per Cell: Total Volume Available (ft³)
+  mean: 501.5952
+  median: 487.5000
+  min: 487.5000
+  max: 611.1633
+  range: 123.6633
+
+Per Cell: Total Hyporheic Volume (ft³)
+  mean: 41.2636
+  median: 0.0000
+  min: 0.0000
+  max: 12489.9963
+  range: 12489.9963
+
+Per Cell: Starting Hydraulic Head
+  mean: 64721341672558691934074306560.0000
+  median: 1603.1095
+  min: -1000000000000000160622113193984.0000
+  max: 1000000000000000160622113193984.0000
+  range: 2000000000000000321244226387968.0000
+
+Per Cell: Ending Hydraulic Head
+  mean: 80278741925863457516951699456.0000
+  median: 1603.1735
+  min: -1000000000000000019884624838656.0000
+  max: 1000000000000000160622113193984.0000
+  range: 2000000000000000039769249677312.0000
+
+Per Cell: Particle Depth
+  mean: 1596.1575
+  median: 1600.3438
+  min: 1580.3293
+  max: 1602.6875
+  range: 22.3582
+
+Per Cell: Residence Time (days)
+  mean: 6894.4131
+  median: 1768.1233
+  min: 1.0000
+  max: 546129.2500
+  range: 546128.2500
+
+Per Cell: Path Length (ft)
+  mean: 223.1238
+  median: 182.9402
+  min: 0.0139
+  max: 692.3584
+  range: 692.3445
+
+Per Cell: Particle Velocity (ft/day)
+  mean: 1.4366
+  median: 0.1205
+  min: 0.0001
+  max: 4096.0122
+  range: 4096.0122
+
+Per Cell: Flow Rate (ft³/day)
+  mean: 2378.8335
+  median: 0.0000
+  min: 0.0000
+  max: 1236633.3008
+  range: 1236633.3008
+
+Per Cell: Hydraulic Gradient
+  mean: -6301123949075453018122485760.0000
+  median: 0.0000
+  min: -39734700219896004674966727426048.0000
+  max: 31976099712229290002241615298560.0000
+  range: 71710799932125299180807970095104.0000
+
+Particle Path: Total Volume Available Along Path (ft³)
+  mean: 38735.4229
+  median: 31687.5000
+  min: 1028.7659
+  max: 88030.4138
+  range: 87001.6479
+
+Particle Path: Hyporheic Volume Along Path (ft³)
+  mean: 3186.5577
+  median: 1937.5000
+  min: 0.0000
+  max: 14969.8029
+  range: 14969.8029
+
+Particle Path: Starting Hydraulic Head
+  mean: 162876225826988471671473569792.0000
+  median: 36370903277378098565126029312.0000
+  min: -1000000000000000160622113193984.0000
+  max: 1000000000000000160622113193984.0000
+  range: 2000000000000000321244226387968.0000
+
+Particle Path: Ending Hydraulic Head
+  mean: 183938801571015088539269332992.0000
+  median: 53502430512277199798631661568.0000
+  min: -1000000000000000160622113193984.0000
+  max: 1000000000000000160622113193984.0000
+  range: 2000000000000000321244226387968.0000
+
+Particle Path: Depth
+  mean: 1595.5457
+  median: 1599.8750
+  min: 1580.3293
+  max: 1601.1875
+  range: 20.8582
+
+Particle Path: Residence Time (days)
+  mean: 72385.1484
+  median: 15232.6553
+  min: 102.6182
+  max: 546129.2500
+  range: 546026.6250
+
+Particle Path: Length (ft)
+  mean: 320.6428
+  median: 254.8375
+  min: 12.9348
+  max: 692.3584
+  range: 679.4236
+
+Particle Path: Average Velocity (ft/day)
+  mean: 2.5799
+  median: 0.1783
+  min: 0.0064
+  max: 260.3034
+  range: 260.2970
+
+Particle Path: Average Flow Rate (ft³/day)
+  mean: 4391.6734
+  median: 3.2875
+  min: 0.0000
+  max: 177775.0651
+  range: 177775.0651
+
+Particle Path: Hydraulic Gradient
+  mean: -187326787351968920473960448.0000
+  median: -25068305835610994580127744.0000
+  min: -13589055156095955685253054464.0000
+  max: 18369661691970411774097752064.0000
+  range: 31958716848066365260327550976.0000
+
